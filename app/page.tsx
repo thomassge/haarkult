@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ServicesGrid } from "@/components/blocks/services-grid";
 import { TeamGrid } from "@/components/blocks/team-grid";
 import { GalleryGrid } from "@/components/blocks/gallery-grid";
+import { ContactBlock } from "@/components/blocks/contact";
 
 export default function Home() {
   const addressLine = `${site.address.street}, ${site.address.zip} ${site.address.city}`;
@@ -76,7 +77,8 @@ export default function Home() {
         <ServicesGrid />
         <TeamGrid />
         <GalleryGrid />
-        
+        <ContactBlock />
+
         <Section>
           <Container>
             <Heading
