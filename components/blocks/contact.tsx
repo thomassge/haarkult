@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { mapsHref, telHref, whatsappHref } from "@/lib/links";
 
 export function ContactBlock() {
-  const addressLine = `${site.address.street}, ${site.address.zip} ${site.address.city}`;
+  const addressLine = `${site.address.street}, ${site.address.zip} ${site.address.city}, ${site.address.country}`;
 
   return (
     <Section className="pb-24">
@@ -32,9 +32,10 @@ export function ContactBlock() {
             </div>
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <Button href={mapsHref(addressLine)} variant="secondary" external>
-                Route planen
-              </Button>
+              <Button href={site.googleMapsPlaceUrl} variant="secondary" external>
+                  Route planen
+                </Button>
+
               <Button href={telHref(site.phone)} variant="primary" external>
                 Anrufen
               </Button>

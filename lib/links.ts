@@ -13,5 +13,6 @@ export function whatsappHref(phone: string, text?: string) {
 
 
 export function mapsHref(addressLine: string) {
-    return 'https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressLine)}';
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressLine)}`;
 }
+
