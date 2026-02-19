@@ -1,47 +1,84 @@
-import Image from "next/image";
-
 import { site } from "@/content/site";
 import { telHref, whatsappHref } from "@/lib/links";
+import { Container } from "@/components/ui/container";
+import { Section } from "@/components/ui/section";
+import { Heading } from "@/components/ui/heading";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            {site.name}
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            {site.address.street}, {site.address.zip} {site.address.city}
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full bg-black px-5 text-white transition-colors hover:bg-zinc-800 md:w-[158px]"
-            href={telHref(site.phone)}
-          >
-            Anrufen
-          </a>
+  const addressLine = `${site.address.street}, ${site.address.zip} ${site.address.city}`;
 
-          {site.whatsapp && (
-            <a
-              className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.12] px-5 transition-colors hover:bg-black/[.04] dark:border-white/[.18] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-              href={whatsappHref(site.whatsapp, `Hi! Ich würde gern einen Termin bei ${site.name} machen.`)}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              WhatsApp
-            </a>
-          )}
-        </div>
+  return (
+    <div className="min-h-screen bg-zinc-50 text-zinc-950 dark:bg-black dark:text-zinc-50">
+      <main>
+        {/* HERO */}
+        <Section className="pt-20 md:pt-28">
+          <Container>
+            <div className="grid gap-10 md:grid-cols-2 md:items-center">
+              <div className="space-y-8">
+                <Heading
+                  eyebrow={`Friseur in ${site.address.city}`}
+                  title={site.name}
+                  subtitle={addressLine}
+                />
+
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <Button href={telHref(site.phone)} variant="primary" external>
+                    Anrufen
+                  </Button>
+
+                  {site.whatsapp && (
+                    <Button
+                      href={whatsappHref(
+                        site.whatsapp,
+                        `Hi! Ich würde gern einen Termin bei ${site.name} machen.`
+                      )}
+                      variant="secondary"
+                      external
+                    >
+                      WhatsApp
+                    </Button>
+                  )}
+                </div>
+
+                <div className="rounded-2xl border border-black/[.08] bg-white p-6 shadow-sm dark:border-white/[.12] dark:bg-zinc-950">
+                  <p className="text-sm font-medium text-zinc-600 dark:text-zinc-300">
+                    Öffnungszeiten
+                  </p>
+                  <ul className="mt-4 space-y-2 text-sm text-zinc-800 dark:text-zinc-100">
+                    {site.openingHours.map((row) => (
+                      <li key={row.label} className="flex items-center justify-between">
+                        <span className="text-zinc-600 dark:text-zinc-300">{row.label}</span>
+                        <span className="font-medium">{row.hours}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Bild-Platzhalter: später ersetzen durch echtes Salon-Foto */}
+              <div className="relative overflow-hidden rounded-3xl border border-black/[.08] bg-white shadow-sm dark:border-white/[.12] dark:bg-zinc-950">
+                <div className="aspect-[4/3] w-full" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                    Hier kommt ein starkes Salon-Foto rein.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Container>
+        </Section>
+
+        {/* Nächste Sections kommen in Milestone 1/2: Leistungen, Team, Galerie, Kontakt */}
+        <Section>
+          <Container>
+            <Heading
+              eyebrow="Baukasten-Prinzip"
+              title="Alles aus Daten aufgebaut"
+              subtitle="Als Nächstes bauen wir Leistungen, Team und Galerie als wiederverwendbare Blocks – gespeist aus content/*.ts."
+            />
+          </Container>
+        </Section>
       </main>
     </div>
   );
