@@ -6,7 +6,7 @@ import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
 import { ServicesGrid } from "@/components/blocks/services-grid";
 import { TeamGrid } from "@/components/blocks/team-grid";
-
+import { GalleryGrid } from "@/components/blocks/gallery-grid";
 
 export default function Home() {
   const addressLine = `${site.address.street}, ${site.address.zip} ${site.address.city}`;
@@ -75,6 +75,8 @@ export default function Home() {
         {/* Nächste Sections kommen in Milestone 1/2: Leistungen, Team, Galerie, Kontakt */}
         <ServicesGrid />
         <TeamGrid />
+        <GalleryGrid />
+        
         <Section>
           <Container>
             <Heading
