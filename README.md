@@ -1,3 +1,7 @@
+# Haarkult
+
+For project goals, architecture rules, workflow expectations, and current next steps, read [CODEX_CONTEXT.md](./CODEX_CONTEXT.md) first.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
