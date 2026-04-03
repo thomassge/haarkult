@@ -3,6 +3,8 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { BodyText, FinePrint } from "@/components/ui/typography";
 import type { OpeningHour } from "@/content/site";
 
 type HeroAction = {
@@ -39,13 +41,15 @@ export function Hero({
   image,
 }: HeroProps) {
   return (
-    <Section className="pt-20 md:pt-28">
+    <Section className="pt-10 sm:pt-14 lg:pt-20">
       <Container>
-        <div className="grid gap-10 md:grid-cols-2 md:items-center">
-          <div className="space-y-8">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(26rem,0.95fr)] lg:items-center lg:gap-12">
+          <div className="space-y-8 lg:space-y-10">
             <div className="space-y-4">
-              <Heading eyebrow={eyebrow} title={title} subtitle={subtitle} />
-              <p className="text-sm font-medium tracking-wide text-zinc-500">{meta}</p>
+              <Heading eyebrow={eyebrow} title={title} subtitle={subtitle} size="hero" />
+              <BodyText className="text-sm font-medium tracking-[0.02em] text-zinc-500 dark:text-zinc-400">
+                {meta}
+              </BodyText>
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row">
@@ -61,32 +65,33 @@ export function Hero({
               ))}
             </div>
 
-            <div className="rounded-2xl border border-black/[.08] bg-white p-6 shadow-sm dark:border-white/[.12] dark:bg-zinc-950">
-              <p className="text-sm font-medium text-zinc-600 dark:text-zinc-300">
-                {hoursTitle}
-              </p>
-              <ul className="mt-4 space-y-2 text-sm text-zinc-800 dark:text-zinc-100">
+            <Card className="max-w-xl" padded>
+              <FinePrint>{hoursTitle}</FinePrint>
+              <ul className="mt-5 space-y-3 text-sm text-zinc-800 dark:text-zinc-100">
                 {openingHours.map((row) => (
                   <li key={row.label} className="flex items-center justify-between">
                     <span className="text-zinc-600 dark:text-zinc-300">{row.label}</span>
-                    <span className="font-medium">{row.hours}</span>
+                    <span className="font-medium tracking-[-0.01em]">{row.hours}</span>
                   </li>
                 ))}
               </ul>
-            </div>
+            </Card>
           </div>
 
-          <div className="relative overflow-hidden rounded-3xl border border-black/[.08] bg-white shadow-sm dark:border-white/[.12] dark:bg-zinc-950">
+          <Card className="relative overflow-hidden rounded-[2.25rem]">
             <div className="relative aspect-[4/3] w-full">
               {image ? (
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  fill
-                  priority
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
+                <>
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    fill
+                    priority
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-black/10 via-transparent to-white/35" />
+                </>
               ) : (
                 <div className="flex h-full items-center justify-center bg-zinc-100 dark:bg-zinc-900">
                   <p className="text-sm text-zinc-500 dark:text-zinc-400">
@@ -95,7 +100,7 @@ export function Hero({
                 </div>
               )}
             </div>
-          </div>
+          </Card>
         </div>
       </Container>
     </Section>

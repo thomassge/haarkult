@@ -1,29 +1,31 @@
-// components/ui/heading.tsx
 import { cn } from "@/lib/cn";
+import { Eyebrow, Lead } from "@/components/ui/typography";
 
 type HeadingProps = {
   eyebrow?: string;
   title: string;
   subtitle?: string;
+  size?: "section" | "hero";
   className?: string;
 };
 
-export function Heading({ eyebrow, title, subtitle, className }: HeadingProps) {
+export function Heading({
+  eyebrow,
+  title,
+  subtitle,
+  size = "section",
+  className,
+}: HeadingProps) {
+  const titleClassName =
+    size === "hero"
+      ? "max-w-[11ch] text-5xl font-semibold leading-[0.92] tracking-[-0.055em] text-zinc-950 sm:text-6xl lg:text-7xl dark:text-zinc-50"
+      : "text-3xl font-semibold leading-tight tracking-[-0.045em] text-zinc-950 sm:text-4xl lg:text-[3.15rem] dark:text-zinc-50";
+
   return (
-    <div className={cn("space-y-3", className)}>
-      {eyebrow && (
-        <p className="text-sm font-medium tracking-wide text-zinc-500">
-          {eyebrow}
-        </p>
-      )}
-      <h2 className="text-3xl font-semibold tracking-tight text-zinc-950 md:text-4xl">
-        {title}
-      </h2>
-      {subtitle && (
-        <p className="max-w-2xl text-lg leading-8 text-zinc-600">
-          {subtitle}
-        </p>
-      )}
+    <div className={cn("space-y-4", className)}>
+      {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+      <h2 className={titleClassName}>{title}</h2>
+      {subtitle && <Lead>{subtitle}</Lead>}
     </div>
   );
 }

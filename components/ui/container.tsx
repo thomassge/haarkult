@@ -1,4 +1,3 @@
-// components/ui/container.tsx
 import { cn } from "@/lib/cn";
 
 type ContainerProps = {
@@ -7,9 +6,5 @@ type ContainerProps = {
 };
 
 export function Container({ children, className }: ContainerProps) {
-  return (
-    <div className={cn("mx-auto w-full max-w-6xl px-6 md:px-10", className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn("mx-auto w-full max-w-[76rem] px-5 sm:px-6 lg:px-10", className)}>{children}</div>;
 }

@@ -2,6 +2,8 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { BodyText, FinePrint } from "@/components/ui/typography";
 import type { OpeningHour } from "@/content/site";
 
 type ContactAction = {
@@ -37,16 +39,14 @@ export function ContactBlock({
   return (
     <Section className="pb-24">
       <Container>
-        <div className="grid gap-10 md:grid-cols-2 md:items-start">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start lg:gap-12">
           <Heading eyebrow={eyebrow} title={title} subtitle={subtitle} />
 
-          <div className="rounded-3xl border border-black/[.08] bg-white p-6 shadow-sm dark:border-white/[.12] dark:bg-zinc-950">
+          <Card padded>
             <div className="space-y-2">
-              <p className="text-sm font-medium text-zinc-600 dark:text-zinc-300">
-                {addressLabel}
-              </p>
-              <p className="text-base font-semibold tracking-tight">{siteName}</p>
-              <p className="text-sm text-zinc-600 dark:text-zinc-300">{addressLine}</p>
+              <FinePrint>{addressLabel}</FinePrint>
+              <p className="text-xl font-semibold tracking-[-0.03em]">{siteName}</p>
+              <BodyText>{addressLine}</BodyText>
             </div>
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -62,10 +62,8 @@ export function ContactBlock({
               ))}
             </div>
 
-            <div className="mt-8 border-t border-black/[.08] pt-6 dark:border-white/[.12]">
-              <p className="text-sm font-medium text-zinc-600 dark:text-zinc-300">
-                {hoursTitle}
-              </p>
+            <div className="mt-8 border-t border-[var(--line)] pt-6">
+              <FinePrint>{hoursTitle}</FinePrint>
               <ul className="mt-3 space-y-2 text-sm">
                 {openingHours.map((row) => (
                   <li key={row.label} className="flex justify-between">
@@ -77,7 +75,7 @@ export function ContactBlock({
                 ))}
               </ul>
             </div>
-          </div>
+          </Card>
         </div>
       </Container>
     </Section>

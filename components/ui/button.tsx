@@ -1,4 +1,3 @@
-// components/ui/button.tsx
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 
@@ -20,16 +19,16 @@ export function Button({
   external,
 }: ButtonProps) {
   const base =
-    "inline-flex h-12 items-center justify-center rounded-full px-5 text-base font-medium transition-colors";
+    "inline-flex min-h-12 w-full items-center justify-center rounded-full px-5 py-3 text-sm font-semibold tracking-[-0.01em] transition duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/15 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent sm:w-auto";
   const styles =
     variant === "primary"
-      ? "bg-black text-white hover:bg-zinc-800"
-      : "border border-black/[.12] text-zinc-950 hover:bg-black/[.04] dark:border-white/[.18] dark:text-zinc-50 dark:hover:bg-[#1a1a1a]";
+      ? "bg-[var(--accent)] text-[var(--accent-foreground)] shadow-[0_20px_40px_-24px_rgba(23,19,15,0.65)] hover:-translate-y-0.5 hover:brightness-105"
+      : "border border-[var(--line-strong)] bg-white/55 text-[var(--foreground)] backdrop-blur-sm hover:-translate-y-0.5 hover:bg-white/75 dark:bg-white/5 dark:hover:bg-white/8";
 
   if (external) {
     return (
       <a
-        className={cn(base, styles, "w-full md:w-auto", className)}
+        className={cn(base, styles, className)}
         href={href}
         target="_blank"
         rel="noopener noreferrer"
@@ -40,7 +39,7 @@ export function Button({
   }
 
   return (
-    <Link className={cn(base, styles, "w-full md:w-auto", className)} href={href}>
+    <Link className={cn(base, styles, className)} href={href}>
       {children}
     </Link>
   );

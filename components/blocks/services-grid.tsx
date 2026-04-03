@@ -2,6 +2,8 @@ import type { Service, ServiceCategory } from "@/content/services";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Heading } from "@/components/ui/heading";
+import { Card } from "@/components/ui/card";
+import { BodyText, FinePrint } from "@/components/ui/typography";
 
 type ServicesGridProps = {
   eyebrow: string;
@@ -23,42 +25,41 @@ export function ServicesGrid({
       <Container>
         <Heading eyebrow={eyebrow} title={title} subtitle={subtitle} />
 
-        <div className="mt-10 space-y-12">
+        <div className="mt-12 space-y-14">
           {categories.map((category) => {
             const categoryItems = items.filter((service) => service.category === category);
             if (categoryItems.length === 0) return null;
 
             return (
-              <div key={category}>
-                <h3 className="text-sm font-medium tracking-wide text-zinc-500">
-                  {category}
-                </h3>
+              <div key={category} className="space-y-5">
+                <FinePrint>{category}</FinePrint>
 
-                <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                   {categoryItems.map((service) => (
-                    <div
+                    <Card
                       key={service.id}
-                      className="rounded-2xl border border-black/[.08] bg-white p-6 shadow-sm transition-transform hover:-translate-y-0.5 dark:border-white/[.12] dark:bg-zinc-950"
+                      hover
+                      className="h-full p-6 sm:p-7"
                     >
                       <div className="flex items-start justify-between gap-4">
                         <h4 className="text-lg font-semibold tracking-tight">
                           {service.title}
                         </h4>
-                        <span className="rounded-full border border-black/[.10] px-3 py-1 text-xs font-medium text-zinc-700 dark:border-white/[.14] dark:text-zinc-200">
+                        <span className="rounded-full border border-[var(--line)] bg-black/[0.025] px-3 py-1 text-xs font-semibold text-zinc-700 dark:bg-white/[0.04] dark:text-zinc-200">
                           {service.priceHint}
                         </span>
                       </div>
 
                       {service.note && (
-                        <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-400">
+                        <BodyText className="mt-2 text-xs leading-6 text-zinc-500 dark:text-zinc-400">
                           {service.note}
-                        </p>
+                        </BodyText>
                       )}
 
-                      <p className="mt-3 text-sm leading-6 text-zinc-600 dark:text-zinc-300">
+                      <BodyText className="mt-4">
                         {service.description}
-                      </p>
-                    </div>
+                      </BodyText>
+                    </Card>
                   ))}
                 </div>
               </div>
