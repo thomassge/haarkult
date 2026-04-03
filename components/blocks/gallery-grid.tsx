@@ -4,6 +4,7 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Heading } from "@/components/ui/heading";
 import { Card } from "@/components/ui/card";
+import { Reveal, StaggerGroup, StaggerItem } from "@/components/ui/reveal";
 import { BodyText } from "@/components/ui/typography";
 
 type GalleryGridProps = {
@@ -22,33 +23,36 @@ export function GalleryGrid({
   return (
     <Section>
       <Container>
-        <Heading eyebrow={eyebrow} title={title} subtitle={subtitle} />
+        <Reveal>
+          <Heading eyebrow={eyebrow} title={title} subtitle={subtitle} />
+        </Reveal>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <StaggerGroup className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4" delayChildren={0.05}>
           {images.slice(0, 4).map((image) => (
-            <Card
-              key={image.src}
-              hover
-              className="group overflow-hidden p-0"
-            >
-              <div className="relative aspect-[4/3] w-full">
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  fill
-                  className="object-cover transition duration-700 ease-out group-hover:scale-[1.04]"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                />
-              </div>
+            <StaggerItem key={image.src}>
+              <Card
+                hover
+                className="group overflow-hidden p-0"
+              >
+                <div className="relative aspect-[4/3] w-full">
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    fill
+                    className="object-cover transition duration-700 ease-out group-hover:scale-[1.04]"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  />
+                </div>
 
-              <div className="p-5">
-                <BodyText className="text-zinc-600 dark:text-zinc-300">
-                  {image.alt}
-                </BodyText>
-              </div>
-            </Card>
+                <div className="p-5">
+                  <BodyText className="text-zinc-600 dark:text-zinc-300">
+                    {image.alt}
+                  </BodyText>
+                </div>
+              </Card>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerGroup>
       </Container>
     </Section>
   );
