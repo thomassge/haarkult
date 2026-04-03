@@ -31,13 +31,13 @@ const homeSections: readonly HomeSection[] = [
 
 // Aktionen ohne passende URL in site.ts werden automatisch ausgelassen.
 const heroActions: readonly HomeAction[] = [
-  { kind: "phone", label: "Anrufen", variant: "primary" },
+  { kind: "phone", label: "Anrufen", variant: "secondary" },
   { kind: "whatsapp", label: "WhatsApp", variant: "secondary" },
 ];
 
 const contactActions: readonly HomeAction[] = [
   { kind: "maps", label: "Route planen", variant: "secondary" },
-  { kind: "phone", label: "Anrufen", variant: "primary" },
+  { kind: "phone", label: "Anrufen", variant: "secondary" },
   { kind: "instagram", label: "Instagram", variant: "secondary" },
   { kind: "whatsapp", label: "WhatsApp", variant: "secondary" },
 ];
