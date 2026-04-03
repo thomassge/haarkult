@@ -46,7 +46,7 @@ export function ContactBlock({
             <div className="space-y-2">
               <FinePrint>{addressLabel}</FinePrint>
               <p className="text-xl font-semibold tracking-[-0.03em]">{siteName}</p>
-              <BodyText>{addressLine}</BodyText>
+              <BodyText className="text-zinc-600 dark:text-zinc-300">{addressLine}</BodyText>
             </div>
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">

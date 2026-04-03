@@ -32,7 +32,7 @@ export function Lead({ children, className }: TextProps) {
 }
 
 export function BodyText({ children, className }: TextProps) {
-  return <p className={cn("text-sm leading-7 text-zinc-600 dark:text-zinc-300", className)}>{children}</p>;
+  return <p className={cn("text-sm leading-7", className)}>{children}</p>;
 }
 
 export function FinePrint({ children, className }: TextProps) {

@@ -42,7 +42,7 @@ export function GalleryGrid({
               </div>
 
               <div className="p-5">
-                <BodyText className="text-sm">
+                <BodyText className="text-zinc-600 dark:text-zinc-300">
                   {image.alt}
                 </BodyText>
               </div>

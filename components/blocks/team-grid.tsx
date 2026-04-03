@@ -39,7 +39,7 @@ export function TeamGrid({ eyebrow, title, subtitle, members }: TeamGridProps) {
 
               <div className="p-6 sm:p-7">
                 <p className="text-xl font-semibold tracking-[-0.03em]">{member.name}</p>
-                <BodyText className="mt-2">
+                <BodyText className="mt-2 text-zinc-600 dark:text-zinc-300">
                   {member.role}
                 </BodyText>
               </div>

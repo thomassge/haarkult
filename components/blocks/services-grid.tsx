@@ -56,7 +56,7 @@ export function ServicesGrid({
                         </BodyText>
                       )}
 
-                      <BodyText className="mt-4">
+                      <BodyText className="mt-4 text-zinc-600 dark:text-zinc-300">
                         {service.description}
                       </BodyText>
                     </Card>
