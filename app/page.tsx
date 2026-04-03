@@ -1,5 +1,6 @@
+import { Fragment, type ReactElement } from "react";
 import { gallery } from "@/content/gallery";
-import { homePage } from "@/content/home";
+import { homePage, type HomeSectionId } from "@/content/home";
 import { site } from "@/content/site";
 import { services, serviceCategoryOrder } from "@/content/services";
 import { team } from "@/content/team";
@@ -60,6 +61,59 @@ export default function Home() {
     });
   }
 
+  const sectionBlocks: Record<HomeSectionId, ReactElement> = {
+    hero: (
+      <Hero
+        eyebrow={`${homePage.hero.eyebrowPrefix} ${site.brand.city}`}
+        title={site.brand.name}
+        subtitle={homePage.hero.subtitle}
+        meta={shortAddressLine}
+        actions={heroActions}
+        hoursTitle={homePage.hero.hoursTitle}
+        openingHours={site.hours}
+        image={homePage.hero.image}
+      />
+    ),
+    services: (
+      <ServicesGrid
+        eyebrow={homePage.services.eyebrow}
+        title={homePage.services.title}
+        subtitle={homePage.services.subtitle}
+        categories={serviceCategoryOrder}
+        items={services}
+      />
+    ),
+    team: (
+      <TeamGrid
+        eyebrow={homePage.team.eyebrow}
+        title={homePage.team.title}
+        subtitle={homePage.team.subtitle}
+        members={team}
+      />
+    ),
+    gallery: (
+      <GalleryGrid
+        eyebrow={homePage.gallery.eyebrow}
+        title={homePage.gallery.title}
+        subtitle={homePage.gallery.subtitle}
+        images={gallery}
+      />
+    ),
+    contact: (
+      <ContactBlock
+        eyebrow={homePage.contact.eyebrow}
+        title={homePage.contact.title}
+        subtitle={homePage.contact.subtitle}
+        addressLabel={homePage.contact.addressLabel}
+        siteName={site.brand.name}
+        addressLine={fullAddressLine}
+        actions={contactActions}
+        hoursTitle={homePage.contact.hoursTitle}
+        openingHours={site.hours}
+      />
+    ),
+  };
+
   return (
     <div className="relative min-h-screen overflow-hidden text-zinc-950 dark:text-zinc-50">
       <div
@@ -71,46 +125,11 @@ export default function Home() {
         className="pointer-events-none absolute left-1/2 top-72 -z-10 h-[34rem] w-[34rem] -translate-x-1/2 rounded-full bg-white/30 blur-3xl dark:bg-white/[0.03]"
       />
       <main className="relative">
-        <Hero
-          eyebrow={`${homePage.hero.eyebrowPrefix} ${site.brand.city}`}
-          title={site.brand.name}
-          subtitle={homePage.hero.subtitle}
-          meta={shortAddressLine}
-          actions={heroActions}
-          hoursTitle={homePage.hero.hoursTitle}
-          openingHours={site.hours}
-          image={homePage.hero.image}
-        />
-        <ServicesGrid
-          eyebrow={homePage.services.eyebrow}
-          title={homePage.services.title}
-          subtitle={homePage.services.subtitle}
-          categories={serviceCategoryOrder}
-          items={services}
-        />
-        <TeamGrid
-          eyebrow={homePage.team.eyebrow}
-          title={homePage.team.title}
-          subtitle={homePage.team.subtitle}
-          members={team}
-        />
-        <GalleryGrid
-          eyebrow={homePage.gallery.eyebrow}
-          title={homePage.gallery.title}
-          subtitle={homePage.gallery.subtitle}
-          images={gallery}
-        />
-        <ContactBlock
-          eyebrow={homePage.contact.eyebrow}
-          title={homePage.contact.title}
-          subtitle={homePage.contact.subtitle}
-          addressLabel={homePage.contact.addressLabel}
-          siteName={site.brand.name}
-          addressLine={fullAddressLine}
-          actions={contactActions}
-          hoursTitle={homePage.contact.hoursTitle}
-          openingHours={site.hours}
-        />
+        {homePage.sections
+          .filter((section) => section.enabled !== false)
+          .map((section) => (
+            <Fragment key={section.id}>{sectionBlocks[section.id]}</Fragment>
+          ))}
       </main>
     </div>
   );

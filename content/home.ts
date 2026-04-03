@@ -4,7 +4,26 @@ type SectionCopy = {
   subtitle: string;
 };
 
+export const homeSectionIds = ["hero", "services", "team", "gallery", "contact"] as const;
+
+export type HomeSectionId = (typeof homeSectionIds)[number];
+
+export type HomeSection = {
+  id: HomeSectionId;
+  enabled?: boolean;
+};
+
+// Reihenfolge steuert die Homepage; mit enabled: false kann ein Block ausgeblendet werden.
+const homeSections: readonly HomeSection[] = [
+  { id: "hero" },
+  { id: "services" },
+  { id: "team" },
+  { id: "gallery" },
+  { id: "contact" },
+];
+
 export const homePage = {
+  sections: homeSections,
   hero: {
     eyebrowPrefix: "Friseur in",
     subtitle:
