@@ -3,10 +3,10 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
-import { mapsHref, telHref, whatsappHref } from "@/lib/links";
+import { telHref, whatsappHref } from "@/lib/links";
 
 export function ContactBlock() {
-  const addressLine = `${site.address.street}, ${site.address.zip} ${site.address.city}, ${site.address.country}`;
+  const addressLine = `${site.contact.address.street}, ${site.contact.address.zip} ${site.contact.address.city}, ${site.contact.address.country}`;
 
   return (
     <Section className="pb-24">
@@ -24,7 +24,7 @@ export function ContactBlock() {
                 Adresse
               </p>
               <p className="text-base font-semibold tracking-tight">
-                {site.name}
+                {site.brand.name}
               </p>
               <p className="text-sm text-zinc-600 dark:text-zinc-300">
                 {addressLine}
@@ -32,18 +32,18 @@ export function ContactBlock() {
             </div>
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <Button href={site.googleMapsPlaceUrl} variant="secondary" external>
+              <Button href={site.contact.mapsUrl} variant="secondary" external>
                   Route planen
                 </Button>
 
-              <Button href={telHref(site.phone)} variant="primary" external>
+              <Button href={telHref(site.contact.phone)} variant="primary" external>
                 Anrufen
               </Button>
-              {site.whatsapp && (
+              {site.contact.whatsapp && (
                 <Button
                   href={whatsappHref(
-                    site.whatsapp,
-                    `Hi! Ich würde gern einen Termin bei ${site.name} machen.`
+                    site.contact.whatsapp,
+                    `Hi! Ich würde gern einen Termin bei ${site.brand.name} machen.`
                   )}
                   variant="secondary"
                   external
@@ -59,7 +59,7 @@ export function ContactBlock() {
                 Öffnungszeiten
               </p>
               <ul className="mt-3 space-y-2 text-sm">
-                {site.openingHours.map((row) => (
+                {site.hours.map((row) => (
                   <li key={row.label} className="flex justify-between">
                     <span className="text-zinc-600 dark:text-zinc-300">
                       {row.label}

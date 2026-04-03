@@ -10,7 +10,7 @@ import { GalleryGrid } from "@/components/blocks/gallery-grid";
 import { ContactBlock } from "@/components/blocks/contact";
 
 export default function Home() {
-  const addressLine = `${site.address.street}, ${site.address.zip} ${site.address.city}`;
+  const addressLine = `${site.contact.address.street}, ${site.contact.address.zip} ${site.contact.address.city}`;
 
   return (
     <div className="min-h-screen bg-zinc-50 text-zinc-950 dark:bg-black dark:text-zinc-50">
@@ -21,21 +21,21 @@ export default function Home() {
             <div className="grid gap-10 md:grid-cols-2 md:items-center">
               <div className="space-y-8">
                 <Heading
-                  eyebrow={`Friseur in ${site.address.city}`}
-                  title={site.name}
+                  eyebrow={`Friseur in ${site.brand.city}`}
+                  title={site.brand.name}
                   subtitle={addressLine}
                 />
 
                 <div className="flex flex-col gap-3 sm:flex-row">
-                  <Button href={telHref(site.phone)} variant="primary" external>
+                  <Button href={telHref(site.contact.phone)} variant="primary" external>
                     Anrufen
                   </Button>
 
-                  {site.whatsapp && (
+                  {site.contact.whatsapp && (
                     <Button
                       href={whatsappHref(
-                        site.whatsapp,
-                        `Hi! Ich würde gern einen Termin bei ${site.name} machen.`
+                        site.contact.whatsapp,
+                        `Hi! Ich würde gern einen Termin bei ${site.brand.name} machen.`
                       )}
                       variant="secondary"
                       external
@@ -50,7 +50,7 @@ export default function Home() {
                     Öffnungszeiten
                   </p>
                   <ul className="mt-4 space-y-2 text-sm text-zinc-800 dark:text-zinc-100">
-                    {site.openingHours.map((row) => (
+                    {site.hours.map((row) => (
                       <li key={row.label} className="flex items-center justify-between">
                         <span className="text-zinc-600 dark:text-zinc-300">{row.label}</span>
                         <span className="font-medium">{row.hours}</span>
