@@ -1,40 +1,139 @@
 # Haarkult
 
-For project goals, architecture rules, workflow expectations, and current next steps, read [CODEX_CONTEXT.md](./CODEX_CONTEXT.md) first.
+Projekt für `Haarkult-Maintal` auf Basis von Next.js App Router, TypeScript und Tailwind CSS.
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Das Repository dient gleichzeitig als:
 
-## Getting Started
+1. echte Website für den Salon `Haarkult-Maintal`
+2. wiederverwendbare Vorlage für weitere Friseur-Websites
 
-First, run the development server:
+Für Arbeitskontext, Handoffs und die laufende Roadmap zuerst [CODEX_CONTEXT.md](./CODEX_CONTEXT.md) lesen.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Produktziel
+
+Die Website soll modern, ruhig und hochwertig wirken:
+
+- viel Weißraum
+- starke Typografie
+- hochwertige Bilder
+- wenig visuelle Unruhe
+- selektive, dezente Animation
+- nur deutsche Inhalte
+
+Wichtig:
+
+- kein CMS
+- kein komplettes Buchungssystem im aktuellen Stand
+- Inhalte liegen direkt im Repository
+- wiederverwendbare Blocks dürfen keine salonspezifischen Inhalte direkt importieren
+
+## Tech Stack
+
+- Next.js App Router
+- TypeScript
+- Tailwind CSS
+- Framer Motion für ausgewählte Bewegungen
+
+## Projektstruktur
+
+```text
+app/
+  page.tsx                 -> Seiten-Komposition
+  layout.tsx               -> globale Layout-/SEO-Basis
+
+components/
+  blocks/                  -> wiederverwendbare Seitenabschnitte
+  ui/                      -> Design-System und UI-Primitives
+
+content/
+  site.ts                  -> Marke, Kontakt, SEO, Assets
+  home.ts                  -> Homepage-Struktur, Texte, CTA-Konfiguration
+  services.ts              -> Leistungen und Preise
+  team.ts                  -> Teamdaten
+  gallery.ts               -> Galerieinhalte
+
+public/
+  brand/                   -> Logo, Hero-Bilder, Markenassets
+  gallery/                 -> Galerie-Bilder
+  team/                    -> Teamfotos
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Lokale Entwicklung
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Auf diesem Windows-/PowerShell-Setup `npm.cmd` statt `npm` verwenden:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```powershell
+npm.cmd install
+npm.cmd run dev
+```
 
-## Learn More
+Wichtige Checks:
 
-To learn more about Next.js, take a look at the following resources:
+```powershell
+npm.cmd run lint
+npm.cmd run build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Danach ist die Website unter `http://localhost:3000` erreichbar.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Inhalte pflegen
 
-## Deploy on Vercel
+Wenn sich nur Saloninhalte ändern, sollten Änderungen fast immer hier stattfinden:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `content/site.ts`
+- `content/home.ts`
+- `content/services.ts`
+- `content/team.ts`
+- `content/gallery.ts`
+- `public/brand`
+- `public/gallery`
+- `public/team`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`app/page.tsx` sollte Inhalte nicht neu erfinden, sondern nur konfigurierte Blocks zusammensetzen.
+
+## Neuen Salon aus dieser Vorlage bauen
+
+Empfohlener Ablauf:
+
+1. Repository kopieren oder als neues Repo duplizieren.
+2. Inhalte in `content/site.ts` anpassen:
+   Salonname, Stadt, Kontakt, WhatsApp, Maps-Link, Instagram, SEO, Logo, Hero-Bild.
+3. Inhalte in `content/home.ts` anpassen:
+   Reihenfolge der Sektionen, Sichtbarkeit, CTAs, Texte.
+4. Leistungen, Team und Galerie ersetzen:
+   `content/services.ts`, `content/team.ts`, `content/gallery.ts`.
+5. Bilder in `public/brand`, `public/team`, `public/gallery` austauschen.
+6. Lokal prüfen mit `npm.cmd run lint` und `npm.cmd run build`.
+
+Ziel dabei:
+
+- möglichst nur `content/*` und `public/*` ändern
+- `components/blocks/*` und `components/ui/*` nur anfassen, wenn das System wirklich erweitert werden muss
+
+## Aktueller Builder-Stand
+
+Bereits umgesetzt:
+
+- zentrale Marken-, Kontakt- und SEO-Konfiguration
+- prop-driven Homepage-Blocks
+- konfigurierbare Sektionsreihenfolge auf der Startseite
+- stärker builder-orientierter Content-Vertrag
+- selektive Motion für Hero, Karten und Abschnitts-Reveals
+
+## Arbeitsprinzipien
+
+- nur deutsche Texte
+- statisch/server-first, `use client` nur wenn wirklich nötig
+- Motion nur gezielt, nicht flächendeckend
+- kleine, saubere Commits
+- wiederverwendbare Blocks statt salonspezifischer Sonderlogik
+
+## Nächster Einstiegspunkt
+
+Wenn du als nächster Agent oder Entwickler weitermachst:
+
+1. [CODEX_CONTEXT.md](./CODEX_CONTEXT.md) lesen
+2. Status in Git prüfen
+3. `npm.cmd run lint`
+4. `npm.cmd run build`
+5. dann den nächsten kleinen Builder-Schritt umsetzen
