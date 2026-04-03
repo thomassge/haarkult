@@ -232,107 +232,199 @@ At the time this file was written:
 - `npm.cmd run lint` passes
 - `npm.cmd run build` passes
 
-## Known Open Issues
+## Current Product Review
 
-There is already review feedback that must be addressed next.
+Review date: `2026-04-04`
 
-### Review issue 1
+The current site already has a solid one-page structure, real salon imagery, a warm visual system, and clean reusable blocks. It is not yet at the point where it clearly maximizes trust and appointment conversion within the first 30 seconds.
 
-Dark mode button focus state is not visible enough.
+Important context update:
 
-Affected file:
+- the earlier button focus and `BodyText` override review items appear resolved in the current codebase
+- the main blockers are now product-level gaps around booking clarity, trust signals, contact completeness, and image/performance quality
 
-- [button.tsx](/C:/Users/neyma/dev/haarkult/components/ui/button.tsx)
+### Salon Criteria Assessment
 
-Problem:
+1. Great first impression right away: partially implemented
 
-- the current custom focus ring becomes too weak in dark mode
-- keyboard users may not be able to clearly see which button is focused
+- already present:
+  - warm premium visual system
+  - strong spacing and low clutter
+  - real hero image and real salon branding
+- still missing:
+  - sharper salon value proposition in the hero
+  - stronger immediate booking cue
+  - higher-quality image set for a more premium first impression
 
-Required fix:
+2. Mobile first: partially implemented
 
-- provide a clearly visible light/dark-appropriate focus ring before removing the native outline
+- already present:
+  - responsive section layout
+  - mobile-friendly stacked buttons
+  - image sizing via `next/image`
+- still missing:
+  - explicit mobile QA on real devices
+  - a persistent or very obvious mobile booking CTA
+  - validation that the first screen feels conversion-focused on phones
 
-### Review issue 2
+3. Booking an appointment without friction: not implemented well enough
 
-`BodyText` color overrides do not work as intended.
+- current state:
+  - the hero exposes `Anrufen` and `WhatsApp`
+  - there is no explicit `Termin buchen` or `Termin anfragen` primary CTA
+  - booking is still framed as generic contact rather than the main user outcome
+- priority:
+  - highest
 
-Affected file:
+4. Clearly display prices and services: partially implemented
 
-- [typography.tsx](/C:/Users/neyma/dev/haarkult/components/ui/typography.tsx)
+- already present:
+  - concrete service list in [content/services.ts](/C:/Users/neyma/dev/haarkult/content/services.ts)
+  - prices and short descriptions are already modeled
+- still missing:
+  - rough duration per service
+  - quicker scanability without requiring so many taps
+  - stronger visibility for the most booked services
 
-Problem:
+5. Build trust: partially implemented
 
-- `BodyText` hard-codes a text color
-- callers try to override the color via `className`
-- the built-in class wins, so the shared primitive is less reusable than intended
+- already present:
+  - real salon photos in [public/gallery](/C:/Users/neyma/dev/haarkult/public/gallery)
+  - real team photos in [public/team](/C:/Users/neyma/dev/haarkult/public/team)
+  - friendly and concise copy
+- still missing:
+  - reviews or testimonials
+  - before-and-after results
+  - richer salon/team credibility copy
 
-Required fix:
+6. Personality over generic: partially implemented
 
-- make color overrides predictable
-- either remove default color from `BodyText`, or restructure the class order/API so caller intent can win
+- already present:
+  - warmer and calmer design direction than a default template
+- still missing:
+  - a more explicit brand identity decision
+  - more distinctive hero copy
+  - stronger visual/editorial cues that make this salon feel memorable rather than just clean
 
-These two issues should be fixed before moving further into new visual or feature work.
+7. Contact information should be easy to find: partially implemented
+
+- already present:
+  - address, opening hours, phone, WhatsApp, and maps link
+  - contact block at the end of the page
+- still missing:
+  - Instagram is not configured yet in [content/site.ts](/C:/Users/neyma/dev/haarkult/content/site.ts)
+  - no persistent quick-access layer for mobile users
+
+8. Keep text brief, but make it count: mostly implemented
+
+- already present:
+  - concise section copy
+  - compact descriptions instead of long text blocks
+- still missing:
+  - more persuasive and more characteristic top-level messaging
+
+9. Speed: partially implemented
+
+- already present:
+  - static Next.js output
+  - successful production build
+  - image rendering via `next/image`
+- still missing:
+  - image optimization work
+  - mobile-focused performance validation
+- evidence:
+  - the current hero image in [public/brand/haarkult-titelbild.png](/C:/Users/neyma/dev/haarkult/public/brand/haarkult-titelbild.png) is `640x1120` at about `960 KB`
+  - several gallery images are small PNG assets, which limits both perceived quality and optimization headroom
+
+10. Integrate Instagram sensibly: not implemented
+
+- current state:
+  - Instagram is supported by the CTA system
+  - the actual profile URL is not configured, so the CTA does not render
+
+11. Good photos instead of stock photos: mostly implemented, but quality needs improvement
+
+- already present:
+  - the site uses real salon/team/gallery assets instead of stock imagery
+- still missing:
+  - more premium source images
+  - more result-focused photography, not just interior shots
+
+12. Clear structure: mostly implemented
+
+- already present:
+  - the page already follows a good salon order:
+    hero, services, team, gallery, contact
+  - the structure is simple and low-clutter
+- still missing:
+  - explicit wayfinding or anchor navigation
+  - a dedicated booking entry point in the structure itself
+
+### Current Must-Do TODOs
+
+1. Make booking the unmistakable primary action.
+
+- update [content/home.ts](/C:/Users/neyma/dev/haarkult/content/home.ts) so the hero uses a primary `Termin buchen` or `Termin anfragen` CTA
+- repeat that booking action later on the page
+- consider a sticky mobile CTA if the first fold still feels too passive
+
+2. Add duration metadata to services and render it in the UI.
+
+- extend [content/services.ts](/C:/Users/neyma/dev/haarkult/content/services.ts) with rough timing per service
+- show duration next to price in [services-grid.tsx](/C:/Users/neyma/dev/haarkult/components/blocks/services-grid.tsx)
+
+3. Reduce service discovery friction.
+
+- rework the all-accordion presentation in [services-grid.tsx](/C:/Users/neyma/dev/haarkult/components/blocks/services-grid.tsx)
+- expose the most booked services faster, especially on mobile
+
+4. Add stronger trust signals.
+
+- add reviews or testimonials as structured content
+- add before-and-after results
+- strengthen the salon/team story beyond role labels in [content/team.ts](/C:/Users/neyma/dev/haarkult/content/team.ts)
+
+5. Complete the contact layer.
+
+- add the real Instagram URL in [content/site.ts](/C:/Users/neyma/dev/haarkult/content/site.ts)
+- consider surfacing key contact details more persistently on mobile
+
+6. Upgrade photography quality.
+
+- replace low-resolution gallery/team assets in [public/gallery](/C:/Users/neyma/dev/haarkult/public/gallery) and [public/team](/C:/Users/neyma/dev/haarkult/public/team)
+- ensure the hero image is strong enough for premium positioning
+
+7. Optimize image performance.
+
+- convert oversized PNG assets where appropriate
+- reduce transfer size of the hero image in [public/brand](/C:/Users/neyma/dev/haarkult/public/brand)
+- run a real mobile performance check after asset changes
+
+8. Run real mobile QA.
+
+- verify first-screen clarity, thumb reach, CTA visibility, scroll stability, and overall loading feel on an actual phone
+
+9. Sharpen brand personality.
+
+- decide the intended identity more explicitly:
+  elegant, modern, family-friendly, urban, luxurious, or similar
+- align hero copy, typography choices, and image art direction to that decision
+
+10. Add clearer wayfinding.
+
+- consider section anchors or a simple top-level navigation so users can jump straight to services, team, gallery, contact, and booking
 
 ## Suggested Next Steps
 
-Recommended order:
+Recommended order now:
 
-1. Fix the two review findings
-2. Re-run lint and build
-3. Commit that fix cleanly
-4. Continue turning the homepage into a true builder system
-
-After the review fixes, the next meaningful product steps are:
-
-### Step A: make sections configurable/optional
-
-Goal:
-
-- allow a salon to enable or disable sections without editing component internals
-
-Possible direction:
-
-- add section flags and ordering in `content/home.ts` or a dedicated page config
-
-### Step B: improve the content contract
-
-Goal:
-
-- make it easier to swap salons by changing only content and assets
-
-Possible additions:
-
-- optional logo path
-- hero image path
-- optional Instagram URL
-- optional CTA variants
-- optional testimonials or featured services later
-
-### Step C: add selective motion
-
-Goal:
-
-- introduce a little more premium polish without making the site feel noisy
-
-Rules:
-
-- use Framer Motion selectively
-- good candidates:
-  - hero image entrance
-  - section reveal
-  - card stagger on scroll
-- avoid:
-  - animating everything
-  - repeated decorative motion
-  - generic "AI-looking" UI movement
-
-### Step D: template hygiene
-
-Still worth checking later:
-
-- README is still likely too generic and should become project-specific
-- repo onboarding should eventually explain how to clone this for a new salon
+1. Redesign the booking CTA flow
+2. Add service durations and improve scanability
+3. Add trust content: reviews, before/after, stronger salon/team copy
+4. Complete Instagram/contact visibility
+5. Replace and optimize images
+6. Run real mobile QA
+7. Add lightweight wayfinding if still needed
 
 ## Builder Direction
 
@@ -374,9 +466,8 @@ A good next change in this repo should usually satisfy most of these:
 
 If you are a new Codex agent, start here:
 
-1. Read the review issues in this file
-2. Fix those first
+1. Read the current product review and must-do TODOs in this file
+2. Prioritize booking clarity, trust signals, and contact completeness first
 3. Keep the architecture prop-driven and content-driven
 4. Maintain the premium, calm visual direction
 5. Commit changes in small logical steps
-
