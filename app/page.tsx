@@ -1,93 +1,108 @@
+import { gallery } from "@/content/gallery";
+import { homePage } from "@/content/home";
 import { site } from "@/content/site";
+import { services, serviceCategoryOrder } from "@/content/services";
+import { team } from "@/content/team";
 import { telHref, whatsappHref } from "@/lib/links";
-import { Container } from "@/components/ui/container";
-import { Section } from "@/components/ui/section";
-import { Heading } from "@/components/ui/heading";
-import { Button } from "@/components/ui/button";
+import { Hero } from "@/components/blocks/hero";
 import { ServicesGrid } from "@/components/blocks/services-grid";
 import { TeamGrid } from "@/components/blocks/team-grid";
 import { GalleryGrid } from "@/components/blocks/gallery-grid";
 import { ContactBlock } from "@/components/blocks/contact";
 
+type PageAction = {
+  label: string;
+  href: string;
+  variant: "primary" | "secondary";
+  external: boolean;
+};
+
 export default function Home() {
-  const addressLine = `${site.contact.address.street}, ${site.contact.address.zip} ${site.contact.address.city}`;
+  const shortAddressLine = `${site.contact.address.street}, ${site.contact.address.zip} ${site.contact.address.city}`;
+  const fullAddressLine = `${site.contact.address.street}, ${site.contact.address.zip} ${site.contact.address.city}, ${site.contact.address.country}`;
+  const whatsappMessage = `Hi! Ich würde gern einen Termin bei ${site.brand.name} machen.`;
+  const heroActions: PageAction[] = [
+    {
+      label: homePage.hero.primaryActionLabel,
+      href: telHref(site.contact.phone),
+      variant: "primary",
+      external: true,
+    },
+  ];
+  const contactActions: PageAction[] = [
+    {
+      label: homePage.contact.mapsActionLabel,
+      href: site.contact.mapsUrl,
+      variant: "secondary",
+      external: true,
+    },
+    {
+      label: homePage.contact.phoneActionLabel,
+      href: telHref(site.contact.phone),
+      variant: "primary",
+      external: true,
+    },
+  ];
+
+  if (site.contact.whatsapp) {
+    heroActions.push({
+      label: homePage.hero.secondaryActionLabel,
+      href: whatsappHref(site.contact.whatsapp, whatsappMessage),
+      variant: "secondary",
+      external: true,
+    });
+
+    contactActions.push({
+      label: homePage.contact.whatsappActionLabel,
+      href: whatsappHref(site.contact.whatsapp, whatsappMessage),
+      variant: "secondary",
+      external: true,
+    });
+  }
 
   return (
     <div className="min-h-screen bg-zinc-50 text-zinc-950 dark:bg-black dark:text-zinc-50">
       <main>
-        {/* HERO */}
-        <Section className="pt-20 md:pt-28">
-          <Container>
-            <div className="grid gap-10 md:grid-cols-2 md:items-center">
-              <div className="space-y-8">
-                <Heading
-                  eyebrow={`Friseur in ${site.brand.city}`}
-                  title={site.brand.name}
-                  subtitle={addressLine}
-                />
-
-                <div className="flex flex-col gap-3 sm:flex-row">
-                  <Button href={telHref(site.contact.phone)} variant="primary" external>
-                    Anrufen
-                  </Button>
-
-                  {site.contact.whatsapp && (
-                    <Button
-                      href={whatsappHref(
-                        site.contact.whatsapp,
-                        `Hi! Ich würde gern einen Termin bei ${site.brand.name} machen.`
-                      )}
-                      variant="secondary"
-                      external
-                    >
-                      WhatsApp
-                    </Button>
-                  )}
-                </div>
-
-                <div className="rounded-2xl border border-black/[.08] bg-white p-6 shadow-sm dark:border-white/[.12] dark:bg-zinc-950">
-                  <p className="text-sm font-medium text-zinc-600 dark:text-zinc-300">
-                    Öffnungszeiten
-                  </p>
-                  <ul className="mt-4 space-y-2 text-sm text-zinc-800 dark:text-zinc-100">
-                    {site.hours.map((row) => (
-                      <li key={row.label} className="flex items-center justify-between">
-                        <span className="text-zinc-600 dark:text-zinc-300">{row.label}</span>
-                        <span className="font-medium">{row.hours}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              {/* Bild-Platzhalter: später ersetzen durch echtes Salon-Foto */}
-              <div className="relative overflow-hidden rounded-3xl border border-black/[.08] bg-white shadow-sm dark:border-white/[.12] dark:bg-zinc-950">
-                <div className="aspect-[4/3] w-full" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                    Hier kommt ein starkes Salon-Foto rein.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </Container>
-        </Section>
-
-        {/* Nächste Sections kommen in Milestone 1/2: Leistungen, Team, Galerie, Kontakt */}
-        <ServicesGrid />
-        <TeamGrid />
-        <GalleryGrid />
-        <ContactBlock />
-
-        <Section>
-          <Container>
-            <Heading
-              eyebrow="Baukasten-Prinzip"
-              title="Alles aus Daten aufgebaut"
-              subtitle="Als Nächstes bauen wir Leistungen, Team und Galerie als wiederverwendbare Blocks – gespeist aus content/*.ts."
-            />
-          </Container>
-        </Section>
+        <Hero
+          eyebrow={`${homePage.hero.eyebrowPrefix} ${site.brand.city}`}
+          title={site.brand.name}
+          subtitle={homePage.hero.subtitle}
+          meta={shortAddressLine}
+          actions={heroActions}
+          hoursTitle={homePage.hero.hoursTitle}
+          openingHours={site.hours}
+          image={homePage.hero.image}
+        />
+        <ServicesGrid
+          eyebrow={homePage.services.eyebrow}
+          title={homePage.services.title}
+          subtitle={homePage.services.subtitle}
+          categories={serviceCategoryOrder}
+          items={services}
+        />
+        <TeamGrid
+          eyebrow={homePage.team.eyebrow}
+          title={homePage.team.title}
+          subtitle={homePage.team.subtitle}
+          members={team}
+        />
+        <GalleryGrid
+          eyebrow={homePage.gallery.eyebrow}
+          title={homePage.gallery.title}
+          subtitle={homePage.gallery.subtitle}
+          images={gallery}
+        />
+        <ContactBlock
+          eyebrow={homePage.contact.eyebrow}
+          title={homePage.contact.title}
+          subtitle={homePage.contact.subtitle}
+          addressLabel={homePage.contact.addressLabel}
+          siteName={site.brand.name}
+          addressLine={fullAddressLine}
+          actions={contactActions}
+          hoursTitle={homePage.contact.hoursTitle}
+          openingHours={site.hours}
+        />
       </main>
     </div>
   );

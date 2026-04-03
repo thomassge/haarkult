@@ -1,65 +1,73 @@
-import { site } from "@/content/site";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
-import { telHref, whatsappHref } from "@/lib/links";
+import type { OpeningHour } from "@/content/site";
 
-export function ContactBlock() {
-  const addressLine = `${site.contact.address.street}, ${site.contact.address.zip} ${site.contact.address.city}, ${site.contact.address.country}`;
+type ContactAction = {
+  label: string;
+  href: string;
+  variant?: "primary" | "secondary";
+  external?: boolean;
+};
 
+type ContactBlockProps = {
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  addressLabel: string;
+  siteName: string;
+  addressLine: string;
+  actions: ContactAction[];
+  hoursTitle: string;
+  openingHours: OpeningHour[];
+};
+
+export function ContactBlock({
+  eyebrow,
+  title,
+  subtitle,
+  addressLabel,
+  siteName,
+  addressLine,
+  actions,
+  hoursTitle,
+  openingHours,
+}: ContactBlockProps) {
   return (
     <Section className="pb-24">
       <Container>
         <div className="grid gap-10 md:grid-cols-2 md:items-start">
-          <Heading
-            eyebrow="Kontakt"
-            title="So erreichst du uns"
-            subtitle="Ruf an, schreib uns oder lass dich direkt per Maps führen."
-          />
+          <Heading eyebrow={eyebrow} title={title} subtitle={subtitle} />
 
           <div className="rounded-3xl border border-black/[.08] bg-white p-6 shadow-sm dark:border-white/[.12] dark:bg-zinc-950">
             <div className="space-y-2">
               <p className="text-sm font-medium text-zinc-600 dark:text-zinc-300">
-                Adresse
+                {addressLabel}
               </p>
-              <p className="text-base font-semibold tracking-tight">
-                {site.brand.name}
-              </p>
-              <p className="text-sm text-zinc-600 dark:text-zinc-300">
-                {addressLine}
-              </p>
+              <p className="text-base font-semibold tracking-tight">{siteName}</p>
+              <p className="text-sm text-zinc-600 dark:text-zinc-300">{addressLine}</p>
             </div>
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <Button href={site.contact.mapsUrl} variant="secondary" external>
-                  Route planen
-                </Button>
-
-              <Button href={telHref(site.contact.phone)} variant="primary" external>
-                Anrufen
-              </Button>
-              {site.contact.whatsapp && (
+              {actions.map((action) => (
                 <Button
-                  href={whatsappHref(
-                    site.contact.whatsapp,
-                    `Hi! Ich würde gern einen Termin bei ${site.brand.name} machen.`
-                  )}
-                  variant="secondary"
-                  external
+                  key={`${action.label}-${action.href}`}
+                  href={action.href}
+                  variant={action.variant}
+                  external={action.external}
                 >
-                  WhatsApp
+                  {action.label}
                 </Button>
-              )}
+              ))}
             </div>
 
-            {/* Öffnungszeiten kompakt (ruhig, nicht dominant) */}
             <div className="mt-8 border-t border-black/[.08] pt-6 dark:border-white/[.12]">
               <p className="text-sm font-medium text-zinc-600 dark:text-zinc-300">
-                Öffnungszeiten
+                {hoursTitle}
               </p>
               <ul className="mt-3 space-y-2 text-sm">
-                {site.hours.map((row) => (
+                {openingHours.map((row) => (
                   <li key={row.label} className="flex justify-between">
                     <span className="text-zinc-600 dark:text-zinc-300">
                       {row.label}
