@@ -49,7 +49,7 @@ export function ContactBlock({
               <BodyText className="text-zinc-600 dark:text-zinc-300">{addressLine}</BodyText>
             </div>
 
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               {actions.map((action) => (
                 <Button
                   key={`${action.label}-${action.href}`}

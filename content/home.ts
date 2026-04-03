@@ -13,6 +13,13 @@ export type HomeSection = {
   enabled?: boolean;
 };
 
+export type HomeAction = {
+  kind: "phone" | "whatsapp" | "maps" | "instagram";
+  label: string;
+  variant?: "primary" | "secondary";
+  enabled?: boolean;
+};
+
 // Reihenfolge steuert die Homepage; mit enabled: false kann ein Block ausgeblendet werden.
 const homeSections: readonly HomeSection[] = [
   { id: "hero" },
@@ -22,19 +29,35 @@ const homeSections: readonly HomeSection[] = [
   { id: "contact" },
 ];
 
+// Aktionen ohne passende URL in site.ts werden automatisch ausgelassen.
+const heroActions: readonly HomeAction[] = [
+  { kind: "phone", label: "Anrufen", variant: "primary" },
+  { kind: "whatsapp", label: "WhatsApp", variant: "secondary" },
+];
+
+const contactActions: readonly HomeAction[] = [
+  { kind: "maps", label: "Route planen", variant: "secondary" },
+  { kind: "phone", label: "Anrufen", variant: "primary" },
+  { kind: "instagram", label: "Instagram", variant: "secondary" },
+  { kind: "whatsapp", label: "WhatsApp", variant: "secondary" },
+];
+
 export const homePage = {
   sections: homeSections,
+  actionMessages: {
+    whatsapp: "Hi! Ich würde gern einen Termin bei {salonName} machen.",
+  },
   hero: {
     eyebrowPrefix: "Friseur in",
     subtitle:
       "Präzise Schnitte, moderne Colorationen und persönliche Beratung in entspannter Salonatmosphäre.",
-    primaryActionLabel: "Anrufen",
-    secondaryActionLabel: "WhatsApp",
     hoursTitle: "Öffnungszeiten",
-    image: {
-      src: "/brand/haarkult-titelbild.png",
-      alt: "Innenansicht des Salons Haarkult-Maintal",
-    },
+    actions: heroActions,
+  } satisfies {
+    eyebrowPrefix: string;
+    subtitle: string;
+    hoursTitle: string;
+    actions: readonly HomeAction[];
   },
   services: {
     eyebrow: "Leistungen",
@@ -56,15 +79,11 @@ export const homePage = {
     title: "So erreichst du uns",
     subtitle: "Ruf an, schreib uns oder lass dich direkt per Maps führen.",
     addressLabel: "Adresse",
-    mapsActionLabel: "Route planen",
-    phoneActionLabel: "Anrufen",
-    whatsappActionLabel: "WhatsApp",
     hoursTitle: "Öffnungszeiten",
+    actions: contactActions,
   } satisfies SectionCopy & {
     addressLabel: string;
-    mapsActionLabel: string;
-    phoneActionLabel: string;
-    whatsappActionLabel: string;
     hoursTitle: string;
+    actions: readonly HomeAction[];
   },
 } as const;

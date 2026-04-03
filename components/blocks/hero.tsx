@@ -5,18 +5,13 @@ import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { BodyText, FinePrint } from "@/components/ui/typography";
-import type { OpeningHour } from "@/content/site";
+import type { BrandAsset, OpeningHour } from "@/content/site";
 
 type HeroAction = {
   label: string;
   href: string;
   variant?: "primary" | "secondary";
   external?: boolean;
-};
-
-type HeroImage = {
-  src: string;
-  alt: string;
 };
 
 type HeroProps = {
@@ -27,7 +22,8 @@ type HeroProps = {
   actions: HeroAction[];
   hoursTitle: string;
   openingHours: OpeningHour[];
-  image?: HeroImage;
+  logo?: BrandAsset | null;
+  image?: BrandAsset | null;
 };
 
 export function Hero({
@@ -38,6 +34,7 @@ export function Hero({
   actions,
   hoursTitle,
   openingHours,
+  logo,
   image,
 }: HeroProps) {
   return (
@@ -46,13 +43,25 @@ export function Hero({
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(26rem,0.95fr)] lg:items-center lg:gap-12">
           <div className="space-y-8 lg:space-y-10">
             <div className="space-y-4">
+              {logo ? (
+                <div className="inline-flex rounded-[1.4rem] border border-[var(--line)] bg-[var(--surface-strong)] px-4 py-3 shadow-[var(--shadow-soft)]">
+                  <Image
+                    src={logo.src}
+                    alt={logo.alt}
+                    width={160}
+                    height={56}
+                    className="h-9 w-auto object-contain sm:h-10"
+                    priority
+                  />
+                </div>
+              ) : null}
               <Heading eyebrow={eyebrow} title={title} subtitle={subtitle} size="hero" />
               <BodyText className="text-sm font-medium tracking-[0.02em] text-zinc-500 dark:text-zinc-400">
                 {meta}
               </BodyText>
             </div>
 
-            <div className="flex flex-col gap-3 sm:flex-row">
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               {actions.map((action) => (
                 <Button
                   key={`${action.label}-${action.href}`}

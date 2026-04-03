@@ -3,11 +3,18 @@ export type OpeningHour = {
   hours: string;
 };
 
+export type BrandAsset = {
+  src: string;
+  alt: string;
+};
+
 export type SiteConfig = {
   brand: {
     name: string;
     city: string;
     country: string;
+    logo?: BrandAsset | null;
+    heroImage?: BrandAsset | null;
   };
   contact: {
     phone: string;
@@ -35,6 +42,14 @@ export const site: SiteConfig = {
     name: "Haarkult-Maintal",
     city: "Maintal",
     country: "Deutschland",
+    logo: {
+      src: "/brand/haarkult-logo.png",
+      alt: "Logo von Haarkult-Maintal",
+    },
+    heroImage: {
+      src: "/brand/haarkult-titelbild.png",
+      alt: "Innenansicht des Salons Haarkult-Maintal",
+    },
   },
   contact: {
     phone: "06109-6962322",

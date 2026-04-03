@@ -1,65 +1,28 @@
 import { Fragment, type ReactElement } from "react";
+import { Hero } from "@/components/blocks/hero";
+import { ContactBlock } from "@/components/blocks/contact";
+import { GalleryGrid } from "@/components/blocks/gallery-grid";
+import { ServicesGrid } from "@/components/blocks/services-grid";
+import { TeamGrid } from "@/components/blocks/team-grid";
 import { gallery } from "@/content/gallery";
 import { homePage, type HomeSectionId } from "@/content/home";
 import { site } from "@/content/site";
 import { services, serviceCategoryOrder } from "@/content/services";
 import { team } from "@/content/team";
-import { telHref, whatsappHref } from "@/lib/links";
-import { Hero } from "@/components/blocks/hero";
-import { ServicesGrid } from "@/components/blocks/services-grid";
-import { TeamGrid } from "@/components/blocks/team-grid";
-import { GalleryGrid } from "@/components/blocks/gallery-grid";
-import { ContactBlock } from "@/components/blocks/contact";
-
-type PageAction = {
-  label: string;
-  href: string;
-  variant: "primary" | "secondary";
-  external: boolean;
-};
+import {
+  fillMessageTemplate,
+  formatAddressLine,
+  resolvePageActions,
+} from "@/lib/home-page";
 
 export default function Home() {
-  const shortAddressLine = `${site.contact.address.street}, ${site.contact.address.zip} ${site.contact.address.city}`;
-  const fullAddressLine = `${site.contact.address.street}, ${site.contact.address.zip} ${site.contact.address.city}, ${site.contact.address.country}`;
-  const whatsappMessage = `Hi! Ich würde gern einen Termin bei ${site.brand.name} machen.`;
-  const heroActions: PageAction[] = [
-    {
-      label: homePage.hero.primaryActionLabel,
-      href: telHref(site.contact.phone),
-      variant: "primary",
-      external: true,
-    },
-  ];
-  const contactActions: PageAction[] = [
-    {
-      label: homePage.contact.mapsActionLabel,
-      href: site.contact.mapsUrl,
-      variant: "secondary",
-      external: true,
-    },
-    {
-      label: homePage.contact.phoneActionLabel,
-      href: telHref(site.contact.phone),
-      variant: "primary",
-      external: true,
-    },
-  ];
-
-  if (site.contact.whatsapp) {
-    heroActions.push({
-      label: homePage.hero.secondaryActionLabel,
-      href: whatsappHref(site.contact.whatsapp, whatsappMessage),
-      variant: "secondary",
-      external: true,
-    });
-
-    contactActions.push({
-      label: homePage.contact.whatsappActionLabel,
-      href: whatsappHref(site.contact.whatsapp, whatsappMessage),
-      variant: "secondary",
-      external: true,
-    });
-  }
+  const shortAddressLine = formatAddressLine(site.contact.address);
+  const fullAddressLine = formatAddressLine(site.contact.address, true);
+  const whatsappMessage = fillMessageTemplate(homePage.actionMessages.whatsapp, {
+    salonName: site.brand.name,
+  });
+  const heroActions = resolvePageActions(homePage.hero.actions, site, whatsappMessage);
+  const contactActions = resolvePageActions(homePage.contact.actions, site, whatsappMessage);
 
   const sectionBlocks: Record<HomeSectionId, ReactElement> = {
     hero: (
@@ -71,7 +34,8 @@ export default function Home() {
         actions={heroActions}
         hoursTitle={homePage.hero.hoursTitle}
         openingHours={site.hours}
-        image={homePage.hero.image}
+        logo={site.brand.logo}
+        image={site.brand.heroImage}
       />
     ),
     services: (
