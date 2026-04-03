@@ -1,6 +1,6 @@
 import { cn } from "@/lib/cn";
 
-type CardElement = "article" | "div" | "section";
+type CardElement = "article" | "details" | "div" | "section";
 
 type CardProps = {
   as?: CardElement;

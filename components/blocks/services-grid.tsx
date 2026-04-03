@@ -21,6 +21,9 @@ export function ServicesGrid({
   categories,
   items,
 }: ServicesGridProps) {
+  const getCategoryItemCountLabel = (count: number) =>
+    count === 1 ? "1 Leistung" : `${count} Leistungen`;
+
   return (
     <Section>
       <Container>
@@ -28,47 +31,71 @@ export function ServicesGrid({
           <Heading eyebrow={eyebrow} title={title} subtitle={subtitle} />
         </Reveal>
 
-        <div className="mt-12 space-y-14">
+        <div className="mt-12 space-y-4">
           {categories.map((category) => {
             const categoryItems = items.filter((service) => service.category === category);
             if (categoryItems.length === 0) return null;
 
             return (
-              <div key={category} className="space-y-5">
-                <Reveal y={18}>
-                  <FinePrint>{category}</FinePrint>
-                </Reveal>
+              <Reveal key={category} y={18}>
+                <Card
+                  as="details"
+                  className="group overflow-hidden p-0 open:border-[var(--line-strong)]"
+                >
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 sm:px-7 sm:py-6 [&::-webkit-details-marker]:hidden">
+                    <div className="space-y-2">
+                      <FinePrint>{category}</FinePrint>
+                      <BodyText className="text-zinc-600 dark:text-zinc-300">
+                        {getCategoryItemCountLabel(categoryItems.length)}
+                      </BodyText>
+                    </div>
 
-                <StaggerGroup className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3" delayChildren={0.04}>
-                  {categoryItems.map((service) => (
-                    <StaggerItem key={service.id}>
-                      <Card
-                        hover
-                        className="h-full p-6 sm:p-7"
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400">
+                        Details
+                      </span>
+                      <span
+                        aria-hidden
+                        className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] bg-white/55 text-lg leading-none text-zinc-700 transition-transform duration-200 ease-out group-open:rotate-45 dark:bg-white/5 dark:text-zinc-200"
                       >
-                        <div className="flex items-start justify-between gap-4">
-                          <h4 className="text-lg font-semibold tracking-tight">
-                            {service.title}
-                          </h4>
-                          <span className="rounded-full border border-[var(--line)] bg-black/[0.025] px-3 py-1 text-xs font-semibold text-zinc-700 dark:bg-white/[0.04] dark:text-zinc-200">
-                            {service.priceHint}
-                          </span>
-                        </div>
+                        +
+                      </span>
+                    </div>
+                  </summary>
 
-                        {service.note && (
-                          <BodyText className="mt-2 text-xs leading-6 text-zinc-500 dark:text-zinc-400">
-                            {service.note}
-                          </BodyText>
-                        )}
+                  <div className="border-t border-[var(--line)] px-6 pb-6 pt-6 sm:px-7 sm:pb-7">
+                    <StaggerGroup className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3" delayChildren={0.04}>
+                      {categoryItems.map((service) => (
+                        <StaggerItem key={service.id}>
+                          <Card
+                            hover
+                            className="h-full p-6 sm:p-7"
+                          >
+                            <div className="flex items-start justify-between gap-4">
+                              <h4 className="text-lg font-semibold tracking-tight">
+                                {service.title}
+                              </h4>
+                              <span className="rounded-full border border-[var(--line)] bg-black/[0.025] px-3 py-1 text-xs font-semibold text-zinc-700 dark:bg-white/[0.04] dark:text-zinc-200">
+                                {service.priceHint}
+                              </span>
+                            </div>
 
-                        <BodyText className="mt-4 text-zinc-600 dark:text-zinc-300">
-                          {service.description}
-                        </BodyText>
-                      </Card>
-                    </StaggerItem>
-                  ))}
-                </StaggerGroup>
-              </div>
+                            {service.note && (
+                              <BodyText className="mt-2 text-xs leading-6 text-zinc-500 dark:text-zinc-400">
+                                {service.note}
+                              </BodyText>
+                            )}
+
+                            <BodyText className="mt-4 text-zinc-600 dark:text-zinc-300">
+                              {service.description}
+                            </BodyText>
+                          </Card>
+                        </StaggerItem>
+                      ))}
+                    </StaggerGroup>
+                  </div>
+                </Card>
+              </Reveal>
             );
           })}
         </div>
