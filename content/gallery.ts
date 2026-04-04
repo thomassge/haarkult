@@ -5,8 +5,8 @@ export type GalleryImage = {
 };
 
 export const gallery: GalleryImage[] = [
-  { src: "/gallery/Salon.webp", alt: "Salon" },
-  { src: "/gallery/Theke.webp", alt: "Theke" },
-  { src: "/gallery/Sortiment.webp", alt: "Sortiment" },
-  { src: "/gallery/Haarewaschen.webp", alt: "Haare waschen" },
+  { src: "/gallery/Salon.png", alt: "Salon" },
+  { src: "/gallery/Theke.png", alt: "Theke" },
+  { src: "/gallery/Sortiment.png", alt: "Sortiment" },
+  { src: "/gallery/Haarewaschen.png", alt: "Haare waschen" },
 ];
