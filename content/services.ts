@@ -6,7 +6,7 @@ export type Service = {
   title: string;
   description: string;
   priceHint: string; // z.B. "22 €" oder "ab 26 €" oder "20-35 €"
-  durationHint: string; // z.B. "30 Min." oder "45-60 Min."
+  durationHint: string; // z.B. "30 Min." oder "60 Min."
   note?: string; // z.B. "ab Schulter +15 €"
 };
 
@@ -26,7 +26,7 @@ export const services: Service[] = [
     title: "Neuschnitt",
     description: "Kompletter Neuaufbau des Looks inkl. Beratung und präzisem Finish.",
     priceHint: "40 €",
-    durationHint: "45-60 Min.",
+    durationHint: "60 Min.",
     note: "ab Schulter +15 €",
   },
   {
@@ -35,7 +35,7 @@ export const services: Service[] = [
     title: "Haarschnitt",
     description: "Klassischer Schnitt mit sauberer Kontur - passend zu Haar und Gesichtsform.",
     priceHint: "ab 26 €",
-    durationHint: "30-45 Min.",
+    durationHint: "45 Min.",
     note: "ab Schulter +15 €",
   },
   {
@@ -44,7 +44,7 @@ export const services: Service[] = [
     title: "Föhnen",
     description: "Volumen und Form - je nach Wunsch glatt, Wellen oder natürlicher Blowout.",
     priceHint: "ab 27 €",
-    durationHint: "30-45 Min.",
+    durationHint: "45 Min.",
   },
   {
     id: "damen-farbe-foehnen",
@@ -52,7 +52,7 @@ export const services: Service[] = [
     title: "Farbe + Föhnen",
     description: "Ansatz oder Komplettfarbe für frische Tiefe und Glanz - inkl. Styling.",
     priceHint: "70 €",
-    durationHint: "90-120 Min.",
+    durationHint: "120 Min.",
   },
   {
     id: "damen-inoa-foehnen",
@@ -60,7 +60,7 @@ export const services: Service[] = [
     title: "Inoa + Föhnen",
     description: "Sanfte, hochwertige Coloration mit Inoa für ein gleichmäßiges Farbergebnis - inkl. Styling.",
     priceHint: "75 €",
-    durationHint: "90-120 Min.",
+    durationHint: "120 Min.",
   },
   {
     id: "damen-straehnen",
@@ -68,7 +68,7 @@ export const services: Service[] = [
     title: "Strähnen",
     description: "Highlights und Dimension für mehr Struktur und Lichtreflexe im Haar.",
     priceHint: "ab 60 €",
-    durationHint: "120-180 Min.",
+    durationHint: "180 Min.",
   },
   {
     id: "damen-glossing",
@@ -76,7 +76,7 @@ export const services: Service[] = [
     title: "Glossing",
     description: "Glanz, Tonauffrischung und harmonische Nuancen - ideal nach Farbe oder Strähnen.",
     priceHint: "20-35 €",
-    durationHint: "20-30 Min.",
+    durationHint: "30 Min.",
   },
   {
     id: "damen-toenung",
@@ -84,7 +84,7 @@ export const services: Service[] = [
     title: "Tönung",
     description: "Schonende Farbauffrischung oder dezente Veränderung - natürliches Ergebnis.",
     priceHint: "ab 46 €",
-    durationHint: "60-90 Min.",
+    durationHint: "90 Min.",
   },
   {
     id: "damen-painting",
@@ -92,7 +92,7 @@ export const services: Service[] = [
     title: "Painting",
     description: "Freihand-Technik für weiche Übergänge und einen modernen, natürlichen Look.",
     priceHint: "ab 50 €",
-    durationHint: "150-210 Min.",
+    durationHint: "210 Min.",
   },
   {
     id: "damen-dauerwelle",
@@ -100,7 +100,7 @@ export const services: Service[] = [
     title: "Dauerwelle",
     description: "Locken oder Bewegung mit Struktur - von soft bis definierter.",
     priceHint: "75 €",
-    durationHint: "90-120 Min.",
+    durationHint: "120 Min.",
   },
 
   // Herren
@@ -162,7 +162,7 @@ export const services: Service[] = [
     title: "Kinderhaarschnitt",
     description: "Kinderfreundlich und entspannt - mit Geduld und sauberem Ergebnis.",
     priceHint: "ab 15 €",
-    durationHint: "20-30 Min.",
+    durationHint: "30 Min.",
   },
 
   // Beauty (Wimpern/Augenbrauen)
