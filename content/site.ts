@@ -77,7 +77,7 @@ export const site: SiteConfig = {
   },
   hours: [
     { label: "Mo-Fr", hours: "09:00-18:00" },
-    { label: "Sa", hours: "08:00-13:30" },
+    { label: "Sa", hours: "08:00-13:00" },
     { label: "So", hours: "Geschlossen" },
   ],
   socials: {
