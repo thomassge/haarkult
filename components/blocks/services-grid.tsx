@@ -64,20 +64,26 @@ export function ServicesGrid({
                   </summary>
 
                   <div className="border-t border-[var(--line)] px-6 pb-6 pt-6 sm:px-7 sm:pb-7">
-                    <StaggerGroup className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3" delayChildren={0.04}>
+                    <StaggerGroup
+                      className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3"
+                      delayChildren={0.04}
+                    >
                       {categoryItems.map((service) => (
                         <StaggerItem key={service.id}>
-                          <Card
-                            hover
-                            className="h-full p-6 sm:p-7"
-                          >
+                          <Card hover className="h-full p-6 sm:p-7">
                             <div className="flex items-start justify-between gap-4">
                               <h4 className="text-lg font-semibold tracking-tight">
                                 {service.title}
                               </h4>
-                              <span className="rounded-full border border-[var(--line)] bg-black/[0.025] px-3 py-1 text-xs font-semibold text-zinc-700 dark:bg-white/[0.04] dark:text-zinc-200">
-                                {service.priceHint}
-                              </span>
+
+                              <div className="flex shrink-0 flex-wrap justify-end gap-2">
+                                <span className="rounded-full border border-[var(--line)] bg-black/[0.025] px-3 py-1 text-xs font-semibold text-zinc-700 dark:bg-white/[0.04] dark:text-zinc-200">
+                                  {service.priceHint}
+                                </span>
+                                <span className="rounded-full border border-[var(--line)] bg-white/50 px-3 py-1 text-xs font-medium text-zinc-500 dark:bg-white/[0.03] dark:text-zinc-300">
+                                  {service.durationHint}
+                                </span>
+                              </div>
                             </div>
 
                             {service.note && (
