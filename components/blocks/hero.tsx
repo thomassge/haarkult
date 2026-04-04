@@ -73,9 +73,9 @@ export function Hero({
                     <Image
                       src={logo.src}
                       alt={logo.alt}
-                      width={220}
-                      height={147}
-                      className="h-12 w-auto object-contain sm:h-14"
+                      width={160}
+                      height={56}
+                      className="h-9 w-auto object-contain sm:h-10"
                       priority
                     />
                   </div>
