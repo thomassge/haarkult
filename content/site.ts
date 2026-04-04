@@ -53,8 +53,8 @@ export const site: SiteConfig = {
       alt: "Logo von Haarkult-Maintal",
     },
     heroImage: {
-      src: "/gallery/Salon.webp",
-      alt: "Salon von Haarkult-Maintal",
+      src: "/brand/haarkult-titelbild.png",
+      alt: "Innenansicht des Salons Haarkult-Maintal",
     },
   },
   contact: {
