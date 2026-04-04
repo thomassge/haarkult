@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import type { Service, ServiceCategory } from "@/content/services";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
@@ -21,6 +24,7 @@ export function ServicesGrid({
   categories,
   items,
 }: ServicesGridProps) {
+  const [openCategory, setOpenCategory] = useState<ServiceCategory | null>(null);
   const getCategoryItemCountLabel = (count: number) =>
     count === 1 ? "1 Leistung" : `${count} Leistungen`;
 
@@ -38,11 +42,19 @@ export function ServicesGrid({
 
             return (
               <Reveal key={category} y={18}>
-                <Card
-                  as="details"
-                  className="group overflow-hidden p-0 open:border-[var(--line-strong)]"
+                <details
+                  className="surface-card group overflow-hidden rounded-[2rem] p-0 open:border-[var(--line-strong)]"
+                  open={openCategory === category}
                 >
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 sm:px-7 sm:py-6 [&::-webkit-details-marker]:hidden">
+                  <summary
+                    className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 sm:px-7 sm:py-6 [&::-webkit-details-marker]:hidden"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      setOpenCategory((currentCategory) =>
+                        currentCategory === category ? null : category
+                      );
+                    }}
+                  >
                     <div className="space-y-2">
                       <FinePrint>{category}</FinePrint>
                       <BodyText className="text-zinc-600 dark:text-zinc-300">
@@ -100,7 +112,7 @@ export function ServicesGrid({
                       ))}
                     </StaggerGroup>
                   </div>
-                </Card>
+                </details>
               </Reveal>
             );
           })}
