@@ -49,16 +49,16 @@ export function Hero({
                 alt={image.alt}
                 fill
                 priority
-                className="object-cover"
+                className="object-cover object-center brightness-[1.04] saturate-[1.02]"
                 sizes="100vw"
               />
               <div
                 aria-hidden
-                className="absolute inset-0 bg-[linear-gradient(180deg,rgba(251,248,243,0.97)_0%,rgba(246,241,232,0.9)_36%,rgba(246,241,232,0.62)_70%,rgba(246,241,232,0.4)_100%)] lg:bg-[linear-gradient(90deg,rgba(251,248,243,0.97)_0%,rgba(246,241,232,0.9)_34%,rgba(246,241,232,0.62)_58%,rgba(246,241,232,0.18)_100%)] dark:bg-[linear-gradient(180deg,rgba(10,8,6,0.92)_0%,rgba(10,8,6,0.8)_40%,rgba(10,8,6,0.56)_100%)] dark:lg:bg-[linear-gradient(90deg,rgba(10,8,6,0.92)_0%,rgba(10,8,6,0.78)_35%,rgba(10,8,6,0.48)_60%,rgba(10,8,6,0.18)_100%)]"
+                className="absolute inset-0 bg-[linear-gradient(180deg,rgba(251,248,243,0.84)_0%,rgba(246,241,232,0.7)_34%,rgba(246,241,232,0.34)_68%,rgba(246,241,232,0.12)_100%)] lg:bg-[linear-gradient(90deg,rgba(251,248,243,0.94)_0%,rgba(246,241,232,0.8)_34%,rgba(246,241,232,0.42)_58%,rgba(246,241,232,0.12)_100%)] dark:bg-[linear-gradient(180deg,rgba(10,8,6,0.64)_0%,rgba(10,8,6,0.48)_38%,rgba(10,8,6,0.28)_72%,rgba(10,8,6,0.12)_100%)] dark:lg:bg-[linear-gradient(90deg,rgba(10,8,6,0.76)_0%,rgba(10,8,6,0.58)_35%,rgba(10,8,6,0.3)_60%,rgba(10,8,6,0.1)_100%)]"
               />
               <div
                 aria-hidden
-                className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.18),transparent_30%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.08),transparent_26%)]"
+                className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.28),transparent_32%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent_28%)]"
               />
             </>
           ) : (
