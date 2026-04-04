@@ -72,7 +72,7 @@ export const site: SiteConfig = {
       "https://www.google.com/maps/place/Haarkult-Maintal/@50.152117,8.8045167,17z/data=!3m1!4b1!4m6!3m5!1s0x47bd103bb988b69f:0xad9ecf6dcf6099ce!8m2!3d50.152117!4d8.8045167!16s%2Fg%2F11c5wygkc9?entry=ttu&g_ep=EgoyMDI2MDIxNi4wIKXMDSoASAFQAw%3D%3D",
   },
   legal: {
-    businessName: "haar kult",
+    businessName: "haarkult",
     owners: ["Maria Samartzidou", "Sonia Duarte da Luz"],
   },
   hours: [
