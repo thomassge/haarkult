@@ -69,7 +69,7 @@ export function Hero({
             <div className="space-y-8 lg:max-w-[38rem] lg:self-center lg:space-y-10">
               <Reveal className="space-y-4" y={18}>
                 {logo ? (
-                  <div className="inline-flex rounded-[1.4rem] border border-white/40 bg-white/72 px-4 py-3 shadow-[var(--shadow-soft)] backdrop-blur-md dark:border-white/10 dark:bg-black/35">
+                  <div className="inline-flex rounded-[1.4rem] border border-black/60 bg-black px-4 py-3 shadow-[var(--shadow-soft)]">
                     <Image
                       src={logo.src}
                       alt={logo.alt}
