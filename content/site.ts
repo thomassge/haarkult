@@ -49,7 +49,7 @@ export const site: SiteConfig = {
     city: "Maintal",
     country: "Deutschland",
     logo: {
-      src: "/brand/haarkult-logo.png",
+      src: "/brand/haarkult-logo.webp",
       alt: "Logo von Haarkult-Maintal",
     },
     heroImage: {
