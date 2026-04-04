@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import type { GalleryImage } from "@/content/gallery";
 import { Container } from "@/components/ui/container";
@@ -20,6 +23,8 @@ export function GalleryGrid({
   subtitle,
   images,
 }: GalleryGridProps) {
+  const [failedSrc, setFailedSrc] = useState<Record<string, true>>({});
+
   return (
     <Section>
       <Container>
@@ -28,30 +33,40 @@ export function GalleryGrid({
         </Reveal>
 
         <StaggerGroup className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4" delayChildren={0.05}>
-          {images.slice(0, 4).map((image) => (
-            <StaggerItem key={image.src}>
-              <Card
-                hover
-                className="group overflow-hidden p-0"
-              >
-                <div className="relative aspect-[4/3] w-full">
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    fill
-                    className="object-cover transition duration-700 ease-out group-hover:scale-[1.04]"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  />
-                </div>
+          {images.slice(0, 4).map((image) => {
+            const hasFallback = Boolean(image.fallbackSrc);
+            const useFallback = hasFallback && Boolean(failedSrc[image.src]);
+            const currentSrc = useFallback ? image.fallbackSrc! : image.src;
 
-                <div className="p-5">
-                  <BodyText className="text-zinc-600 dark:text-zinc-300">
-                    {image.alt}
-                  </BodyText>
-                </div>
-              </Card>
-            </StaggerItem>
-          ))}
+            return (
+              <StaggerItem key={image.src}>
+                <Card
+                  hover
+                  className="group overflow-hidden p-0"
+                >
+                  <div className="relative aspect-[4/3] w-full">
+                    <Image
+                      src={currentSrc}
+                      alt={image.alt}
+                      fill
+                      className="object-cover transition duration-700 ease-out group-hover:scale-[1.04]"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      onError={() => {
+                        if (!hasFallback) return;
+                        setFailedSrc((prev) => (prev[image.src] ? prev : { ...prev, [image.src]: true }));
+                      }}
+                    />
+                  </div>
+
+                  <div className="p-5">
+                    <BodyText className="text-zinc-600 dark:text-zinc-300">
+                      {image.alt}
+                    </BodyText>
+                  </div>
+                </Card>
+              </StaggerItem>
+            );
+          })}
         </StaggerGroup>
       </Container>
     </Section>
