@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { SiteFooter } from "@/components/blocks/site-footer";
 import { site } from "@/content/site";
 import "./globals.css";
 
@@ -28,7 +29,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <div className="flex min-h-screen flex-col">
+          <div className="flex-1">{children}</div>
+          <SiteFooter
+            brandName={site.brand.name}
+            city={site.brand.city}
+            phone={site.contact.phone}
+            email={site.contact.email}
+          />
+        </div>
       </body>
     </html>
   );

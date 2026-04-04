@@ -18,6 +18,8 @@ export type SiteConfig = {
   };
   contact: {
     phone: string;
+    fax?: string | null;
+    email: string;
     whatsapp: string | null;
     address: {
       street: string;
@@ -26,6 +28,10 @@ export type SiteConfig = {
       country: string;
     };
     mapsUrl: string;
+  };
+  legal: {
+    businessName: string;
+    owners: string[];
   };
   hours: OpeningHour[];
   socials: {
@@ -53,6 +59,8 @@ export const site: SiteConfig = {
   },
   contact: {
     phone: "06109-6962322",
+    fax: "06109-6962333",
+    email: "haarkult-maintal@t-online.de",
     whatsapp: "4915788101539",
     address: {
       street: "Zwerggasse 2",
@@ -62,6 +70,10 @@ export const site: SiteConfig = {
     },
     mapsUrl:
       "https://www.google.com/maps/place/Haarkult-Maintal/@50.152117,8.8045167,17z/data=!3m1!4b1!4m6!3m5!1s0x47bd103bb988b69f:0xad9ecf6dcf6099ce!8m2!3d50.152117!4d8.8045167!16s%2Fg%2F11c5wygkc9?entry=ttu&g_ep=EgoyMDI2MDIxNi4wIKXMDSoASAFQAw%3D%3D",
+  },
+  legal: {
+    businessName: "haar kult",
+    owners: ["Maria Samartzidou", "Sonia Duarte da Luz"],
   },
   hours: [
     { label: "Mo-Fr", hours: "09:00-18:00" },

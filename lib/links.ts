@@ -4,6 +4,10 @@ export function telHref(phone: string) {
   return `tel:${cleaned}`;
 }
 
+export function mailtoHref(email: string) {
+  return `mailto:${email}`;
+}
+
 export function whatsappHref(phone: string, text?: string) {
   const cleaned = phone.replace(/[^\d]/g, "");
   const base = `https://wa.me/${cleaned}`;
