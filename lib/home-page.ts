@@ -107,3 +107,16 @@ export function resolvePageActions(
     ];
   });
 }
+
+export function getBookingPageAction(site: SiteConfig): ResolvedPageAction | null {
+  if (site.booking.mode !== "online_booking") {
+    return null;
+  }
+
+  return {
+    label: "Termin buchen",
+    href: "/termin-buchen",
+    variant: "primary",
+    external: false,
+  };
+}

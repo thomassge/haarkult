@@ -12,6 +12,7 @@ import { team } from "@/content/team";
 import {
   fillMessageTemplate,
   formatAddressLine,
+  getBookingPageAction,
   resolvePageActions,
 } from "@/lib/home-page";
 
@@ -21,8 +22,23 @@ export default function Home() {
   const whatsappMessage = fillMessageTemplate(homePage.actionMessages.whatsapp, {
     salonName: site.brand.name,
   });
-  const heroActions = resolvePageActions(homePage.hero.actions, site, whatsappMessage);
-  const contactActions = resolvePageActions(homePage.contact.actions, site, whatsappMessage);
+  const bookingAction = getBookingPageAction(site);
+  const fallbackHeroActions = resolvePageActions(
+    homePage.hero.actions,
+    site,
+    whatsappMessage
+  );
+  const fallbackContactActions = resolvePageActions(
+    homePage.contact.actions,
+    site,
+    whatsappMessage
+  );
+  const heroActions = bookingAction
+    ? [bookingAction, ...fallbackHeroActions]
+    : fallbackHeroActions;
+  const contactActions = bookingAction
+    ? [bookingAction, ...fallbackContactActions]
+    : fallbackContactActions;
 
   const sectionBlocks: Record<HomeSectionId, ReactElement> = {
     hero: (

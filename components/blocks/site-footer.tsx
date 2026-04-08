@@ -7,6 +7,7 @@ type SiteFooterProps = {
   city: string;
   phone: string;
   email: string;
+  bookingHref?: string;
 };
 
 export function SiteFooter({
@@ -14,6 +15,7 @@ export function SiteFooter({
   city,
   phone,
   email,
+  bookingHref,
 }: SiteFooterProps) {
   const year = new Date().getFullYear();
 
@@ -30,9 +32,17 @@ export function SiteFooter({
           </div>
 
           <nav
-            aria-label="Rechtliche und Kontakt-Links"
+            aria-label="Rechtliche, Kontakt- und Service-Links"
             className="flex flex-wrap gap-x-5 gap-y-3"
           >
+            {bookingHref ? (
+              <Link
+                className="transition hover:text-zinc-950 dark:hover:text-zinc-50"
+                href={bookingHref}
+              >
+                Termin buchen
+              </Link>
+            ) : null}
             <a className="transition hover:text-zinc-950 dark:hover:text-zinc-50" href={telHref(phone)}>
               Telefon
             </a>
