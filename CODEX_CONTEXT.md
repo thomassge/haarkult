@@ -75,6 +75,20 @@ Current stack:
 - Tailwind CSS
 - Framer Motion only for selected places, not everywhere
 
+Chosen booking foundation on `2026-04-08`:
+
+- database: Neon Postgres
+- ORM + migrations: Drizzle ORM + drizzle-kit
+- admin auth: Auth.js
+- email: Resend
+- public booking backend surface: Route Handlers in `app/api/booking/*`
+- optional admin form mutations: Server Actions where they simplify internal UI
+
+Explicit product/auth note:
+
+- admin/staff login for v1 should use email + password
+- this is a product/architecture decision only so far; do not treat it as implemented
+
 Recommended backend additions for booking mode:
 
 - relational database, preferably PostgreSQL
@@ -202,11 +216,31 @@ Key commits already in the repo:
 
 Current live code state:
 
-- the homepage still uses contact CTAs, not a real booking flow
-- CTAs currently support phone / WhatsApp / maps / Instagram, but not email as a first-class `HomeAction`
+- salon-level booking config now exists in [content/site.ts](/C:/Users/neyma/dev/haarkult/content/site.ts)
+- homepage/contact actions now support email as a first-class `HomeAction`
+- `/termin-buchen` now exists as a mode-aware route shell in [app/termin-buchen/page.tsx](/C:/Users/neyma/dev/haarkult/app/termin-buchen/page.tsx)
+- the homepage hero and footer now react to `booking.mode`
+- in `online_booking` mode the primary CTA is `Termin buchen`
+- in `online_booking` mode WhatsApp is intentionally hidden everywhere the shared action resolver is used
+- the current salon is temporarily set to `online_booking` for testing scenarios
 - no booking backend exists yet
 - no admin area exists yet
 - Instagram is still not configured in [content/site.ts](/C:/Users/neyma/dev/haarkult/content/site.ts)
+
+Latest booking-related commits from `2026-04-08`:
+
+- `cbc9488`
+  - `feat: add booking config and email CTAs`
+- `fb68f88`
+  - `feat: add mode-aware booking route shell`
+- `690f16b`
+  - `chore: enable online booking mode for testing`
+- `ea04772`
+  - `style: refine booking hero card emphasis`
+- `50e76fd`
+  - `style: highlight booking CTA with surface styling`
+- `51b79b7`
+  - `fix: hide whatsapp actions in booking mode`
 
 ## User Workflow Preference
 
@@ -219,6 +253,7 @@ Important working style:
 - keep commits small and clean
 - explain changes in simple language when asked
 - maintain momentum step-by-step
+- after every substantive product decision, architecture discussion, or implementation session, update [CODEX_CONTEXT.md](/C:/Users/neyma/dev/haarkult/CODEX_CONTEXT.md) before handoff so the next session can continue from exact current state
 
 Best working loop:
 
@@ -255,10 +290,11 @@ Use `npm.cmd` instead of plain `npm` in PowerShell on this machine, because Powe
 
 ## Verified State
 
-Verified on `2026-04-04`:
+Verified on `2026-04-08`:
 
 - `npm.cmd run lint` passes
 - `npm.cmd run build` passes
+- `main` is ahead of `origin/main` by 6 commits
 
 ## Booking Direction (Approved)
 
@@ -581,18 +617,42 @@ Do not ship booking mode without:
 Recommended order now:
 
 1. Add booking-mode config and fallback-action contract
+   - done on `2026-04-08`
 2. Add email as a first-class CTA/action option for contact-only mode
-3. Define the booking data model and choose DB/auth/email tooling
-4. Add DB schema + migrations
-5. Add protected admin auth shell
-6. Implement availability engine
-7. Implement booking creation with conflict protection
-8. Build public booking flow at a dedicated route such as `/termin-buchen`
-9. Build admin booking management UI
-10. Add confirmations / cancellations / rescheduling
-11. QA both modes:
+   - done on `2026-04-08`
+3. Add a mode-aware `/termin-buchen` route shell and wire `booking.mode` into visible CTAs
+   - done on `2026-04-08`
+4. Define the booking data model and lock DB/auth/email tooling
+   - stack decision is now:
+     - Neon Postgres
+     - Drizzle ORM
+     - Auth.js
+     - Resend
+5. Add DB schema + migrations
+6. Add protected admin auth shell
+7. Implement availability engine
+8. Implement booking creation with conflict protection
+9. Replace the `/termin-buchen` shell with the real public booking flow
+10. Build admin booking management UI
+11. Add confirmations / cancellations / rescheduling
+12. QA both modes:
     - `contact_only`
     - `online_booking`
+
+### Immediate next implementation step
+
+From the current repo state, the next concrete engineering step should be:
+
+1. add DB tooling and environment contracts
+2. create the first schema/migration set for:
+   - `admin_users`
+   - `staff`
+   - `staff_services`
+   - `weekly_availability`
+   - `availability_exceptions`
+   - `bookings`
+   - `booking_events`
+3. only after that, add the protected admin auth shell and availability logic
 
 ### Default assumptions unless the user overrides them
 
@@ -629,31 +689,25 @@ The biggest remaining product gaps are now:
 
 ## Current Must-Do TODOs
 
-1. Introduce a builder-friendly booking mode config:
-   - `contact_only`
-   - `online_booking`
-
-2. Add `email` as a first-class action type alongside phone / WhatsApp / maps / Instagram.
-
-3. Decide and implement the booking data boundary:
+1. Implement the booking data boundary in code:
    - which service fields remain repo-driven
    - which operational data lives in the database
 
-4. Design and implement the booking backend foundation:
+2. Design and implement the booking backend foundation:
    - DB schema
    - admin auth
    - availability engine
    - booking creation with conflict protection
 
-5. Build the public booking flow without breaking the contact-only path.
+3. Build the real public booking flow without breaking the contact-only path.
 
-6. Build the admin/staff booking management UI.
+4. Build the admin/staff booking management UI.
 
-7. Keep improving trust and contact completeness:
+5. Keep improving trust and contact completeness:
    - add Instagram URL
    - add reviews / before-after / richer team copy
 
-8. Replace and optimize images after the booking foundation is clear.
+6. Replace and optimize images after the booking foundation is clear.
 
 ## Builder Direction
 
