@@ -33,6 +33,7 @@ export function resolvePageActions(
   whatsappMessage?: string
 ) {
   const fallbackActions = new Set(site.booking.fallbackActions);
+  const isOnlineBookingMode = site.booking.mode === "online_booking";
 
   return actions.flatMap<ResolvedPageAction>((action) => {
     if (action.enabled === false) {
@@ -58,6 +59,10 @@ export function resolvePageActions(
     }
 
     if (action.kind === "whatsapp") {
+      if (isOnlineBookingMode) {
+        return [];
+      }
+
       if (!site.contact.whatsapp) {
         return [];
       }
