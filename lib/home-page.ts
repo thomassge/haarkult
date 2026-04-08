@@ -1,6 +1,6 @@
 import type { HomeAction } from "@/content/home";
 import type { SiteConfig } from "@/content/site";
-import { telHref, whatsappHref } from "@/lib/links";
+import { mailtoHref, telHref, whatsappHref } from "@/lib/links";
 
 export type ResolvedPageAction = {
   label: string;
@@ -31,8 +31,17 @@ export function resolvePageActions(
   site: SiteConfig,
   whatsappMessage?: string
 ) {
+  const fallbackActions = new Set(site.booking.fallbackActions);
+
   return actions.flatMap<ResolvedPageAction>((action) => {
     if (action.enabled === false) {
+      return [];
+    }
+
+    if (
+      (action.kind === "phone" || action.kind === "whatsapp" || action.kind === "email") &&
+      !fallbackActions.has(action.kind)
+    ) {
       return [];
     }
 
@@ -56,6 +65,17 @@ export function resolvePageActions(
         {
           label: action.label,
           href: whatsappHref(site.contact.whatsapp, whatsappMessage),
+          variant: action.variant ?? "secondary",
+          external: true,
+        },
+      ];
+    }
+
+    if (action.kind === "email") {
+      return [
+        {
+          label: action.label,
+          href: mailtoHref(site.contact.email),
           variant: action.variant ?? "secondary",
           external: true,
         },

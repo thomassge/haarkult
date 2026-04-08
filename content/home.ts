@@ -1,3 +1,5 @@
+import type { BookingFallbackAction } from "@/content/site";
+
 type SectionCopy = {
   eyebrow: string;
   title: string;
@@ -13,8 +15,10 @@ export type HomeSection = {
   enabled?: boolean;
 };
 
+export type HomeActionKind = BookingFallbackAction | "maps" | "instagram";
+
 export type HomeAction = {
-  kind: "phone" | "whatsapp" | "maps" | "instagram";
+  kind: HomeActionKind;
   label: string;
   variant?: "primary" | "secondary";
   enabled?: boolean;
@@ -33,11 +37,13 @@ const homeSections: readonly HomeSection[] = [
 const heroActions: readonly HomeAction[] = [
   { kind: "phone", label: "Anrufen", variant: "secondary" },
   { kind: "whatsapp", label: "WhatsApp", variant: "secondary" },
+  { kind: "email", label: "E-Mail", variant: "secondary" },
 ];
 
 const contactActions: readonly HomeAction[] = [
   { kind: "maps", label: "Route planen", variant: "secondary" },
   { kind: "phone", label: "Anrufen", variant: "secondary" },
+  { kind: "email", label: "E-Mail", variant: "secondary" },
   { kind: "instagram", label: "Instagram", variant: "secondary" },
   { kind: "whatsapp", label: "WhatsApp", variant: "secondary" },
 ];

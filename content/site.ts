@@ -8,6 +8,26 @@ export type BrandAsset = {
   alt: string;
 };
 
+export const bookingModes = ["contact_only", "online_booking"] as const;
+
+export type BookingMode = (typeof bookingModes)[number];
+
+export const bookingFallbackActionKinds = ["phone", "whatsapp", "email"] as const;
+
+export type BookingFallbackAction = (typeof bookingFallbackActionKinds)[number];
+
+export type BookingConfig = {
+  mode: BookingMode;
+  fallbackActions: BookingFallbackAction[];
+  confirmationMode: "manual" | "instant";
+  allowStylistSelection: boolean;
+  leadTimeHours: number;
+  maxAdvanceDays: number;
+  slotStepMinutes: number;
+  bufferBeforeMinutes: number;
+  bufferAfterMinutes: number;
+};
+
 export type SiteConfig = {
   brand: {
     name: string;
@@ -34,6 +54,7 @@ export type SiteConfig = {
     owners: string[];
   };
   hours: OpeningHour[];
+  booking: BookingConfig;
   socials: {
     instagram: string | null;
   };
@@ -80,6 +101,17 @@ export const site: SiteConfig = {
     { label: "Sa", hours: "08:00-13:00" },
     { label: "So", hours: "Geschlossen" },
   ],
+  booking: {
+    mode: "contact_only",
+    fallbackActions: ["phone", "whatsapp", "email"],
+    confirmationMode: "manual",
+    allowStylistSelection: true,
+    leadTimeHours: 12,
+    maxAdvanceDays: 60,
+    slotStepMinutes: 15,
+    bufferBeforeMinutes: 0,
+    bufferAfterMinutes: 0,
+  },
   socials: {
     instagram: null,
   },
