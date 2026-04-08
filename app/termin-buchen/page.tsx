@@ -49,26 +49,35 @@ export default function BookingPage() {
       <Section className="pt-14 sm:pt-20 lg:pt-24">
         <Container>
           <div className="grid gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
-            <Card className="bg-white/72 backdrop-blur-md dark:bg-black/30" padded>
-              <Heading
-                eyebrow={isBookingEnabled ? "Online-Buchung" : "Kontakt"}
-                title={
-                  isBookingEnabled
-                    ? "Termin buchen"
-                    : "Online-Terminbuchung ist aktuell nicht aktiv"
-                }
-                subtitle={
-                  isBookingEnabled
-                    ? "Hier entsteht die digitale Terminbuchung. Bald kannst du Leistungen, freie Zeiten und optional dein Wunschteam direkt online waehlen."
-                    : `Dieses Studio vergibt Termine derzeit direkt ueber ${fallbackChannels}.`
-                }
+            <Card
+              className="relative overflow-hidden border-[var(--line-strong)] shadow-[var(--shadow-strong)]"
+              padded
+            >
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.34),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.08),transparent_38%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.1),transparent_38%),linear-gradient(180deg,rgba(255,255,255,0.04),transparent_34%)]"
               />
+              <div className="relative">
+                <Heading
+                  eyebrow={isBookingEnabled ? "Online-Buchung" : "Kontakt"}
+                  title={
+                    isBookingEnabled
+                      ? "Termin buchen"
+                      : "Online-Terminbuchung ist aktuell nicht aktiv"
+                  }
+                  subtitle={
+                    isBookingEnabled
+                      ? "Hier entsteht die digitale Terminbuchung. Bald kannst du Leistungen, freie Zeiten und optional dein Wunschteam direkt online waehlen."
+                      : `Dieses Studio vergibt Termine derzeit direkt ueber ${fallbackChannels}.`
+                  }
+                />
 
-              <BodyText className="mt-6 text-zinc-700 dark:text-zinc-300">
-                {isBookingEnabled
-                  ? "Bis die komplette Buchungsstrecke live ist, bleiben die gewohnten Kontaktwege weiterhin verfuegbar."
-                  : "Wenn du diese Seite direkt aufgerufen hast, nutze bitte die Kontaktmoeglichkeiten unten. So landest du ohne Umweg beim Salon."}
-              </BodyText>
+                <BodyText className="mt-6 text-zinc-700 dark:text-zinc-300">
+                  {isBookingEnabled
+                    ? "Bis die komplette Buchungsstrecke live ist, bleiben die gewohnten Kontaktwege weiterhin verfuegbar."
+                    : "Wenn du diese Seite direkt aufgerufen hast, nutze bitte die Kontaktmoeglichkeiten unten. So landest du ohne Umweg beim Salon."}
+                </BodyText>
+              </div>
             </Card>
 
             <Card padded>
