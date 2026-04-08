@@ -1,11 +1,12 @@
 import type { HomeAction } from "@/content/home";
 import type { SiteConfig } from "@/content/site";
+import type { ButtonVariant } from "@/components/ui/button";
 import { mailtoHref, telHref, whatsappHref } from "@/lib/links";
 
 export type ResolvedPageAction = {
   label: string;
   href: string;
-  variant: "primary" | "secondary";
+  variant: ButtonVariant;
   external: boolean;
 };
 
@@ -116,7 +117,7 @@ export function getBookingPageAction(site: SiteConfig): ResolvedPageAction | nul
   return {
     label: "Termin buchen",
     href: "/termin-buchen",
-    variant: "primary",
+    variant: "highlight",
     external: false,
   };
 }

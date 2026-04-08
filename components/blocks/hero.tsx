@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Heading } from "@/components/ui/heading";
-import { Button } from "@/components/ui/button";
+import { Button, type ButtonVariant } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Reveal } from "@/components/ui/reveal";
 import { BodyText, FinePrint } from "@/components/ui/typography";
@@ -11,7 +11,7 @@ import type { BrandAsset, OpeningHour } from "@/content/site";
 type HeroAction = {
   label: string;
   href: string;
-  variant?: "primary" | "secondary";
+  variant?: ButtonVariant;
   external?: boolean;
 };
 

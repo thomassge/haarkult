@@ -1,7 +1,7 @@
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Heading } from "@/components/ui/heading";
-import { Button } from "@/components/ui/button";
+import { Button, type ButtonVariant } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Reveal } from "@/components/ui/reveal";
 import { BodyText, FinePrint } from "@/components/ui/typography";
@@ -10,7 +10,7 @@ import type { OpeningHour } from "@/content/site";
 type ContactAction = {
   label: string;
   href: string;
-  variant?: "primary" | "secondary";
+  variant?: ButtonVariant;
   external?: boolean;
 };
 
