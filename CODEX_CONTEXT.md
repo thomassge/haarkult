@@ -172,11 +172,16 @@ Relevant files today:
 - [app/page.tsx](/C:/Users/neyma/dev/haarkult/app/page.tsx)
 - [app/layout.tsx](/C:/Users/neyma/dev/haarkult/app/layout.tsx)
 - [app/globals.css](/C:/Users/neyma/dev/haarkult/app/globals.css)
+- [.env.example](/C:/Users/neyma/dev/haarkult/.env.example)
 - [content/site.ts](/C:/Users/neyma/dev/haarkult/content/site.ts)
 - [content/home.ts](/C:/Users/neyma/dev/haarkult/content/home.ts)
 - [content/services.ts](/C:/Users/neyma/dev/haarkult/content/services.ts)
 - [content/team.ts](/C:/Users/neyma/dev/haarkult/content/team.ts)
 - [content/gallery.ts](/C:/Users/neyma/dev/haarkult/content/gallery.ts)
+- [db/index.ts](/C:/Users/neyma/dev/haarkult/db/index.ts)
+- [db/schema.ts](/C:/Users/neyma/dev/haarkult/db/schema.ts)
+- [drizzle.config.ts](/C:/Users/neyma/dev/haarkult/drizzle.config.ts)
+- [drizzle/0000_previous_oracle.sql](/C:/Users/neyma/dev/haarkult/drizzle/0000_previous_oracle.sql)
 - [components/ui/button.tsx](/C:/Users/neyma/dev/haarkult/components/ui/button.tsx)
 - [components/ui/card.tsx](/C:/Users/neyma/dev/haarkult/components/ui/card.tsx)
 - [components/ui/container.tsx](/C:/Users/neyma/dev/haarkult/components/ui/container.tsx)
@@ -189,6 +194,8 @@ Relevant files today:
 - [components/blocks/gallery-grid.tsx](/C:/Users/neyma/dev/haarkult/components/blocks/gallery-grid.tsx)
 - [components/blocks/contact.tsx](/C:/Users/neyma/dev/haarkult/components/blocks/contact.tsx)
 - [components/blocks/site-footer.tsx](/C:/Users/neyma/dev/haarkult/components/blocks/site-footer.tsx)
+- [lib/booking/env.ts](/C:/Users/neyma/dev/haarkult/lib/booking/env.ts)
+- [lib/booking/catalog.ts](/C:/Users/neyma/dev/haarkult/lib/booking/catalog.ts)
 - [lib/home-page.ts](/C:/Users/neyma/dev/haarkult/lib/home-page.ts)
 - [lib/links.ts](/C:/Users/neyma/dev/haarkult/lib/links.ts)
 
@@ -223,7 +230,11 @@ Current live code state:
 - in `online_booking` mode the primary CTA is `Termin buchen`
 - in `online_booking` mode WhatsApp is intentionally hidden everywhere the shared action resolver is used
 - the current salon is temporarily set to `online_booking` for testing scenarios
-- no booking backend exists yet
+- the service catalog now exposes explicit booking metadata in [content/services.ts](/C:/Users/neyma/dev/haarkult/content/services.ts)
+- booking env contracts now exist in [.env.example](/C:/Users/neyma/dev/haarkult/.env.example) and [lib/booking/env.ts](/C:/Users/neyma/dev/haarkult/lib/booking/env.ts)
+- the initial Drizzle + Neon DB foundation now exists in [db/schema.ts](/C:/Users/neyma/dev/haarkult/db/schema.ts), [db/index.ts](/C:/Users/neyma/dev/haarkult/db/index.ts), and [drizzle.config.ts](/C:/Users/neyma/dev/haarkult/drizzle.config.ts)
+- the first generated migration now exists in [drizzle/0000_previous_oracle.sql](/C:/Users/neyma/dev/haarkult/drizzle/0000_previous_oracle.sql)
+- no booking APIs or availability engine exist yet
 - no admin area exists yet
 - Instagram is still not configured in [content/site.ts](/C:/Users/neyma/dev/haarkult/content/site.ts)
 
@@ -284,6 +295,8 @@ Useful commands:
 npm.cmd run dev
 npm.cmd run lint
 npm.cmd run build
+npm.cmd run db:generate
+npm.cmd run db:migrate
 ```
 
 Use `npm.cmd` instead of plain `npm` in PowerShell on this machine, because PowerShell execution policy can block `npm.ps1`.
@@ -294,7 +307,7 @@ Verified on `2026-04-08`:
 
 - `npm.cmd run lint` passes
 - `npm.cmd run build` passes
-- `main` is ahead of `origin/main` by 6 commits
+- the initial Drizzle migration generates successfully via `npm.cmd run db:generate`
 
 ## Booking Direction (Approved)
 
@@ -643,16 +656,9 @@ Recommended order now:
 
 From the current repo state, the next concrete engineering step should be:
 
-1. add DB tooling and environment contracts
-2. create the first schema/migration set for:
-   - `admin_users`
-   - `staff`
-   - `staff_services`
-   - `weekly_availability`
-   - `availability_exceptions`
-   - `bookings`
-   - `booking_events`
-3. only after that, add the protected admin auth shell and availability logic
+1. add the protected admin auth shell with Auth.js and route protection for `app/admin/*`
+2. wire the first `admin_users` lookup and login flow against the new DB foundation
+3. only after auth is in place, implement the availability engine and conflict-safe booking creation
 
 ### Default assumptions unless the user overrides them
 
@@ -689,25 +695,25 @@ The biggest remaining product gaps are now:
 
 ## Current Must-Do TODOs
 
-1. Implement the booking data boundary in code:
-   - which service fields remain repo-driven
-   - which operational data lives in the database
+1. Add the protected admin auth shell and connect it to `admin_users`.
 
-2. Design and implement the booking backend foundation:
-   - DB schema
-   - admin auth
-   - availability engine
-   - booking creation with conflict protection
+2. Implement the availability engine:
+   - booking config rules
+   - `weekly_availability`
+   - `availability_exceptions`
+   - existing bookings
 
-3. Build the real public booking flow without breaking the contact-only path.
+3. Implement conflict-safe booking creation and the first public booking APIs.
 
-4. Build the admin/staff booking management UI.
+4. Build the real public booking flow without breaking the contact-only path.
 
-5. Keep improving trust and contact completeness:
+5. Build the admin/staff booking management UI.
+
+6. Keep improving trust and contact completeness:
    - add Instagram URL
    - add reviews / before-after / richer team copy
 
-6. Replace and optimize images after the booking foundation is clear.
+7. Replace and optimize images after the booking foundation is clear.
 
 ## Builder Direction
 
