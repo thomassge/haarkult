@@ -102,7 +102,7 @@ export const site: SiteConfig = {
     { label: "So", hours: "Geschlossen" },
   ],
   booking: {
-    mode: "contact_only",
+    mode: "online_booking",
     fallbackActions: ["phone", "whatsapp", "email"],
     confirmationMode: "manual",
     allowStylistSelection: true,
