@@ -87,11 +87,39 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
+| BUIL-01 | Phase 1 | Pending |
+| BUIL-02 | Phase 1 | Pending |
+| BUIL-03 | Phase 5 | Pending |
+| MODE-01 | Phase 1 | Pending |
+| MODE-02 | Phase 1 | Pending |
+| MODE-03 | Phase 1 | Pending |
+| BOOK-01 | Phase 3 | Pending |
+| BOOK-02 | Phase 3 | Pending |
+| BOOK-03 | Phase 3 | Pending |
+| BOOK-04 | Phase 3 | Pending |
+| BOOK-05 | Phase 3 | Pending |
+| BOOK-06 | Phase 3 | Pending |
+| BOOK-07 | Phase 3 | Pending |
+| BOOK-08 | Phase 3 | Pending |
+| STAF-01 | Phase 2 | Pending |
+| STAF-02 | Phase 2 | Pending |
+| STAF-03 | Phase 2 | Pending |
+| STAF-04 | Phase 2 | Pending |
+| STAF-05 | Phase 3 | Pending |
+| ADMN-01 | Phase 2 | Pending |
+| ADMN-02 | Phase 4 | Pending |
+| ADMN-03 | Phase 4 | Pending |
+| ADMN-04 | Phase 4 | Pending |
+| ADMN-05 | Phase 4 | Pending |
+| ADMN-06 | Phase 2 | Pending |
+| COMM-01 | Phase 4 | Pending |
+| COMM-02 | Phase 4 | Pending |
+| COMM-03 | Phase 5 | Pending |
 
 **Coverage:**
 - v1 requirements: 28 total
-- Mapped to phases: 0
-- Unmapped: 28
+- Mapped to phases: 28
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-10*
