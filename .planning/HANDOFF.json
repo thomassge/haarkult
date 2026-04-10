@@ -1,0 +1,83 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-04-10T09:36:37.638Z",
+  "phase": "01",
+  "phase_name": "Builder Boundaries & Mode Hardening",
+  "phase_dir": ".planning/phases/01-builder-boundaries-mode-hardening",
+  "plan": 0,
+  "task": 0,
+  "total_tasks": 3,
+  "status": "paused",
+  "completed_tasks": [
+    {
+      "id": 1,
+      "name": "Capture Phase 1 context and discussion log",
+      "status": "done",
+      "commit": "b5f2204"
+    },
+    {
+      "id": 2,
+      "name": "Record phase context session in STATE.md",
+      "status": "done",
+      "commit": "9a88524"
+    },
+    {
+      "id": 3,
+      "name": "Research Phase 1 and add validation strategy",
+      "status": "done",
+      "commit": "f0768c0 / 99fa5f9"
+    }
+  ],
+  "remaining_tasks": [
+    {
+      "id": 4,
+      "name": "Write 01-01, 01-02, and 01-03 PLAN.md files",
+      "status": "not_started"
+    },
+    {
+      "id": 5,
+      "name": "Run plan verification and revise if needed",
+      "status": "not_started"
+    },
+    {
+      "id": 6,
+      "name": "Record phase as planned in STATE.md",
+      "status": "not_started"
+    }
+  ],
+  "blockers": [
+    {
+      "description": "gsd-planner subagents timed out twice on Windows without writing any PLAN.md files",
+      "type": "technical",
+      "workaround": "After a planner timeout, inspect the phase directory immediately. If no plan files exist after one narrowed retry, switch to local plan authoring instead of waiting longer."
+    }
+  ],
+  "human_actions_pending": [],
+  "decisions": [
+    {
+      "decision": "Keep salon-wide data in content/site.ts and split booking-specific rules/copy into content/booking.ts",
+      "rationale": "This is the simplest professional boundary split and avoids over-fragmenting the content model.",
+      "phase": "01"
+    },
+    {
+      "decision": "Direct visits to /termin-buchen in contact_only should show a friendly fallback page instead of redirecting",
+      "rationale": "This preserves a safe entry for bookmarks and search traffic while still honoring the disabled booking mode.",
+      "phase": "01"
+    },
+    {
+      "decision": "Contact visibility stays salon-configurable in both modes and no channel is hidden only because booking is enabled",
+      "rationale": "The salon should decide whether phone, email, and WhatsApp appear.",
+      "phase": "01"
+    },
+    {
+      "decision": "Real booking and admin flows stay physically separate from brochure surfaces",
+      "rationale": "This protects BUIL-01 and BUIL-02 before booking complexity grows.",
+      "phase": "01"
+    }
+  ],
+  "uncommitted_files": [
+    ".npm-cache/"
+  ],
+  "next_action": "Start from the phase-prompt template and write 01-01-PLAN.md, 01-02-PLAN.md, and 01-03-PLAN.md locally using 01-CONTEXT.md, 01-RESEARCH.md, and 01-VALIDATION.md; then run plan verification.",
+  "context_notes": "Pause happened mid /gsd-plan-phase for Phase 1. Context, discussion log, research, and validation are all committed. The blocking issue is agent transport reliability on Windows: the researcher wrote its file but never returned a completion marker, and the planner timed out twice without writing plan artifacts. Resume by planning locally rather than spending more time on hanging planner agents."
+}
