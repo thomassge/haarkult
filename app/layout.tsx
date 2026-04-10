@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SiteFooter } from "@/components/blocks/site-footer";
+import { booking } from "@/content/booking";
 import { site } from "@/content/site";
+import { getBookingEntryHref } from "@/lib/site-mode";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -24,6 +26,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const bookingHref = getBookingEntryHref(booking) ?? undefined;
+
   return (
     <html lang="de">
       <body
@@ -36,7 +40,7 @@ export default function RootLayout({
             city={site.brand.city}
             phone={site.contact.phone}
             email={site.contact.email}
-            bookingHref={site.booking.mode === "online_booking" ? "/termin-buchen" : undefined}
+            bookingHref={bookingHref}
           />
         </div>
       </body>

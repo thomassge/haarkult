@@ -1,7 +1,9 @@
 import type { HomeAction } from "@/content/home";
 import type { SiteConfig } from "@/content/site";
+import type { BookingConfig } from "@/content/booking";
 import type { ButtonVariant } from "@/components/ui/button";
 import { mailtoHref, telHref, whatsappHref } from "@/lib/links";
+import { getBookingEntryHref, getBookingPresentationState } from "@/lib/site-mode";
 
 export type ResolvedPageAction = {
   label: string;
@@ -30,10 +32,11 @@ export function fillMessageTemplate(
 export function resolvePageActions(
   actions: readonly HomeAction[],
   site: SiteConfig,
+  bookingConfig: BookingConfig,
   whatsappMessage?: string
 ) {
-  const fallbackActions = new Set(site.booking.fallbackActions);
-  const isOnlineBookingMode = site.booking.mode === "online_booking";
+  const presentationState = getBookingPresentationState(site, bookingConfig);
+  const fallbackActions = new Set(presentationState.visibleContactKinds);
 
   return actions.flatMap<ResolvedPageAction>((action) => {
     if (action.enabled === false) {
@@ -59,10 +62,6 @@ export function resolvePageActions(
     }
 
     if (action.kind === "whatsapp") {
-      if (isOnlineBookingMode) {
-        return [];
-      }
-
       if (!site.contact.whatsapp) {
         return [];
       }
@@ -114,14 +113,16 @@ export function resolvePageActions(
   });
 }
 
-export function getBookingPageAction(site: SiteConfig): ResolvedPageAction | null {
-  if (site.booking.mode !== "online_booking") {
+export function getBookingPageAction(bookingConfig: BookingConfig): ResolvedPageAction | null {
+  const bookingHref = getBookingEntryHref(bookingConfig);
+
+  if (!bookingHref) {
     return null;
   }
 
   return {
-    label: "Termin buchen",
-    href: "/termin-buchen",
+    label: bookingConfig.entry.label,
+    href: bookingHref,
     variant: "highlight",
     external: false,
   };

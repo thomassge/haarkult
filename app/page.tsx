@@ -4,6 +4,7 @@ import { ContactBlock } from "@/components/blocks/contact";
 import { GalleryGrid } from "@/components/blocks/gallery-grid";
 import { ServicesGrid } from "@/components/blocks/services-grid";
 import { TeamGrid } from "@/components/blocks/team-grid";
+import { booking } from "@/content/booking";
 import { gallery } from "@/content/gallery";
 import { homePage, type HomeSectionId } from "@/content/home";
 import { site } from "@/content/site";
@@ -22,15 +23,17 @@ export default function Home() {
   const whatsappMessage = fillMessageTemplate(homePage.actionMessages.whatsapp, {
     salonName: site.brand.name,
   });
-  const bookingAction = getBookingPageAction(site);
+  const bookingAction = getBookingPageAction(booking);
   const fallbackHeroActions = resolvePageActions(
     homePage.hero.actions,
     site,
+    booking,
     whatsappMessage
   );
   const fallbackContactActions = resolvePageActions(
     homePage.contact.actions,
     site,
+    booking,
     whatsappMessage
   );
   const heroActions = bookingAction

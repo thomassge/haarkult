@@ -5,18 +5,20 @@ import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { Section } from "@/components/ui/section";
 import { BodyText, FinePrint } from "@/components/ui/typography";
+import { booking } from "@/content/booking";
 import { homePage } from "@/content/home";
-import type { BookingFallbackAction } from "@/content/site";
 import { site } from "@/content/site";
 import { fillMessageTemplate, resolvePageActions } from "@/lib/home-page";
+import { getBookingPresentationState } from "@/lib/site-mode";
 
-const isBookingEnabled = site.booking.mode === "online_booking";
-
-const fallbackChannelLabels: Record<BookingFallbackAction, string> = {
+const fallbackChannelLabels = {
   phone: "Telefon",
   whatsapp: "WhatsApp",
   email: "E-Mail",
 };
+
+const presentationState = getBookingPresentationState(site, booking);
+const isBookingEnabled = presentationState.isBookingEnabled;
 
 export const metadata: Metadata = {
   title: isBookingEnabled
@@ -34,11 +36,17 @@ export default function BookingPage() {
   const contactActions = resolvePageActions(
     homePage.contact.actions,
     site,
+    booking,
     whatsappMessage
   );
-  const fallbackChannels = site.booking.fallbackActions
+  const fallbackChannels = presentationState.visibleContactKinds
     .map((kind) => fallbackChannelLabels[kind])
     .join(", ");
+  const pageCopy = isBookingEnabled ? booking.copy.booking : booking.copy.contactOnly;
+  const subtitle = isBookingEnabled
+    ? pageCopy.subtitle
+    : `${pageCopy.subtitlePrefix} ${fallbackChannels}.`;
+  const contactTitle = pageCopy.contactTitle;
 
   return (
     <div className="relative min-h-screen overflow-hidden text-zinc-950 dark:text-zinc-50">
@@ -59,56 +67,34 @@ export default function BookingPage() {
               />
               <div className="relative">
                 <Heading
-                  eyebrow={isBookingEnabled ? "Online-Buchung" : "Kontakt"}
-                  title={
-                    isBookingEnabled
-                      ? "Termin buchen"
-                      : "Online-Terminbuchung ist aktuell nicht aktiv"
-                  }
-                  subtitle={
-                    isBookingEnabled
-                      ? "Hier entsteht die digitale Terminbuchung. Bald kannst du Leistungen, freie Zeiten und optional dein Wunschteam direkt online waehlen."
-                      : `Dieses Studio vergibt Termine derzeit direkt ueber ${fallbackChannels}.`
-                  }
+                  eyebrow={pageCopy.eyebrow}
+                  title={pageCopy.title}
+                  subtitle={subtitle}
                 />
 
                 <BodyText className="mt-6 text-zinc-700 dark:text-zinc-300">
-                  {isBookingEnabled
-                    ? "Bis die komplette Buchungsstrecke live ist, bleiben die gewohnten Kontaktwege weiterhin verfuegbar."
-                    : "Wenn du diese Seite direkt aufgerufen hast, nutze bitte die Kontaktmoeglichkeiten unten. So landest du ohne Umweg beim Salon."}
+                  {pageCopy.body}
                 </BodyText>
               </div>
             </Card>
 
             <Card padded>
-              <FinePrint>{isBookingEnabled ? "So wird die Strecke" : "So geht es aktuell"}</FinePrint>
+              <FinePrint>{pageCopy.stepsLabel}</FinePrint>
               <ul className="mt-5 space-y-3 text-sm leading-7 text-zinc-700 dark:text-zinc-300">
-                {isBookingEnabled ? (
-                  <>
-                    <li>Leistung auswaehlen</li>
-                    <li>Optional Stylistin oder Stylist festlegen</li>
-                    <li>Freie Zeiten ansehen und Termin bestaetigen</li>
-                  </>
-                ) : (
-                  <>
-                    <li>Terminwunsch telefonisch, per WhatsApp oder per E-Mail senden</li>
-                    <li>Rueckmeldung direkt vom Salon erhalten</li>
-                    <li>Details bei Bedarf persoenlich abstimmen</li>
-                  </>
-                )}
+                {pageCopy.steps.map((step) => (
+                  <li key={step}>{step}</li>
+                ))}
               </ul>
             </Card>
           </div>
 
           <Card className="mt-6" padded>
-            <FinePrint>Kontakt</FinePrint>
+            <FinePrint>{contactTitle}</FinePrint>
             <p className="mt-3 text-xl font-semibold tracking-[-0.03em] text-zinc-950 dark:text-zinc-50">
               {site.brand.name}
             </p>
             <BodyText className="mt-2 max-w-2xl text-zinc-600 dark:text-zinc-300">
-              {isBookingEnabled
-                ? "Bis die vollstaendige Online-Buchung live ist, erreichst du den Salon weiterhin direkt ueber die vorhandenen Kontaktkanaele."
-                : "Die Kontaktwege bleiben die zentrale Terminoption, solange der Salon im Kontaktmodus laeuft."}
+              {pageCopy.contactBody}
             </BodyText>
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
