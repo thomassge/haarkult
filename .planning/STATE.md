@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-builder-boundaries-mode-hardening-01-01-PLAN.md
-last_updated: "2026-04-10T13:59:59.804Z"
+stopped_at: Completed 01-builder-boundaries-mode-hardening-01-02-PLAN.md
+last_updated: "2026-04-10T14:08:47.539Z"
 last_activity: 2026-04-10
 progress:
   total_phases: 5
   completed_phases: 0
   total_plans: 3
-  completed_plans: 1
-  percent: 33
+  completed_plans: 2
+  percent: 67
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-10)
 ## Current Position
 
 Phase: 01 (builder-boundaries-mode-hardening) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 Status: Ready to execute
 Last activity: 2026-04-10
 
@@ -52,6 +52,7 @@ Progress: [..........] 0%
 - Trend: Stable
 
 | Phase 01-builder-boundaries-mode-hardening P01 | 16 min | 2 tasks | 8 files |
+| Phase 01-builder-boundaries-mode-hardening P02 | 8 min | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -65,6 +66,8 @@ Recent decisions affecting current work:
 - Initialization: prioritize real booking mode and salon admin next
 - [Phase 01-builder-boundaries-mode-hardening]: Booking-specific rules and copy now live in content/booking.ts while content/site.ts stays salon-wide.
 - [Phase 01-builder-boundaries-mode-hardening]: Brochure consumers resolve booking visibility through lib/site-mode.ts instead of branching on raw config fields.
+- [Phase 01-builder-boundaries-mode-hardening]: Phase 1 now uses a small Vitest jsdom harness so mode behavior can be checked without spinning up the full app.
+- [Phase 01-builder-boundaries-mode-hardening]: Homepage booking entry visibility is resolved from lib/site-mode.ts at the route level instead of a helper-owned inline branch.
 
 ### Pending Todos
 
@@ -76,6 +79,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-10T13:59:59.787Z
-Stopped at: Completed 01-builder-boundaries-mode-hardening-01-01-PLAN.md
+Last session: 2026-04-10T14:08:47.536Z
+Stopped at: Completed 01-builder-boundaries-mode-hardening-01-02-PLAN.md
 Resume file: None
