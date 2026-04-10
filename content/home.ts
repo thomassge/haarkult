@@ -1,4 +1,4 @@
-import type { BookingFallbackAction } from "@/content/site";
+import type { BookingFallbackAction } from "@/content/booking";
 
 type SectionCopy = {
   eyebrow: string;
