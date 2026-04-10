@@ -44,9 +44,8 @@ export default function BookingPage() {
     .join(", ");
   const pageCopy = isBookingEnabled ? booking.copy.booking : booking.copy.contactOnly;
   const subtitle = isBookingEnabled
-    ? pageCopy.subtitle
-    : `${pageCopy.subtitlePrefix} ${fallbackChannels}.`;
-  const contactTitle = pageCopy.contactTitle;
+    ? booking.copy.booking.subtitle
+    : `${booking.copy.contactOnly.subtitlePrefix} ${fallbackChannels}.`;
 
   return (
     <div className="relative min-h-screen overflow-hidden text-zinc-950 dark:text-zinc-50">
@@ -89,7 +88,7 @@ export default function BookingPage() {
           </div>
 
           <Card className="mt-6" padded>
-            <FinePrint>{contactTitle}</FinePrint>
+            <FinePrint>{pageCopy.contactTitle}</FinePrint>
             <p className="mt-3 text-xl font-semibold tracking-[-0.03em] text-zinc-950 dark:text-zinc-50">
               {site.brand.name}
             </p>
