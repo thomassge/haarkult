@@ -2,7 +2,11 @@ import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { homePage } from "@/content/home";
 import { site } from "@/content/site";
-import { fillMessageTemplate, resolvePageActions } from "@/lib/home-page";
+import {
+  fillMessageTemplate,
+  formatInlineList,
+  resolvePageActions,
+} from "@/lib/home-page";
 import { resolveVisibleContactKinds } from "@/lib/site-mode";
 
 const fallbackChannelLabels = {
@@ -47,7 +51,7 @@ describe("/termin-buchen fallback", () => {
     const fallbackChannels = resolveVisibleContactKinds(site, booking).map(
       (kind) => fallbackChannelLabels[kind]
     );
-    const expectedSubtitle = `${booking.copy.contactOnly.subtitlePrefix} ${fallbackChannels.join(", ")}.`;
+    const expectedSubtitle = `${booking.copy.contactOnly.subtitlePrefix} ${formatInlineList(fallbackChannels)}.`;
 
     render(<BookingPage />);
 

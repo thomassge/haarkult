@@ -8,7 +8,11 @@ import { BodyText, FinePrint } from "@/components/ui/typography";
 import { booking } from "@/content/booking";
 import { homePage } from "@/content/home";
 import { site } from "@/content/site";
-import { fillMessageTemplate, resolvePageActions } from "@/lib/home-page";
+import {
+  fillMessageTemplate,
+  formatInlineList,
+  resolvePageActions,
+} from "@/lib/home-page";
 import { getBookingPresentationState } from "@/lib/site-mode";
 
 const fallbackChannelLabels = {
@@ -39,13 +43,14 @@ export default function BookingPage() {
     booking,
     whatsappMessage
   );
-  const fallbackChannels = presentationState.visibleContactKinds
-    .map((kind) => fallbackChannelLabels[kind])
-    .join(", ");
+  const fallbackChannels = presentationState.visibleContactKinds.map(
+    (kind) => fallbackChannelLabels[kind]
+  );
+  const formattedFallbackChannels = formatInlineList(fallbackChannels);
   const pageCopy = isBookingEnabled ? booking.copy.booking : booking.copy.contactOnly;
   const subtitle = isBookingEnabled
     ? booking.copy.booking.subtitle
-    : `${booking.copy.contactOnly.subtitlePrefix} ${fallbackChannels}.`;
+    : `${booking.copy.contactOnly.subtitlePrefix} ${formattedFallbackChannels}.`;
 
   return (
     <div className="relative min-h-screen overflow-hidden text-zinc-950 dark:text-zinc-50">

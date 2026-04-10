@@ -13,9 +13,9 @@ import { team } from "@/content/team";
 import {
   fillMessageTemplate,
   formatAddressLine,
-  getBookingPageAction,
   resolvePageActions,
 } from "@/lib/home-page";
+import { getBookingPresentationState } from "@/lib/site-mode";
 
 export default function Home() {
   const shortAddressLine = formatAddressLine(site.contact.address);
@@ -23,7 +23,7 @@ export default function Home() {
   const whatsappMessage = fillMessageTemplate(homePage.actionMessages.whatsapp, {
     salonName: site.brand.name,
   });
-  const bookingAction = getBookingPageAction(booking);
+  const presentationState = getBookingPresentationState(site, booking);
   const fallbackHeroActions = resolvePageActions(
     homePage.hero.actions,
     site,
@@ -36,12 +36,18 @@ export default function Home() {
     booking,
     whatsappMessage
   );
-  const heroActions = bookingAction
-    ? [bookingAction, ...fallbackHeroActions]
-    : fallbackHeroActions;
-  const contactActions = bookingAction
-    ? [bookingAction, ...fallbackContactActions]
-    : fallbackContactActions;
+  const bookingAction = presentationState.bookingEntryHref
+    ? [
+        {
+          label: booking.entry.label,
+          href: presentationState.bookingEntryHref,
+          variant: "highlight" as const,
+          external: false,
+        },
+      ]
+    : [];
+  const heroActions = [...bookingAction, ...fallbackHeroActions];
+  const contactActions = [...bookingAction, ...fallbackContactActions];
 
   const sectionBlocks: Record<HomeSectionId, ReactElement> = {
     hero: (

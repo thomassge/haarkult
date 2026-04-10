@@ -3,7 +3,7 @@ import type { SiteConfig } from "@/content/site";
 import type { BookingConfig } from "@/content/booking";
 import type { ButtonVariant } from "@/components/ui/button";
 import { mailtoHref, telHref, whatsappHref } from "@/lib/links";
-import { getBookingEntryHref, getBookingPresentationState } from "@/lib/site-mode";
+import { getBookingPresentationState } from "@/lib/site-mode";
 
 export type ResolvedPageAction = {
   label: string;
@@ -27,6 +27,18 @@ export function fillMessageTemplate(
     (message, [key, value]) => message.replaceAll(`{${key}}`, value),
     template
   );
+}
+
+export function formatInlineList(items: readonly string[]) {
+  if (items.length <= 1) {
+    return items[0] ?? "";
+  }
+
+  if (items.length === 2) {
+    return `${items[0]} oder ${items[1]}`;
+  }
+
+  return `${items.slice(0, -1).join(", ")} oder ${items.at(-1)}`;
 }
 
 export function resolvePageActions(
@@ -111,19 +123,4 @@ export function resolvePageActions(
       },
     ];
   });
-}
-
-export function getBookingPageAction(bookingConfig: BookingConfig): ResolvedPageAction | null {
-  const bookingHref = getBookingEntryHref(bookingConfig);
-
-  if (!bookingHref) {
-    return null;
-  }
-
-  return {
-    label: bookingConfig.entry.label,
-    href: bookingHref,
-    variant: "highlight",
-    external: false,
-  };
 }
