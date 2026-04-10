@@ -1,21 +1,17 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
-import { mailtoHref, telHref } from "@/lib/links";
+import type { PublicSiteAction } from "@/lib/site-mode";
 
 type SiteFooterProps = {
   brandName: string;
   city: string;
-  phone: string;
-  email: string;
-  bookingHref?: string;
+  publicActions: PublicSiteAction[];
 };
 
 export function SiteFooter({
   brandName,
   city,
-  phone,
-  email,
-  bookingHref,
+  publicActions,
 }: SiteFooterProps) {
   const year = new Date().getFullYear();
 
@@ -35,23 +31,25 @@ export function SiteFooter({
             aria-label="Rechtliche, Kontakt- und Service-Links"
             className="flex flex-wrap gap-x-5 gap-y-3"
           >
-            {bookingHref ? (
-              <Link
-                className="transition hover:text-zinc-950 dark:hover:text-zinc-50"
-                href={bookingHref}
-              >
-                Termin buchen
-              </Link>
-            ) : null}
-            <a className="transition hover:text-zinc-950 dark:hover:text-zinc-50" href={telHref(phone)}>
-              Telefon
-            </a>
-            <a
-              className="transition hover:text-zinc-950 dark:hover:text-zinc-50"
-              href={mailtoHref(email)}
-            >
-              E-Mail
-            </a>
+            {publicActions.map((action) =>
+              action.external ? (
+                <a
+                  key={`${action.kind}-${action.href}`}
+                  className="transition hover:text-zinc-950 dark:hover:text-zinc-50"
+                  href={action.href}
+                >
+                  {action.label}
+                </a>
+              ) : (
+                <Link
+                  key={`${action.kind}-${action.href}`}
+                  className="transition hover:text-zinc-950 dark:hover:text-zinc-50"
+                  href={action.href}
+                >
+                  {action.label}
+                </Link>
+              )
+            )}
             <Link className="transition hover:text-zinc-950 dark:hover:text-zinc-50" href="/impressum">
               Impressum
             </Link>

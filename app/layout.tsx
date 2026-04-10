@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { SiteFooter } from "@/components/blocks/site-footer";
 import { booking } from "@/content/booking";
 import { site } from "@/content/site";
-import { getBookingEntryHref } from "@/lib/site-mode";
+import { resolvePublicSiteActions } from "@/lib/site-mode";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -26,7 +26,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const bookingHref = getBookingEntryHref(booking) ?? undefined;
+  const publicActions = resolvePublicSiteActions(site, booking);
 
   return (
     <html lang="de">
@@ -38,9 +38,7 @@ export default function RootLayout({
           <SiteFooter
             brandName={site.brand.name}
             city={site.brand.city}
-            phone={site.contact.phone}
-            email={site.contact.email}
-            bookingHref={bookingHref}
+            publicActions={publicActions}
           />
         </div>
       </body>
