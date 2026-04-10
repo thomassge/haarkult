@@ -7,14 +7,14 @@
 
 ### Builder
 
-- [ ] **BUIL-01**: Maintainer can create a new salon website by replacing structured salon content and configuration without rewriting shared brochure components
-- [ ] **BUIL-02**: Maintainer can replace salon-specific brand and media assets without editing shared booking or admin logic
+- [x] **BUIL-01**: Maintainer can create a new salon website by replacing structured salon content and configuration without rewriting shared brochure components
+- [x] **BUIL-02**: Maintainer can replace salon-specific brand and media assets without editing shared booking or admin logic
 - [ ] **BUIL-03**: Maintainer can reuse the same booking and admin code paths across multiple salons with salon-specific data differences
 
 ### Modes
 
-- [ ] **MODE-01**: Maintainer can configure a salon website to run in `contact_only` mode
-- [ ] **MODE-02**: Maintainer can configure a salon website to run in `booking` mode
+- [x] **MODE-01**: Maintainer can configure a salon website to run in `contact_only` mode
+- [x] **MODE-02**: Maintainer can configure a salon website to run in `booking` mode
 - [ ] **MODE-03**: Visitor in `contact_only` mode sees contact paths and does not get a working public booking flow
 
 ### Public Booking
@@ -87,11 +87,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| BUIL-01 | Phase 1 | Pending |
-| BUIL-02 | Phase 1 | Pending |
+| BUIL-01 | Phase 1 | Complete |
+| BUIL-02 | Phase 1 | Complete |
 | BUIL-03 | Phase 5 | Pending |
-| MODE-01 | Phase 1 | Pending |
-| MODE-02 | Phase 1 | Pending |
+| MODE-01 | Phase 1 | Complete |
+| MODE-02 | Phase 1 | Complete |
 | MODE-03 | Phase 1 | Pending |
 | BOOK-01 | Phase 3 | Pending |
 | BOOK-02 | Phase 3 | Pending |

@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: planning
-stopped_at: Phase 1 context gathered
-last_updated: "2026-04-10T08:44:43.198Z"
-last_activity: 2026-04-10 - Initial roadmap, requirements, and research created
+status: executing
+stopped_at: Completed 01-builder-boundaries-mode-hardening-01-01-PLAN.md
+last_updated: "2026-04-10T13:59:59.804Z"
+last_activity: 2026-04-10
 progress:
   total_phases: 5
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 0
+  total_plans: 3
+  completed_plans: 1
+  percent: 33
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-10)
 
 **Core value:** A salon should be able to run a premium website with either contact-only mode or real booking mode by changing salon-specific content and configuration, not by rewriting the codebase.
-**Current focus:** Phase 1 - Builder Boundaries & Mode Hardening
+**Current focus:** Phase 01 — builder-boundaries-mode-hardening
 
 ## Current Position
 
-Phase: 1 of 5 (Builder Boundaries & Mode Hardening)
-Plan: 0 of 3 in current phase
-Status: Ready to plan
-Last activity: 2026-04-10 - Initial roadmap, requirements, and research created
+Phase: 01 (builder-boundaries-mode-hardening) — EXECUTING
+Plan: 2 of 3
+Status: Ready to execute
+Last activity: 2026-04-10
 
 Progress: [..........] 0%
 
@@ -51,6 +51,8 @@ Progress: [..........] 0%
 - Last 5 plans: -
 - Trend: Stable
 
+| Phase 01-builder-boundaries-mode-hardening P01 | 16 min | 2 tasks | 8 files |
+
 ## Accumulated Context
 
 ### Decisions
@@ -61,6 +63,8 @@ Recent decisions affecting current work:
 - Initialization: keep the project salon-first and defer non-salon verticals
 - Initialization: support both `contact_only` and `booking`
 - Initialization: prioritize real booking mode and salon admin next
+- [Phase 01-builder-boundaries-mode-hardening]: Booking-specific rules and copy now live in content/booking.ts while content/site.ts stays salon-wide.
+- [Phase 01-builder-boundaries-mode-hardening]: Brochure consumers resolve booking visibility through lib/site-mode.ts instead of branching on raw config fields.
 
 ### Pending Todos
 
@@ -72,6 +76,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-10T08:44:43.188Z
-Stopped at: Phase 1 context gathered
-Resume file: .planning/phases/01-builder-boundaries-mode-hardening/01-CONTEXT.md
+Last session: 2026-04-10T13:59:59.787Z
+Stopped at: Completed 01-builder-boundaries-mode-hardening-01-01-PLAN.md
+Resume file: None
