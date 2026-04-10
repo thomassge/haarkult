@@ -15,7 +15,7 @@
 
 - [x] **MODE-01**: Maintainer can configure a salon website to run in `contact_only` mode
 - [x] **MODE-02**: Maintainer can configure a salon website to run in `booking` mode
-- [ ] **MODE-03**: Visitor in `contact_only` mode sees contact paths and does not get a working public booking flow
+- [x] **MODE-03**: Visitor in `contact_only` mode sees contact paths and does not get a working public booking flow
 
 ### Public Booking
 
@@ -92,7 +92,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BUIL-03 | Phase 5 | Pending |
 | MODE-01 | Phase 1 | Complete |
 | MODE-02 | Phase 1 | Complete |
-| MODE-03 | Phase 1 | Pending |
+| MODE-03 | Phase 1 | Complete |
 | BOOK-01 | Phase 3 | Pending |
 | BOOK-02 | Phase 3 | Pending |
 | BOOK-03 | Phase 3 | Pending |
