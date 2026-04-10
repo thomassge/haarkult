@@ -84,7 +84,7 @@ export const booking: BookingConfig = {
         "Wenn du diese Seite direkt aufgerufen hast, nutze bitte die Kontaktmoeglichkeiten unten. So landest du ohne Umweg beim Salon.",
       stepsLabel: "So geht es aktuell",
       steps: [
-        "Terminwunsch telefonisch, per WhatsApp oder per E-Mail senden",
+        "Terminwunsch ueber einen der verfuegbaren Kontaktwege senden",
         "Rueckmeldung direkt vom Salon erhalten",
         "Details bei Bedarf persoenlich abstimmen",
       ],
