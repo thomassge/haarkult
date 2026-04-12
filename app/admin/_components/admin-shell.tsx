@@ -10,6 +10,7 @@ export type AdminDashboardCard = {
   title: string;
   description: string;
   href: string;
+  status?: string;
 };
 
 export const adminDashboardCards: AdminDashboardCard[] = [
@@ -40,6 +41,7 @@ type AdminShellProps = {
   subtitle: string;
   adminEmail: string;
   cards?: AdminDashboardCard[];
+  setupStatus?: React.ReactNode;
 };
 
 export function AdminShell({
@@ -47,6 +49,7 @@ export function AdminShell({
   subtitle,
   adminEmail,
   cards = adminDashboardCards,
+  setupStatus,
 }: AdminShellProps) {
   return (
     <Section className="pt-14 sm:pt-20 lg:pt-24">
@@ -57,6 +60,8 @@ export function AdminShell({
             Angemeldet als <span className="font-medium">{adminEmail}</span>
           </div>
         </div>
+
+        {setupStatus ? <div className="mb-6">{setupStatus}</div> : null}
 
         <div className="grid gap-4 md:grid-cols-2">
           {cards.map((card) => (
@@ -72,6 +77,11 @@ export function AdminShell({
                 <BodyText className="mt-3 text-zinc-700 dark:text-zinc-300">
                   {card.description}
                 </BodyText>
+                {card.status ? (
+                  <div className="mt-4 text-sm text-zinc-600 dark:text-zinc-300">
+                    {card.status}
+                  </div>
+                ) : null}
                 <div className="mt-6 text-sm font-medium text-zinc-900 dark:text-zinc-100">
                   Oeffnen
                 </div>

@@ -14,10 +14,12 @@ import {
   staffInputSchema,
 } from "@/lib/booking/setup-validation";
 
-function formBoolean(value: FormDataEntryValue | null, defaultValue = false) {
-  if (value === null) {
+function formBoolean(values: FormDataEntryValue[], defaultValue = false) {
+  if (values.length === 0) {
     return defaultValue;
   }
+
+  const value = values.at(-1);
 
   return value === "on" || value === "true" || value === "1";
 }
@@ -26,10 +28,10 @@ function parseStylistFormData(formData: FormData) {
   const staffInput = staffInputSchema.parse({
     id: formData.get("id")?.toString() || undefined,
     name: formData.get("name"),
-    active: formBoolean(formData.get("active"), true),
+    active: formBoolean(formData.getAll("active"), true),
   });
   const assignmentInput = serviceAssignmentInputSchema.parse({
-    allServices: formBoolean(formData.get("allServices")),
+    allServices: formBoolean(formData.getAll("allServices")),
     serviceIds: formData.getAll("serviceIds").map((value) => value.toString()),
   });
 
@@ -115,7 +117,10 @@ export async function deactivateStylistAction(formData: FormData) {
   await requireAdmin();
 
   const { db } = await import("@/db");
-  const id = staffInputSchema.shape.id.parse(formData.get("id")?.toString());
+  const { id } = staffInputSchema
+    .pick({ id: true })
+    .required()
+    .parse({ id: formData.get("id")?.toString() });
 
   await db
     .update(staff)
