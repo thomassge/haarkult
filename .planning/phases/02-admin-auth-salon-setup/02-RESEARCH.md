@@ -391,22 +391,19 @@ This should be computed from `staff`, `staff_services`, and `weekly_availability
 | A1 | Native `argon2` may create deployment/build friction, so Node `crypto.scrypt` is the safer first implementation choice. | Common Pitfalls, Standard Stack | If the deployment host fully supports `argon2`, the planner may choose Argon2id instead. |
 | A2 | ISO weekday `1..7` with Monday as `1` is the best convention for German salon hours. | Open Questions | If the implementation chooses `0..6`, Phase 3 must use the same convention everywhere. |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Password seeding path**
    - What we know: Phase 2 needs one seeded owner/admin account. [VERIFIED: CONTEXT.md]
-   - What's unclear: Whether the seed should be a one-off script, Drizzle seed, or protected bootstrap command. [VERIFIED: repo search]
-   - Recommendation: Plan 02-01 should include a local seed script that reads owner email/password from environment or prompt input outside committed code. [CITED: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html]
+   - Resolution: Use a local env-driven seed script in Plan 02-01. The script reads `DATABASE_URL`, `ADMIN_SEED_EMAIL`, and `ADMIN_SEED_PASSWORD` from local environment, creates or updates the single Haarkult-Maintal `owner` admin account, and never stores credentials in committed code. [RESOLVED: planner selection] [CITED: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html]
 
 2. **Weekday numbering**
    - What we know: `weekday` is an integer, but no convention is documented. [VERIFIED: db/schema.ts]
-   - What's unclear: Whether 0 means Sunday or Monday. [VERIFIED: db/schema.ts]
-   - Recommendation: Use ISO weekday `1..7` with Monday as `1`, because the product locale is Germany/Europe/Berlin; enforce this in Zod and optionally DB checks. [ASSUMED]
+   - Resolution: Use ISO weekday `1..7` with Monday as `1`, because the product locale is Germany/Europe/Berlin. Enforce this in Zod validation and DB check constraints. [RESOLVED: planner selection]
 
 3. **Auth.js v5 beta acceptance**
    - What we know: Official Auth.js App Router docs use v5-style exports; npm `next-auth` stable latest is 4.24.13 and beta is 5.0.0-beta.30. [VERIFIED: npm registry] [CITED: https://authjs.dev/reference/nextjs]
-   - What's unclear: Whether beta dependency risk is acceptable. [VERIFIED: npm registry]
-   - Recommendation: Use v5 beta for this phase unless the planner decides beta risk is unacceptable. [CITED: https://authjs.dev/getting-started/session-management/protecting]
+   - Resolution: Accept `next-auth@5.0.0-beta.30` for Phase 2 because it matches the official App Router examples and the existing Next.js 16 `proxy.ts` route-protection pattern. [RESOLVED: planner selection] [CITED: https://authjs.dev/getting-started/session-management/protecting]
 
 ## Sources
 

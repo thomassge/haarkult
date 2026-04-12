@@ -19,7 +19,7 @@ created: 2026-04-12
 |----------|-------|
 | **Framework** | Vitest 4.1.4 with jsdom, React Testing Library, `@vitejs/plugin-react`, and `vite-tsconfig-paths` |
 | **Config file** | `vitest.config.ts` |
-| **Quick run command** | `npm.cmd run test:unit -- tests/phase-2/admin-auth.test.ts tests/phase-2/setup-validation.test.ts` |
+| **Quick run command** | `npm.cmd run test:unit -- tests/phase-2/admin-auth.test.ts tests/phase-2/staff-validation.test.ts tests/phase-2/service-assignment.test.ts tests/phase-2/setup-completion.test.ts` |
 | **Full suite command** | `npm.cmd run test:unit && npm.cmd run lint && npm.cmd run build` |
 | **Estimated runtime** | ~90 seconds |
 
