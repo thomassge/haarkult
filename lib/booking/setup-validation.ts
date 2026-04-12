@@ -123,9 +123,7 @@ export function validateNoWeeklyOverlaps(ranges: WeeklyAvailabilityInput[]) {
 }
 
 const localDateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
-const dateTimeSchema = z
-  .union([z.string().datetime({ offset: true }), z.date()])
-  .optional();
+const dateTimeSchema = z.union([z.string().trim().min(1), z.date()]).optional();
 
 export const availabilityExceptionInputSchema = z
   .object({
@@ -199,6 +197,14 @@ function addLocalDays(localDate: string, days: number) {
 function parseExceptionDate(input: string | Date | undefined) {
   if (!input) {
     throw new Error("Bitte den Zeitraum vollstaendig angeben.");
+  }
+
+  if (typeof input === "string") {
+    const localMatch = input.match(/^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})$/);
+
+    if (localMatch) {
+      return berlinLocalDateTimeToUtc(localMatch[1], Number(localMatch[2]), Number(localMatch[3]));
+    }
   }
 
   return input instanceof Date ? input : new Date(input);

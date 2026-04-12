@@ -1,0 +1,5 @@
+ALTER TABLE "availability_exceptions" ADD CONSTRAINT "availability_exceptions_window_check" CHECK ("availability_exceptions"."end_at" > "availability_exceptions"."start_at");--> statement-breakpoint
+ALTER TABLE "weekly_availability" ADD CONSTRAINT "weekly_availability_weekday_check" CHECK ("weekly_availability"."weekday" BETWEEN 1 AND 7);--> statement-breakpoint
+ALTER TABLE "weekly_availability" ADD CONSTRAINT "weekly_availability_start_minutes_check" CHECK ("weekly_availability"."start_minutes" >= 0);--> statement-breakpoint
+ALTER TABLE "weekly_availability" ADD CONSTRAINT "weekly_availability_end_minutes_check" CHECK ("weekly_availability"."end_minutes" <= 1440);--> statement-breakpoint
+ALTER TABLE "weekly_availability" ADD CONSTRAINT "weekly_availability_minutes_window_check" CHECK ("weekly_availability"."start_minutes" < "weekly_availability"."end_minutes");

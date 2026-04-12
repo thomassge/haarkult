@@ -1,7 +1,12 @@
 import { asc } from "drizzle-orm";
 
 import type { ServiceCategory } from "@/content/services";
-import { staff, staffServices, weeklyAvailability } from "@/db/schema";
+import {
+  availabilityExceptions,
+  staff,
+  staffServices,
+  weeklyAvailability,
+} from "@/db/schema";
 import { bookableServices, getBookableServiceById } from "@/lib/booking/catalog";
 
 export type StaffSummaryDto = {
@@ -55,6 +60,22 @@ export type StaffSetupDto = StaffSummaryDto & {
   weeklyRanges: WeeklyRangeDto[];
 };
 
+export type WeeklyAvailabilityDto = WeeklyRangeDto & {
+  id: string;
+  staffId: string;
+};
+
+export type AvailabilityExceptionDto = {
+  id: string;
+  staffId: string;
+  type: "vacation" | "break" | "blocked";
+  label: string | null;
+  allDay: boolean;
+  startAt: Date;
+  endAt: Date;
+  notes: string | null;
+};
+
 export type StaffSetupDataDto = {
   staff: StaffSetupDto[];
   serviceOptions: BookableServiceOptionDto[];
@@ -68,6 +89,18 @@ export type AdminSetupOverviewDto = {
     assignedServices: number;
     weeklyRanges: number;
   };
+};
+
+export type WeeklyAvailabilitySetupDataDto = {
+  staff: StaffSetupDto[];
+  weeklyRanges: WeeklyAvailabilityDto[];
+  setupCompletion: SetupCompletionDto;
+};
+
+export type AvailabilityExceptionSetupDataDto = {
+  staff: StaffSetupDto[];
+  exceptions: AvailabilityExceptionDto[];
+  setupCompletion: SetupCompletionDto;
 };
 
 export function deriveSetupCompletion(
@@ -173,5 +206,45 @@ export async function getAdminSetupOverview(): Promise<AdminSetupOverviewDto> {
         0
       ),
     },
+  };
+}
+
+export async function getWeeklyAvailabilitySetupData(): Promise<WeeklyAvailabilitySetupDataDto> {
+  const setupData = await getStaffSetupData();
+
+  return {
+    staff: setupData.staff.filter((staffRow) => staffRow.active),
+    weeklyRanges: setupData.staff.flatMap((staffRow) =>
+      staffRow.weeklyRanges.map((range) => ({
+        id: `${staffRow.id}-${range.weekday}-${range.startMinutes}-${range.endMinutes}`,
+        staffId: staffRow.id,
+        ...range,
+      }))
+    ),
+    setupCompletion: setupData.setupCompletion,
+  };
+}
+
+export async function getAvailabilityExceptionSetupData(): Promise<AvailabilityExceptionSetupDataDto> {
+  const setupData = await getStaffSetupData();
+  const { db } = await import("@/db");
+  const exceptionRows = await db
+    .select()
+    .from(availabilityExceptions)
+    .orderBy(asc(availabilityExceptions.startAt));
+
+  return {
+    staff: setupData.staff.filter((staffRow) => staffRow.active),
+    exceptions: exceptionRows.map((exceptionRow) => ({
+      id: exceptionRow.id,
+      staffId: exceptionRow.staffId,
+      type: exceptionRow.type,
+      label: exceptionRow.label,
+      allDay: exceptionRow.allDay,
+      startAt: exceptionRow.startAt,
+      endAt: exceptionRow.endAt,
+      notes: exceptionRow.notes,
+    })),
+    setupCompletion: setupData.setupCompletion,
   };
 }

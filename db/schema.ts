@@ -1,6 +1,7 @@
 import { relations, sql } from "drizzle-orm";
 import {
   boolean,
+  check,
   index,
   integer,
   jsonb,
@@ -104,6 +105,13 @@ export const weeklyAvailability = pgTable(
   (table) => [
     index("weekly_availability_staff_id_idx").on(table.staffId),
     index("weekly_availability_staff_day_idx").on(table.staffId, table.weekday),
+    check("weekly_availability_weekday_check", sql`${table.weekday} BETWEEN 1 AND 7`),
+    check("weekly_availability_start_minutes_check", sql`${table.startMinutes} >= 0`),
+    check("weekly_availability_end_minutes_check", sql`${table.endMinutes} <= 1440`),
+    check(
+      "weekly_availability_minutes_window_check",
+      sql`${table.startMinutes} < ${table.endMinutes}`
+    ),
   ]
 );
 
@@ -129,6 +137,10 @@ export const availabilityExceptions = pgTable(
       table.staffId,
       table.startAt,
       table.endAt
+    ),
+    check(
+      "availability_exceptions_window_check",
+      sql`${table.endAt} > ${table.startAt}`
     ),
   ]
 );
