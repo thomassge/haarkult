@@ -61,11 +61,27 @@ function parseWeeklyAvailabilityFormData(formData: FormData) {
   const rawRanges = formData.get("ranges")?.toString();
   const ranges = rawRanges
     ? JSON.parse(rawRanges)
-    : formData.getAll("weekday").map((weekday, index) => ({
-        weekday: weekday.toString(),
-        startMinutes: formData.getAll("startMinutes")[index]?.toString(),
-        endMinutes: formData.getAll("endMinutes")[index]?.toString(),
-      }));
+    : formData
+        .getAll("weekday")
+        .map((weekday, index) => {
+          const startValue =
+            formData.getAll("startMinutes")[index]?.toString() ||
+            timeToMinutes(formData.getAll("startTime")[index]?.toString());
+          const endValue =
+            formData.getAll("endMinutes")[index]?.toString() ||
+            timeToMinutes(formData.getAll("endTime")[index]?.toString());
+
+          return {
+            weekday: weekday.toString(),
+            startMinutes: startValue,
+            endMinutes: endValue,
+          };
+        })
+        .filter(
+          (range) =>
+            range.startMinutes !== undefined ||
+            range.endMinutes !== undefined
+        );
   const parsedRanges = weeklyAvailabilityInputSchema.array().parse(ranges);
   const overlapResult = validateNoWeeklyOverlaps(parsedRanges);
 
@@ -77,6 +93,20 @@ function parseWeeklyAvailabilityFormData(formData: FormData) {
     staffId,
     ranges: parsedRanges,
   };
+}
+
+function timeToMinutes(value: string | undefined) {
+  if (!value) {
+    return undefined;
+  }
+
+  const [hours, minutes] = value.split(":").map(Number);
+
+  if (!Number.isInteger(hours) || !Number.isInteger(minutes)) {
+    return value;
+  }
+
+  return String(hours * 60 + minutes);
 }
 
 function parseAvailabilityExceptionFormData(formData: FormData) {

@@ -25,6 +25,7 @@ export default async function AdminPage() {
       (staffRow) => `Arbeitszeiten fuer ${staffRow.name}`
     ),
   ].filter((item): item is string => Boolean(item));
+  const missingWeeklyCount = overview.setupCompletion.staffMissingWeeklyHours.length;
   const cards = adminDashboardCards
     .filter(
       (card) => card.href === "/admin/leistungen" || requiredSetupRoutes.includes(card.href)
@@ -47,7 +48,17 @@ export default async function AdminPage() {
       if (card.href === "/admin/zeiten") {
         return {
           ...card,
-          status: `${overview.counts.weeklyRanges} Wochenzeiten`,
+          status:
+            missingWeeklyCount > 0
+              ? `${missingWeeklyCount} Personen ohne Arbeitszeiten`
+              : "Arbeitszeiten bereit",
+        };
+      }
+
+      if (card.href === "/admin/ausnahmen") {
+        return {
+          ...card,
+          status: "Optional fuer Setup",
         };
       }
 
