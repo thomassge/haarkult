@@ -1,9 +1,15 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 import {
   availabilityExceptionInputSchema,
   normalizeAvailabilityException,
 } from "@/lib/booking/setup-validation";
+
+function readWorkspaceFile(relativePath: string) {
+  return readFileSync(path.resolve(process.cwd(), relativePath), "utf8");
+}
 
 describe("availability exception validation", () => {
   it("accepts vacation, break, and blocked exception types", () => {
@@ -56,5 +62,19 @@ describe("availability exception validation", () => {
         endAt: "2026-06-15T10:00:00.000Z",
       })
     ).toThrow("Das Ende muss nach dem Start liegen.");
+  });
+
+  it("protects exception persistence with admin auth, queries, and schema window checks", () => {
+    const actionsSource = readWorkspaceFile("lib/booking/setup-actions.ts");
+    const queriesSource = readWorkspaceFile("lib/booking/setup-queries.ts");
+    const schemaSource = readWorkspaceFile("db/schema.ts");
+
+    expect(actionsSource).toMatch(/saveAvailabilityExceptionAction/);
+    expect(actionsSource).toMatch(/saveAvailabilityExceptionAction[\s\S]*requireAdmin\(\)/);
+    expect(actionsSource).toMatch(/deleteAvailabilityExceptionAction/);
+    expect(actionsSource).toMatch(/deleteAvailabilityExceptionAction[\s\S]*requireAdmin\(\)/);
+    expect(queriesSource).toMatch(/getAvailabilityExceptionSetupData/);
+    expect(schemaSource).toMatch(/availability_exceptions[\s\S]*check\(/);
+    expect(schemaSource).toMatch(/endAt[\s\S]*>[\s\S]*startAt/);
   });
 });

@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 import {
@@ -5,6 +7,10 @@ import {
   weeklyAvailabilityInputSchema,
   weekdayLabelByIsoDay,
 } from "@/lib/booking/setup-validation";
+
+function readWorkspaceFile(relativePath: string) {
+  return readFileSync(path.resolve(process.cwd(), relativePath), "utf8");
+}
 
 describe("weekly availability validation", () => {
   it("uses ISO weekdays 1..7 with Monday as 1", () => {
@@ -39,5 +45,21 @@ describe("weekly availability validation", () => {
       success: false,
       message: "Arbeitszeiten duerfen sich pro Wochentag nicht ueberschneiden.",
     });
+  });
+
+  it("protects weekly persistence with admin auth, transactions, queries, and schema checks", () => {
+    const actionsSource = readWorkspaceFile("lib/booking/setup-actions.ts");
+    const queriesSource = readWorkspaceFile("lib/booking/setup-queries.ts");
+    const schemaSource = readWorkspaceFile("db/schema.ts");
+
+    expect(actionsSource).toMatch(/saveWeeklyAvailabilityAction/);
+    expect(actionsSource).toMatch(/saveWeeklyAvailabilityAction[\s\S]*requireAdmin\(\)/);
+    expect(actionsSource).toMatch(/saveWeeklyAvailabilityAction[\s\S]*transaction/);
+    expect(queriesSource).toMatch(/getWeeklyAvailabilitySetupData/);
+    expect(schemaSource).toMatch(/check\(/);
+    expect(schemaSource).toMatch(/weekday[\s\S]*BETWEEN 1 AND 7|weekday.*>= 1/);
+    expect(schemaSource).toMatch(/startMinutes[\s\S]*>= 0/);
+    expect(schemaSource).toMatch(/endMinutes[\s\S]*<= 1440/);
+    expect(schemaSource).toMatch(/startMinutes[\s\S]*<[\s\S]*endMinutes/);
   });
 });

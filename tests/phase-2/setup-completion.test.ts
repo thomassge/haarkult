@@ -87,6 +87,23 @@ describe("admin setup completion", () => {
     expect(result.complete).toBe(true);
   });
 
+  it("becomes complete only after every active stylist has services and weekly working hours", () => {
+    const result = deriveSetupCompletion([
+      completeStaff,
+      {
+        id: "staff-2",
+        name: "Lea",
+        active: true,
+        serviceIds: [bookableServices[1].id],
+        weeklyRanges: [],
+      },
+    ]);
+
+    expect(result.staffMissingServices).toEqual([]);
+    expect(result.staffMissingWeeklyHours).toEqual([{ id: "staff-2", name: "Lea" }]);
+    expect(result.complete).toBe(false);
+  });
+
   it("keeps setup query DTOs separate from admin credentials and public team content", () => {
     const source = readWorkspaceFile("lib/booking/setup-queries.ts");
 
