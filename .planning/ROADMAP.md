@@ -45,9 +45,9 @@ This roadmap tracks the salon-builder product as phase-sized milestones. The ful
 **Plans**: 3 plans
 
 Plans:
-- [ ] 02-01: Implement admin authentication shell and route protection
-- [ ] 02-02: Build salon setup flows for stylists and service assignments
-- [ ] 02-03: Build working-hours and exception management with persisted validation
+- [ ] 02-01-PLAN.md - Implement admin authentication shell and route protection
+- [ ] 02-02-PLAN.md - Build salon setup flows for stylists and service assignments
+- [ ] 02-03-PLAN.md - Build working-hours and exception management with persisted validation
 
 ### Phase 3: Public Booking Engine
 
