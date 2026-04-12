@@ -1,12 +1,27 @@
-import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   authorizeAdminCredentials,
   normalizeAdminEmail,
 } from "@/lib/auth/admin-users";
+import {
+  checkLoginThrottle,
+  clearLoginThrottle,
+  recordLoginFailure,
+} from "@/lib/auth/login-throttle";
 import { hashPassword, verifyPassword } from "@/lib/auth/password";
 
 const validPassword = "ein-sicheres-admin-passwort";
+
+function readWorkspaceFile(relativePath: string) {
+  return readFileSync(path.resolve(process.cwd(), relativePath), "utf8");
+}
+
+afterEach(() => {
+  vi.useRealTimers();
+});
 
 describe("admin password hashing", () => {
   it("stores hashes in the planned scrypt envelope and verifies the password", async () => {
@@ -16,6 +31,89 @@ describe("admin password hashing", () => {
     expect(storedHash.split("$")).toHaveLength(6);
     await expect(verifyPassword(validPassword, storedHash)).resolves.toBe(true);
     await expect(verifyPassword("falsches-passwort", storedHash)).resolves.toBe(false);
+  });
+});
+
+describe("admin login throttling", () => {
+  it("blocks a sixth failed attempt within the 15-minute window", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-04-12T10:00:00Z"));
+
+    const key = "owner@haarkult.de|127.0.0.1";
+
+    expect(checkLoginThrottle(key)).toBe(true);
+
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      recordLoginFailure(key);
+    }
+
+    expect(checkLoginThrottle(key)).toBe(false);
+  });
+
+  it("resets after a successful login or an expired window", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-04-12T10:00:00Z"));
+
+    const successKey = "owner@haarkult.de|127.0.0.1";
+    const expiredKey = "owner@haarkult.de|192.0.2.1";
+
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      recordLoginFailure(successKey);
+      recordLoginFailure(expiredKey);
+    }
+
+    clearLoginThrottle(successKey);
+    expect(checkLoginThrottle(successKey)).toBe(true);
+
+    vi.setSystemTime(new Date("2026-04-12T10:16:00Z"));
+    expect(checkLoginThrottle(expiredKey)).toBe(true);
+  });
+});
+
+describe("admin auth route protection source contracts", () => {
+  it("protects the admin page with requireAdmin before rendering the dashboard", () => {
+    const source = readWorkspaceFile("app/admin/page.tsx");
+
+    expect(source).toMatch(/requireAdmin\(\)/);
+    expect(source).toMatch(/<AdminShell/);
+  });
+
+  it("configures Auth.js with credentials, jwt sessions, minimal claims, and generic sign-in page", () => {
+    const source = readWorkspaceFile("auth.ts");
+
+    expect(source).toMatch(/Credentials/);
+    expect(source).toMatch(/authorizeAdminCredentials/);
+    expect(source).toMatch(/strategy:\s*"jwt"/);
+    expect(source).toMatch(/pages:\s*{\s*signIn:\s*"\/admin\/login"\s*}/);
+    expect(source).toMatch(/checkLoginThrottle/);
+    expect(source).toMatch(/recordLoginFailure/);
+    expect(source).toMatch(/clearLoginThrottle/);
+    expect(source).toMatch(/id/);
+    expect(source).toMatch(/email/);
+    expect(source).toMatch(/role/);
+    expect(source).toMatch(/active/);
+    expect(source).not.toMatch(/passwordHash/);
+  });
+
+  it("uses proxy matching for admin paths while leaving login and Auth.js routes reachable", () => {
+    const source = readWorkspaceFile("proxy.ts");
+
+    expect(source).toMatch(/export\s+{\s*auth\s+as\s+proxy\s+}/);
+    expect(source).toMatch(/\/admin/);
+    expect(source).toMatch(/admin\/login/);
+    expect(source).toMatch(/api\/auth/);
+  });
+
+  it("renders German clickable admin setup frames", () => {
+    const source = readWorkspaceFile("app/admin/_components/admin-shell.tsx");
+
+    expect(source).toMatch(/Stylisten/);
+    expect(source).toMatch(/Leistungen/);
+    expect(source).toMatch(/Arbeitszeiten/);
+    expect(source).toMatch(/Abwesenheiten/);
+    expect(source).toMatch(/href="\/admin\/stylisten"/);
+    expect(source).toMatch(/href="\/admin\/zeiten"/);
+    expect(source).toMatch(/href="\/admin\/ausnahmen"/);
   });
 });
 
