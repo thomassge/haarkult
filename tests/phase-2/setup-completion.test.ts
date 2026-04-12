@@ -81,4 +81,14 @@ describe("admin setup completion", () => {
     expect(source).not.toMatch(/adminUsers|passwordHash/);
     expect(source).not.toMatch(/content\/team|@\/content\/team/);
   });
+
+  it("exposes admin setup queries that derive display labels from the catalog", () => {
+    const source = readWorkspaceFile("lib/booking/setup-queries.ts");
+
+    expect(source).toMatch(/getAdminSetupOverview/);
+    expect(source).toMatch(/getStaffSetupData/);
+    expect(source).toMatch(/bookableServices|getBookableServiceById/);
+    expect(source).toMatch(/serviceTitle/);
+    expect(source).toMatch(/serviceCategory/);
+  });
 });

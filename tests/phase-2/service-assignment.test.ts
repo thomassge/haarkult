@@ -53,4 +53,17 @@ describe("service assignment validation", () => {
     expect(validationSource).toMatch(/bookableServices/);
     expect(validationSource).not.toMatch(/content\/team|@\/content\/team/);
   });
+
+  it("guards staff service mutations and persists service ids without catalog snapshots", () => {
+    const source = readWorkspaceFile("lib/booking/setup-actions.ts");
+    const requireAdminCalls = source.match(/requireAdmin\(\)/g) ?? [];
+
+    expect(source).toMatch(/"use server"/);
+    expect(source).toMatch(/saveStylistAction/);
+    expect(source).toMatch(/deactivateStylistAction/);
+    expect(requireAdminCalls.length).toBeGreaterThanOrEqual(2);
+    expect(source).toMatch(/staffServices/);
+    expect(source).toMatch(/serviceId/);
+    expect(source).not.toMatch(/serviceTitle|servicePriceLabel|serviceDurationMinutes/);
+  });
 });
