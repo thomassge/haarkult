@@ -75,6 +75,18 @@ describe("admin setup completion", () => {
     });
   });
 
+  it("treats availability exceptions as optional for setup completion", () => {
+    const result = deriveSetupCompletion([
+      {
+        ...completeStaff,
+        weeklyRanges: [{ weekday: 1, startMinutes: 540, endMinutes: 720 }],
+      },
+    ]);
+
+    expect(result.staffMissingWeeklyHours).toEqual([]);
+    expect(result.complete).toBe(true);
+  });
+
   it("keeps setup query DTOs separate from admin credentials and public team content", () => {
     const source = readWorkspaceFile("lib/booking/setup-queries.ts");
 
