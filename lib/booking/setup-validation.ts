@@ -5,6 +5,7 @@ import { bookableServices } from "@/lib/booking/catalog";
 
 const bookableServiceIds = new Set(bookableServices.map((service) => service.id));
 const berlinTimeZone = "Europe/Berlin";
+const invalidExceptionRangeMessage = "Bitte einen gueltigen Zeitraum angeben.";
 
 export const WEEKDAYS_ISO = [1, 2, 3, 4, 5, 6, 7] as const;
 export type IsoWeekday = (typeof WEEKDAYS_ISO)[number];
@@ -152,7 +153,7 @@ export function resolveAssignedServiceIds(input: ServiceAssignmentInput) {
   return input.serviceIds;
 }
 
-function getTimeZoneOffsetMs(date: Date, timeZone: string) {
+function getZonedDateTimeParts(date: Date, timeZone: string) {
   const formatter = new Intl.DateTimeFormat("en-US", {
     timeZone,
     year: "numeric",
@@ -163,9 +164,14 @@ function getTimeZoneOffsetMs(date: Date, timeZone: string) {
     second: "2-digit",
     hourCycle: "h23",
   });
-  const parts = Object.fromEntries(
+
+  return Object.fromEntries(
     formatter.formatToParts(date).map((part) => [part.type, part.value])
   );
+}
+
+function getTimeZoneOffsetMs(date: Date, timeZone: string) {
+  const parts = getZonedDateTimeParts(date, timeZone);
   const zonedTimestamp = Date.UTC(
     Number(parts.year),
     Number(parts.month) - 1,
@@ -178,13 +184,44 @@ function getTimeZoneOffsetMs(date: Date, timeZone: string) {
   return zonedTimestamp - date.getTime();
 }
 
+function assertValidExceptionDate(date: Date) {
+  if (Number.isNaN(date.getTime())) {
+    throw new Error(invalidExceptionRangeMessage);
+  }
+
+  return date;
+}
+
+function assertBerlinLocalDateTimeRoundTrip(
+  date: Date,
+  localDate: string,
+  hour: number,
+  minute: number
+) {
+  const parts = getZonedDateTimeParts(date, berlinTimeZone);
+  const [year, month, day] = localDate.split("-");
+
+  if (
+    parts.year !== year ||
+    parts.month !== month ||
+    parts.day !== day ||
+    parts.hour !== String(hour).padStart(2, "0") ||
+    parts.minute !== String(minute).padStart(2, "0")
+  ) {
+    throw new Error(invalidExceptionRangeMessage);
+  }
+}
+
 function berlinLocalDateTimeToUtc(localDate: string, hour = 0, minute = 0) {
   const [year, month, day] = localDate.split("-").map(Number);
   const localTimestamp = Date.UTC(year, month - 1, day, hour, minute, 0);
   const firstPass = new Date(localTimestamp - getTimeZoneOffsetMs(new Date(localTimestamp), berlinTimeZone));
   const secondOffset = getTimeZoneOffsetMs(firstPass, berlinTimeZone);
+  const utcDate = assertValidExceptionDate(new Date(localTimestamp - secondOffset));
 
-  return new Date(localTimestamp - secondOffset);
+  assertBerlinLocalDateTimeRoundTrip(utcDate, localDate, hour, minute);
+
+  return utcDate;
 }
 
 function addLocalDays(localDate: string, days: number) {
@@ -207,7 +244,7 @@ function parseExceptionDate(input: string | Date | undefined) {
     }
   }
 
-  return input instanceof Date ? input : new Date(input);
+  return assertValidExceptionDate(input instanceof Date ? input : new Date(input));
 }
 
 export function normalizeAvailabilityException(input: AvailabilityExceptionInput) {
