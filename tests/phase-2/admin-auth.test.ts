@@ -111,9 +111,9 @@ describe("admin auth route protection source contracts", () => {
     expect(source).toMatch(/Leistungen/);
     expect(source).toMatch(/Arbeitszeiten/);
     expect(source).toMatch(/Abwesenheiten/);
-    expect(source).toMatch(/href="\/admin\/stylisten"/);
-    expect(source).toMatch(/href="\/admin\/zeiten"/);
-    expect(source).toMatch(/href="\/admin\/ausnahmen"/);
+    expect(source).toMatch(/href:\s*"\/admin\/stylisten"/);
+    expect(source).toMatch(/href:\s*"\/admin\/zeiten"/);
+    expect(source).toMatch(/href:\s*"\/admin\/ausnahmen"/);
   });
 });
 
