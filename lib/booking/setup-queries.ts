@@ -1,4 +1,8 @@
+import { asc } from "drizzle-orm";
+
 import type { ServiceCategory } from "@/content/services";
+import { staff, staffServices, weeklyAvailability } from "@/db/schema";
+import { bookableServices, getBookableServiceById } from "@/lib/booking/catalog";
 
 export type StaffSummaryDto = {
   id: string;
@@ -12,6 +16,12 @@ export type StaffServiceAssignmentDto = {
   serviceId: string;
   serviceTitle: string;
   serviceCategory: ServiceCategory;
+};
+
+export type BookableServiceOptionDto = {
+  id: string;
+  title: string;
+  category: ServiceCategory;
 };
 
 export type WeeklyRangeDto = {
@@ -40,6 +50,26 @@ export type SetupCompletionDto = {
   complete: boolean;
 };
 
+export type StaffSetupDto = StaffSummaryDto & {
+  assignedServices: StaffServiceAssignmentDto[];
+  weeklyRanges: WeeklyRangeDto[];
+};
+
+export type StaffSetupDataDto = {
+  staff: StaffSetupDto[];
+  serviceOptions: BookableServiceOptionDto[];
+  setupCompletion: SetupCompletionDto;
+};
+
+export type AdminSetupOverviewDto = {
+  setupCompletion: SetupCompletionDto;
+  counts: {
+    activeStaff: number;
+    assignedServices: number;
+    weeklyRanges: number;
+  };
+};
+
 export function deriveSetupCompletion(
   staffRows: StaffSetupCompletionInput[]
 ): SetupCompletionDto {
@@ -59,5 +89,89 @@ export function deriveSetupCompletion(
       activeStaff.length > 0 &&
       staffMissingServices.length === 0 &&
       staffMissingWeeklyHours.length === 0,
+  };
+}
+
+export function getBookableServiceOptions(): BookableServiceOptionDto[] {
+  return bookableServices.map((service) => ({
+    id: service.id,
+    title: service.title,
+    category: service.category,
+  }));
+}
+
+function createAssignmentDto(row: { staffId: string; serviceId: string }) {
+  const service = getBookableServiceById(row.serviceId);
+
+  return {
+    staffId: row.staffId,
+    serviceId: row.serviceId,
+    serviceTitle: service?.title ?? row.serviceId,
+    serviceCategory: service?.category ?? "Damen",
+  } satisfies StaffServiceAssignmentDto;
+}
+
+export async function getStaffSetupData(): Promise<StaffSetupDataDto> {
+  const { db } = await import("@/db");
+  const [staffRows, serviceRows, weeklyRows] = await Promise.all([
+    db.select().from(staff).orderBy(asc(staff.name)),
+    db.select().from(staffServices),
+    db.select().from(weeklyAvailability),
+  ]);
+
+  const staffDtos = staffRows.map((staffRow) => {
+    const assignedServices = serviceRows
+      .filter((serviceRow) => serviceRow.staffId === staffRow.id)
+      .map(createAssignmentDto);
+    const weeklyRanges = weeklyRows
+      .filter((weeklyRow) => weeklyRow.staffId === staffRow.id)
+      .map(({ weekday, startMinutes, endMinutes }) => ({
+        weekday,
+        startMinutes,
+        endMinutes,
+      }));
+
+    return {
+      id: staffRow.id,
+      name: staffRow.name,
+      slug: staffRow.slug,
+      active: staffRow.active,
+      assignedServices,
+      weeklyRanges,
+    } satisfies StaffSetupDto;
+  });
+
+  return {
+    staff: staffDtos,
+    serviceOptions: getBookableServiceOptions(),
+    setupCompletion: deriveSetupCompletion(
+      staffDtos.map((staffRow) => ({
+        id: staffRow.id,
+        name: staffRow.name,
+        active: staffRow.active,
+        serviceIds: staffRow.assignedServices.map((service) => service.serviceId),
+        weeklyRanges: staffRow.weeklyRanges,
+      }))
+    ),
+  };
+}
+
+export async function getAdminSetupOverview(): Promise<AdminSetupOverviewDto> {
+  const setupData = await getStaffSetupData();
+  const activeStaff = setupData.staff.filter((staffRow) => staffRow.active);
+
+  return {
+    setupCompletion: setupData.setupCompletion,
+    counts: {
+      activeStaff: activeStaff.length,
+      assignedServices: activeStaff.reduce(
+        (total, staffRow) => total + staffRow.assignedServices.length,
+        0
+      ),
+      weeklyRanges: activeStaff.reduce(
+        (total, staffRow) => total + staffRow.weeklyRanges.length,
+        0
+      ),
+    },
   };
 }
