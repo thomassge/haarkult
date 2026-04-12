@@ -7,8 +7,8 @@ This roadmap tracks the salon-builder product as phase-sized milestones. The ful
 ## Milestones
 
 - [x] **v1.0 - Phase 1: Builder Boundaries & Mode Hardening** - shipped 2026-04-12 ([archive](./milestones/v1.0-ROADMAP.md))
-- [ ] **v1.1 - Phase 2: Admin Auth & Salon Setup** - next
-- [ ] **v1.2 - Phase 3: Public Booking Engine** - planned
+- [x] **v1.1 - Phase 2: Admin Auth & Salon Setup** - shipped 2026-04-12
+- [ ] **v1.2 - Phase 3: Public Booking Engine** - next
 - [ ] **v1.3 - Phase 4: Staff Booking Operations** - planned
 - [ ] **v1.4 - Phase 5: Launch Hardening & Reuse Proof** - planned
 
@@ -30,6 +30,16 @@ This roadmap tracks the salon-builder product as phase-sized milestones. The ful
 
 </details>
 
+<details>
+<summary>v1.1 - Phase 2: Admin Auth & Salon Setup - SHIPPED 2026-04-12</summary>
+
+- [x] Phase 2: Admin Auth & Salon Setup - 4/4 plans complete
+- Requirements completed: ADMN-01, ADMN-06, STAF-01, STAF-02, STAF-03, STAF-04
+- Verification: passed after gap closure
+- Report: [02-VERIFICATION.md](./phases/02-admin-auth-salon-setup/02-VERIFICATION.md)
+
+</details>
+
 ## Active / Planned Phases
 
 ### Phase 2: Admin Auth & Salon Setup
@@ -42,12 +52,13 @@ This roadmap tracks the salon-builder product as phase-sized milestones. The ful
   1. Salon staff can sign in to a protected admin area
   2. Salon staff can manage stylists, service assignments, weekly hours, and one-off availability exceptions
   3. Public booking logic can read salon-managed setup data from the server-owned booking model
-**Plans**: 3 plans
+**Plans**: 4 plans
 
 Plans:
-- [ ] 02-01-PLAN.md - Implement admin authentication shell and route protection
-- [ ] 02-02-PLAN.md - Build salon setup flows for stylists and service assignments
-- [ ] 02-03-PLAN.md - Build working-hours and exception management with persisted validation
+- [x] 02-01-PLAN.md - Implement admin authentication shell and route protection
+- [x] 02-02-PLAN.md - Build salon setup flows for stylists and service assignments
+- [x] 02-03-PLAN.md - Build working-hours and exception management with persisted validation
+- [x] 02-04-PLAN.md - Close admin navigation and timed exception validation gaps
 
 ### Phase 3: Public Booking Engine
 
@@ -107,7 +118,7 @@ Plans:
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 1. Builder Boundaries & Mode Hardening | v1.0 | 4/4 | Complete | 2026-04-12 |
-| 2. Admin Auth & Salon Setup | v1.1 | 0/3 | Next | - |
-| 3. Public Booking Engine | v1.2 | 0/3 | Planned | - |
+| 2. Admin Auth & Salon Setup | v1.1 | 4/4 | Complete | 2026-04-12 |
+| 3. Public Booking Engine | v1.2 | 0/3 | Next | - |
 | 4. Staff Booking Operations | v1.3 | 0/3 | Planned | - |
 | 5. Launch Hardening & Reuse Proof | v1.4 | 0/2 | Planned | - |

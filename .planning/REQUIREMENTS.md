@@ -20,12 +20,12 @@ Archived at: [v1.0-REQUIREMENTS.md](./milestones/v1.0-REQUIREMENTS.md)
 
 ### Phase 2 / v1.1 - Admin Auth & Salon Setup
 
-- [ ] **ADMN-01**: Salon staff can sign in to a protected admin area
-- [ ] **ADMN-06**: Salon staff can update core salon booking setup such as stylists and working hours from the admin area
-- [ ] **STAF-01**: Salon staff can create and manage stylists who accept bookings
-- [ ] **STAF-02**: Salon staff can assign which services each stylist can perform
-- [ ] **STAF-03**: Salon staff can set recurring weekly working hours for each stylist
-- [ ] **STAF-04**: Salon staff can set one-off blocked times, breaks, vacations, or availability exceptions for each stylist
+- [x] **ADMN-01**: Salon staff can sign in to a protected admin area
+- [x] **ADMN-06**: Salon staff can update core salon booking setup such as stylists and working hours from the admin area
+- [x] **STAF-01**: Salon staff can create and manage stylists who accept bookings
+- [x] **STAF-02**: Salon staff can assign which services each stylist can perform
+- [x] **STAF-03**: Salon staff can set recurring weekly working hours for each stylist
+- [x] **STAF-04**: Salon staff can set one-off blocked times, breaks, vacations, or availability exceptions for each stylist
 
 ### Later v1 Requirements
 
@@ -100,12 +100,12 @@ Archived at: [v1.0-REQUIREMENTS.md](./milestones/v1.0-REQUIREMENTS.md)
 | MODE-01 | Phase 1 | v1.0 | Complete |
 | MODE-02 | Phase 1 | v1.0 | Complete |
 | MODE-03 | Phase 1 | v1.0 | Complete |
-| STAF-01 | Phase 2 | v1.1 | Pending |
-| STAF-02 | Phase 2 | v1.1 | Pending |
-| STAF-03 | Phase 2 | v1.1 | Pending |
-| STAF-04 | Phase 2 | v1.1 | Pending |
-| ADMN-01 | Phase 2 | v1.1 | Pending |
-| ADMN-06 | Phase 2 | v1.1 | Pending |
+| STAF-01 | Phase 2 | v1.1 | Complete |
+| STAF-02 | Phase 2 | v1.1 | Complete |
+| STAF-03 | Phase 2 | v1.1 | Complete |
+| STAF-04 | Phase 2 | v1.1 | Complete |
+| ADMN-01 | Phase 2 | v1.1 | Complete |
+| ADMN-06 | Phase 2 | v1.1 | Complete |
 | BOOK-01 | Phase 3 | v1.2 | Pending |
 | BOOK-02 | Phase 3 | v1.2 | Pending |
 | BOOK-03 | Phase 3 | v1.2 | Pending |

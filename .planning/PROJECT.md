@@ -4,7 +4,7 @@
 
 This project starts as the real website for the user's mother's salon, Haarkult-Maintal. It is also becoming a reusable salon website system where most variation between salons comes from swapping structured salon information, services, staff data, booking setup, and assets instead of rebuilding the application.
 
-The current product has a completed brochure/builder foundation with hardened mode boundaries. The next priority is Phase 2: protected admin access and salon-operated setup data for stylists, services, working hours, and availability exceptions.
+The current product has a completed brochure/builder foundation with hardened mode boundaries and a completed protected admin setup foundation. The next priority is Phase 3: the public booking engine that consumes salon-managed setup data for service selection, stylist selection, availability, and booking submission.
 
 ## Core Value
 
@@ -12,24 +12,25 @@ A salon should be able to run a premium website with either contact-only mode or
 
 ## Current State
 
-**Shipped milestone:** v1.0 - Phase 1: Builder Boundaries & Mode Hardening
-**Next milestone:** v1.1 - Phase 2: Admin Auth & Salon Setup
+**Shipped milestone:** v1.1 - Phase 2: Admin Auth & Salon Setup
+**Next milestone:** v1.2 - Phase 3: Public Booking Engine
 **Last updated:** 2026-04-12
 
-Phase 1 is complete. Booking-specific config and copy are isolated in `content/booking.ts`, salon-wide data remains in `content/site.ts`, public mode decisions flow through `lib/site-mode.ts`, `/termin-buchen` is route-local, and `/admin` exists as an explicit placeholder boundary for protected work.
+Phase 1 is complete. Booking-specific config and copy are isolated in `content/booking.ts`, salon-wide data remains in `content/site.ts`, public mode decisions flow through `lib/site-mode.ts`, and `/termin-buchen` is route-local.
 
-The current codebase still does not have real admin authentication, staff setup persistence, public availability, booking submission, or notification flows. Those are intentionally planned for later phases.
+Phase 2 is complete. Admin staff can sign in through protected Auth.js Credentials auth, manage operational stylists, assign services, set recurring weekly working hours, and create one-off availability exceptions. Phase 2 verification passed after a gap closure that repointed the `Leistungen` dashboard card to `/admin/stylisten` and rejected invalid timed exception dates before persistence.
+
+The current codebase still does not have a public availability engine, booking submission, staff booking lifecycle operations, or notification flows. Those are intentionally planned for later phases.
 
 ## Next Milestone Goals
 
-Phase 2 should make the admin area operational enough to support future booking logic:
+Phase 3 should make public booking mode real enough for clients to request appointments:
 
-- Salon staff can sign in to a protected admin area.
-- Salon staff can manage stylists who accept bookings.
-- Salon staff can assign services to stylists.
-- Salon staff can set weekly working hours.
-- Salon staff can create one-off blocked times, breaks, vacations, or availability exceptions.
-- Public booking logic can later read this setup from the server-owned booking model.
+- Clients can browse/select bookable services.
+- Clients choose a stylist only when more than one eligible stylist exists.
+- Clients see valid free time slots based on service duration, stylist setup, weekly hours, exceptions, and booking rules.
+- Booking submission re-checks slot availability on the server before writing a request.
+- Public booking logic uses the server-owned setup model created in Phase 2.
 
 ## Requirements
 
@@ -44,15 +45,15 @@ Phase 2 should make the admin area operational enough to support future booking 
 - Mode requirement MODE-01: site can run in `contact_only` mode - v1.0
 - Mode requirement MODE-02: site can run in `booking` mode - v1.0
 - Mode requirement MODE-03: contact-only visitors see contact paths and no working public booking flow - v1.0
+- Admin requirement ADMN-01: salon staff can sign in to a protected admin area - v1.1
+- Admin requirement ADMN-06: salon staff can update core salon booking setup from the admin area - v1.1
+- Staff requirement STAF-01: salon staff can create and manage stylists who accept bookings - v1.1
+- Staff requirement STAF-02: salon staff can assign which services each stylist can perform - v1.1
+- Staff requirement STAF-03: salon staff can set recurring weekly working hours for each stylist - v1.1
+- Staff requirement STAF-04: salon staff can set one-off blocked times, breaks, vacations, or availability exceptions for each stylist - v1.1
 
 ### Active
 
-- [ ] Phase 2: salon staff can sign in to a protected admin area
-- [ ] Phase 2: salon staff can create and manage stylists who accept bookings
-- [ ] Phase 2: salon staff can assign which services each stylist can perform
-- [ ] Phase 2: salon staff can set recurring weekly working hours for each stylist
-- [ ] Phase 2: salon staff can set one-off blocked times, breaks, vacations, or availability exceptions for each stylist
-- [ ] Phase 2: salon staff can update core salon booking setup from the admin area
 - [ ] Complete real booking mode for hair salons on top of the existing website foundation
 - [ ] Let clients choose a service from the salon catalog and create an appointment
 - [ ] Let clients choose a stylist only when the salon has more than one stylist; skip that choice automatically when there is only one
@@ -105,6 +106,10 @@ The business direction is salon-first. The broader idea of supporting other appo
 | Resolve brochure mode behavior through `lib/site-mode.ts` | Avoids duplicate mode branching across homepage, footer, and booking route surfaces | Good - v1.0 |
 | Keep `/termin-buchen` and `/admin` in separate route-local trees | Preserves clean boundaries for future booking and protected admin work | Good - v1.0 |
 | Treat each roadmap phase as a milestone | Keeps completion, archive, and planning loops small while the broader product backlog remains active | Good - v1.0 |
+| Use Auth.js Credentials with scrypt-hashed owner seed accounts for admin v1 | Provides protected salon-admin access without customer accounts or external auth complexity | Good - v1.1 |
+| Store operational staff and availability separately from marketing team content | Public team content stays brochure-oriented while booking logic consumes server-owned setup rows | Good - v1.1 |
+| Keep service assignment under `/admin/stylisten` | Service capabilities are per stylist; a separate `/admin/leistungen` route would duplicate the model | Good - v1.1 |
+| Validate timed availability exceptions before persistence | Phase 3 availability needs reliable exception windows and controlled validation errors | Good - v1.1 |
 
 ## Evolution
 
@@ -119,4 +124,4 @@ This document evolves at phase transitions and milestone boundaries.
 5. Confirm the core value and constraints still match the project.
 
 ---
-*Last updated: 2026-04-12 after v1.0 milestone completion*
+*Last updated: 2026-04-12 after v1.1 milestone completion*

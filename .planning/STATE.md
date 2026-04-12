@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Phase 02 gap-closure plan ready
-last_updated: "2026-04-12T19:31:09.867Z"
-last_activity: 2026-04-12 -- Phase 02 planning complete
+status: ready
+stopped_at: Phase 02 complete; Phase 03 is next
+last_updated: "2026-04-12T19:47:44.651Z"
+last_activity: 2026-04-12 -- Phase 02 complete after gap closure
 progress:
   total_phases: 4
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 4
-  completed_plans: 3
-  percent: 75
+  completed_plans: 4
+  percent: 100
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-12)
 
 **Core value:** A salon should be able to run a premium website with either contact-only mode or real booking mode by changing salon-specific content and configuration, not by rewriting the codebase.
-**Current focus:** Phase 02 — admin-auth-salon-setup
+**Current focus:** Phase 03 - public-booking-engine
 
 ## Current Position
 
-Phase: 02 (admin-auth-salon-setup) — EXECUTING
-Plan: 4 of 4
-Status: Ready to execute gap closure
-Last activity: 2026-04-12 -- Phase 02 planning complete
+Phase: 03 (public-booking-engine) - READY
+Plan: Not started
+Status: Ready to plan
+Last activity: 2026-04-12 -- Phase 02 complete after gap closure
 
 Progress: [##########] 100% for v1.0
 
@@ -37,19 +37,23 @@ Progress: [##########] 100% for v1.0
 | Milestone | Phase | Status | Completed | Archive |
 |-----------|-------|--------|-----------|---------|
 | v1.0 | Phase 1: Builder Boundaries & Mode Hardening | Complete | 2026-04-12 | .planning/milestones/v1.0-ROADMAP.md |
+| v1.1 | Phase 2: Admin Auth & Salon Setup | Complete | 2026-04-12 | .planning/phases/02-admin-auth-salon-setup/02-VERIFICATION.md |
 
 ## Next Milestone
 
-**v1.1 - Phase 2: Admin Auth & Salon Setup**
+**v1.2 - Phase 3: Public Booking Engine**
 
 Requirements:
 
-- ADMN-01
-- ADMN-06
-- STAF-01
-- STAF-02
-- STAF-03
-- STAF-04
+- BOOK-01
+- BOOK-02
+- BOOK-03
+- BOOK-04
+- BOOK-05
+- BOOK-06
+- BOOK-07
+- BOOK-08
+- STAF-05
 
 ## Accumulated Context
 
@@ -64,6 +68,9 @@ Recent decisions affecting current work:
 - Phase 1 uses Vitest coverage for selector, fallback, and boundary regressions.
 - `/termin-buchen` and `/admin` are explicit route boundaries for later booking/admin work.
 - Contact-only fallback steps stay channel-agnostic; channel names come from selector-driven visible contacts.
+- Phase 2 admin setup stores operational staff, services, weekly hours, and exceptions in server-owned booking tables.
+- Service assignment remains under `/admin/stylisten`; the `Leistungen` dashboard card routes there instead of a separate `/admin/leistungen` route.
+- Timed availability exceptions reject invalid or impossible date values before persistence.
 
 ### Pending Todos
 
@@ -71,11 +78,11 @@ None yet.
 
 ### Blockers/Concerns
 
-- Phase 2 must decide the admin auth mechanism and how local/admin setup data is persisted.
-- Booking mode is still a shell until later phases add setup data, availability, and submission flows.
+- Phase 3 must consume the Phase 2 setup model for public availability without reintroducing salon-specific branching.
+- Booking mode is still not publicly usable until Phase 3 adds service selection, slot lookup, and submission flows.
 
 ## Session Continuity
 
-Last session: 2026-04-12T21:20:00+02:00
-Stopped at: Phase 02 verification found 2 gaps; gap-closure planning is next
-Resume file: .planning/phases/02-admin-auth-salon-setup/02-VERIFICATION.md
+Last session: 2026-04-12T21:48:00+02:00
+Stopped at: Phase 02 complete; Phase 03 planning is next
+Resume file: .planning/ROADMAP.md
