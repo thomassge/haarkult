@@ -314,17 +314,17 @@ This is the minimal selector every brochure surface should consume instead of br
 | A1 | Route-local `_components` / `_lib` is the best first physical organization even if route groups are deferred. [ASSUMED] | Architecture Patterns / Don't Hand-Roll | Low. The planner can still keep the selector-layer recommendation and choose route groups earlier if desired. |
 | A2 | The older “outside `app`” API/file-organization model is the main alternative the planner would otherwise drift toward. [ASSUMED] | State of the Art | Low. The practical recommendation to keep booking/admin logic isolated inside current App Router boundaries still stands. |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Which mode literal should Phase 1 canonize internally: `booking` or `online_booking`?**
-   - What we know: Requirements and AGENTS use `booking`, while current code, `CODEX_CONTEXT.md`, and phase context use `online_booking`. [VERIFIED: .planning/REQUIREMENTS.md, AGENTS.md, content/site.ts, CODEX_CONTEXT.md, .planning/phases/01-builder-boundaries-mode-hardening/01-CONTEXT.md]
-   - What's unclear: Whether the user wants the code to rename now or wants docs to treat `booking` as a human-facing alias. [VERIFIED: source comparison only; no explicit lock found]
-   - Recommendation: Decide this in Wave 0 and normalize it everywhere touched by Phase 1 so later plans stop drifting. [VERIFIED: source comparison only]
+   - Resolved outcome: Phase 1 canonizes `booking` as the internal literal. [VERIFIED: .planning/phases/01-builder-boundaries-mode-hardening/01-01-PLAN.md]
+   - Evidence: `01-01-PLAN.md` explicitly normalizes the internal booking-mode literal to `booking` and requires `online_booking` to be removed from the touched config exports. [VERIFIED: .planning/phases/01-builder-boundaries-mode-hardening/01-01-PLAN.md]
+   - Implementation effect: Future Phase 1 work and gap closure should treat `booking` as the only canonical internal mode vocabulary. [VERIFIED: .planning/phases/01-builder-boundaries-mode-hardening/01-01-PLAN.md]
 
 2. **Should Plan `01-03` physically adopt route groups now, or keep current folder paths and use private folders only?**
-   - What we know: Next.js officially supports both route groups and private folders, and route groups are useful for organizing routes by site section or team without changing the URL. [CITED: https://nextjs.org/docs/app/getting-started/project-structure]
-   - What's unclear: Whether the small current route surface justifies the file-move churn in this phase. [VERIFIED: current route surface in `app/` from codebase scan]
-   - Recommendation: Make helper centralization mandatory; make route-group moves conditional on whether the plan already touches most route files. [VERIFIED: .planning/phases/01-builder-boundaries-mode-hardening/01-CONTEXT.md] [CITED: https://nextjs.org/docs/app/getting-started/project-structure]
+   - Resolved outcome: Plan `01-03` keeps the current route paths and uses route-local private folders (`_components`, `_lib`) instead of adopting route groups. [VERIFIED: .planning/phases/01-builder-boundaries-mode-hardening/01-03-PLAN.md, .planning/phases/01-builder-boundaries-mode-hardening/01-03-SUMMARY.md]
+   - Evidence: `01-03-PLAN.md` and `01-03-SUMMARY.md` both define and describe the implemented route-local private-folder structure under `app/termin-buchen/*` and `app/admin/*`. [VERIFIED: .planning/phases/01-builder-boundaries-mode-hardening/01-03-PLAN.md, .planning/phases/01-builder-boundaries-mode-hardening/01-03-SUMMARY.md]
+   - Implementation effect: Phase 1 preserves URL structure and boundary clarity without adding route-group file-move churn. [VERIFIED: .planning/phases/01-builder-boundaries-mode-hardening/01-03-SUMMARY.md]
 
 ## Environment Availability
 

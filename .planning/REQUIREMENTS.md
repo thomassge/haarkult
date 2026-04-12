@@ -1,23 +1,39 @@
 # Requirements: Haarkult Salon Builder
 
 **Defined:** 2026-04-10
+**Last updated:** 2026-04-12 after v1.0 / Phase 1 completion
 **Core Value:** A salon should be able to run a premium website with either contact-only mode or real booking mode by changing salon-specific content and configuration, not by rewriting the codebase.
 
-## v1 Requirements
+## Completed Milestones
 
-### Builder
+### v1.0 - Phase 1: Builder Boundaries & Mode Hardening
 
 - [x] **BUIL-01**: Maintainer can create a new salon website by replacing structured salon content and configuration without rewriting shared brochure components
 - [x] **BUIL-02**: Maintainer can replace salon-specific brand and media assets without editing shared booking or admin logic
-- [ ] **BUIL-03**: Maintainer can reuse the same booking and admin code paths across multiple salons with salon-specific data differences
-
-### Modes
-
 - [x] **MODE-01**: Maintainer can configure a salon website to run in `contact_only` mode
 - [x] **MODE-02**: Maintainer can configure a salon website to run in `booking` mode
 - [x] **MODE-03**: Visitor in `contact_only` mode sees contact paths and does not get a working public booking flow
 
-### Public Booking
+Archived at: [v1.0-REQUIREMENTS.md](./milestones/v1.0-REQUIREMENTS.md)
+
+## Active Requirements
+
+### Phase 2 / v1.1 - Admin Auth & Salon Setup
+
+- [ ] **ADMN-01**: Salon staff can sign in to a protected admin area
+- [ ] **ADMN-06**: Salon staff can update core salon booking setup such as stylists and working hours from the admin area
+- [ ] **STAF-01**: Salon staff can create and manage stylists who accept bookings
+- [ ] **STAF-02**: Salon staff can assign which services each stylist can perform
+- [ ] **STAF-03**: Salon staff can set recurring weekly working hours for each stylist
+- [ ] **STAF-04**: Salon staff can set one-off blocked times, breaks, vacations, or availability exceptions for each stylist
+
+### Later v1 Requirements
+
+#### Builder
+
+- [ ] **BUIL-03**: Maintainer can reuse the same booking and admin code paths across multiple salons with salon-specific data differences
+
+#### Public Booking
 
 - [ ] **BOOK-01**: Client can browse bookable services with duration and price context before starting a booking
 - [ ] **BOOK-02**: Client can start a booking from the public website when booking mode is enabled
@@ -28,24 +44,18 @@
 - [ ] **BOOK-07**: Client can submit a booking using name, phone, email, and an optional note
 - [ ] **BOOK-08**: Client gets a clear retry path when the selected slot is no longer available during submission
 
-### Staff Setup
+#### Staff Setup
 
-- [ ] **STAF-01**: Salon staff can create and manage stylists who accept bookings
-- [ ] **STAF-02**: Salon staff can assign which services each stylist can perform
-- [ ] **STAF-03**: Salon staff can set recurring weekly working hours for each stylist
-- [ ] **STAF-04**: Salon staff can set one-off blocked times, breaks, vacations, or availability exceptions for each stylist
 - [ ] **STAF-05**: The booking system calculates availability from service duration, staff schedules, exceptions, existing bookings, lead time, booking horizon, and slot step rules
 
-### Admin Operations
+#### Admin Operations
 
-- [ ] **ADMN-01**: Salon staff can sign in to a protected admin area
 - [ ] **ADMN-02**: Salon staff can view upcoming bookings in the admin area
 - [ ] **ADMN-03**: Salon staff can accept pending bookings
 - [ ] **ADMN-04**: Salon staff can decline or cancel bookings
 - [ ] **ADMN-05**: Salon staff can move a booking to another valid free slot
-- [ ] **ADMN-06**: Salon staff can update core salon booking setup such as stylists and working hours from the admin area
 
-### Communication & Compliance
+#### Communication & Compliance
 
 - [ ] **COMM-01**: Client receives an email confirmation or status update after booking actions
 - [ ] **COMM-02**: Salon receives a notification about new or changed bookings
@@ -83,44 +93,40 @@
 
 ## Traceability
 
-Which phases cover which requirements. Updated during roadmap creation.
-
-| Requirement | Phase | Status |
-|-------------|-------|--------|
-| BUIL-01 | Phase 1 | Complete |
-| BUIL-02 | Phase 1 | Complete |
-| BUIL-03 | Phase 5 | Pending |
-| MODE-01 | Phase 1 | Complete |
-| MODE-02 | Phase 1 | Complete |
-| MODE-03 | Phase 1 | Complete |
-| BOOK-01 | Phase 3 | Pending |
-| BOOK-02 | Phase 3 | Pending |
-| BOOK-03 | Phase 3 | Pending |
-| BOOK-04 | Phase 3 | Pending |
-| BOOK-05 | Phase 3 | Pending |
-| BOOK-06 | Phase 3 | Pending |
-| BOOK-07 | Phase 3 | Pending |
-| BOOK-08 | Phase 3 | Pending |
-| STAF-01 | Phase 2 | Pending |
-| STAF-02 | Phase 2 | Pending |
-| STAF-03 | Phase 2 | Pending |
-| STAF-04 | Phase 2 | Pending |
-| STAF-05 | Phase 3 | Pending |
-| ADMN-01 | Phase 2 | Pending |
-| ADMN-02 | Phase 4 | Pending |
-| ADMN-03 | Phase 4 | Pending |
-| ADMN-04 | Phase 4 | Pending |
-| ADMN-05 | Phase 4 | Pending |
-| ADMN-06 | Phase 2 | Pending |
-| COMM-01 | Phase 4 | Pending |
-| COMM-02 | Phase 4 | Pending |
-| COMM-03 | Phase 5 | Pending |
+| Requirement | Phase | Milestone | Status |
+|-------------|-------|-----------|--------|
+| BUIL-01 | Phase 1 | v1.0 | Complete |
+| BUIL-02 | Phase 1 | v1.0 | Complete |
+| MODE-01 | Phase 1 | v1.0 | Complete |
+| MODE-02 | Phase 1 | v1.0 | Complete |
+| MODE-03 | Phase 1 | v1.0 | Complete |
+| STAF-01 | Phase 2 | v1.1 | Pending |
+| STAF-02 | Phase 2 | v1.1 | Pending |
+| STAF-03 | Phase 2 | v1.1 | Pending |
+| STAF-04 | Phase 2 | v1.1 | Pending |
+| ADMN-01 | Phase 2 | v1.1 | Pending |
+| ADMN-06 | Phase 2 | v1.1 | Pending |
+| BOOK-01 | Phase 3 | v1.2 | Pending |
+| BOOK-02 | Phase 3 | v1.2 | Pending |
+| BOOK-03 | Phase 3 | v1.2 | Pending |
+| BOOK-04 | Phase 3 | v1.2 | Pending |
+| BOOK-05 | Phase 3 | v1.2 | Pending |
+| BOOK-06 | Phase 3 | v1.2 | Pending |
+| BOOK-07 | Phase 3 | v1.2 | Pending |
+| BOOK-08 | Phase 3 | v1.2 | Pending |
+| STAF-05 | Phase 3 | v1.2 | Pending |
+| ADMN-02 | Phase 4 | v1.3 | Pending |
+| ADMN-03 | Phase 4 | v1.3 | Pending |
+| ADMN-04 | Phase 4 | v1.3 | Pending |
+| ADMN-05 | Phase 4 | v1.3 | Pending |
+| COMM-01 | Phase 4 | v1.3 | Pending |
+| COMM-02 | Phase 4 | v1.3 | Pending |
+| BUIL-03 | Phase 5 | v1.4 | Pending |
+| COMM-03 | Phase 5 | v1.4 | Pending |
 
 **Coverage:**
-- v1 requirements: 28 total
+
+- Phase 1 requirements completed: 5
+- Active/carry-forward v1 requirements: 23
 - Mapped to phases: 28
 - Unmapped: 0
-
----
-*Requirements defined: 2026-04-10*
-*Last updated: 2026-04-10 after initial definition*

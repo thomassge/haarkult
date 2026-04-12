@@ -2,41 +2,38 @@
 
 ## Overview
 
-This roadmap takes the project from today's brownfield brochure site and partial booking foundation to a reusable, salon-first product with real booking mode, protected staff operations, and launch-ready compliance. The phase order is intentionally conservative: protect the reusable salon boundaries first, then make booking correct, then make staff operations practical, then harden the product for launch and reuse.
+This roadmap tracks the salon-builder product as phase-sized milestones. The full product still aims to deliver reusable salon websites with both contact-only and real booking modes, but each phase is closed and archived independently once its requirements are verified.
 
-## Phases
+## Milestones
 
-**Phase Numbering:**
-- Integer phases (1, 2, 3): Planned milestone work
-- Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
+- [x] **v1.0 - Phase 1: Builder Boundaries & Mode Hardening** - shipped 2026-04-12 ([archive](./milestones/v1.0-ROADMAP.md))
+- [ ] **v1.1 - Phase 2: Admin Auth & Salon Setup** - next
+- [ ] **v1.2 - Phase 3: Public Booking Engine** - planned
+- [ ] **v1.3 - Phase 4: Staff Booking Operations** - planned
+- [ ] **v1.4 - Phase 5: Launch Hardening & Reuse Proof** - planned
 
-Decimal phases appear between their surrounding integers in numeric order.
+## Phase Numbering
 
-- [ ] **Phase 1: Builder Boundaries & Mode Hardening** - Lock reusable salon boundaries and enforce the two-mode product contract
-- [ ] **Phase 2: Admin Auth & Salon Setup** - Add protected admin access and salon-operated staff/schedule management
-- [ ] **Phase 3: Public Booking Engine** - Turn booking mode into a real client-facing booking flow with server-owned availability
-- [ ] **Phase 4: Staff Booking Operations** - Let salon staff manage booking lifecycle and notifications
-- [ ] **Phase 5: Launch Hardening & Reuse Proof** - Align compliance, verify both modes, and prove reuse against another salon setup
+- Integer phases (1, 2, 3): planned milestone work
+- Decimal phases (2.1, 2.2): urgent insertions, marked as INSERTED
+- Each phase is treated as a milestone-sized delivery checkpoint for this project
 
-## Phase Details
+## Completed
 
-### Phase 1: Builder Boundaries & Mode Hardening
-**Goal**: Protect the reusable salon builder architecture before booking and admin complexity grow
-**Depends on**: Nothing (first phase)
-**Requirements**: BUIL-01, BUIL-02, MODE-01, MODE-02, MODE-03
-**UI hint**: no
-**Success Criteria** (what must be TRUE):
-  1. Maintainer can swap salon content/config and assets without rewriting shared brochure components
-  2. `contact_only` mode exposes contact paths and does not expose a working public booking flow
-  3. `booking` mode keeps booking/admin boundaries explicit and separate from brochure-only components
-**Plans**: 3 plans
+<details>
+<summary>v1.0 - Phase 1: Builder Boundaries & Mode Hardening - SHIPPED 2026-04-12</summary>
 
-Plans:
-- [ ] 01-01: Normalize reusable salon content and configuration boundaries
-- [ ] 01-02: Harden mode gating for public booking entry points and fallback contact behavior
-- [ ] 01-03: Isolate shared booking/admin module boundaries from brochure components
+- [x] Phase 1: Builder Boundaries & Mode Hardening - 4/4 plans complete
+- Requirements completed: BUIL-01, BUIL-02, MODE-01, MODE-02, MODE-03
+- Audit: passed
+- Archive: [v1.0-ROADMAP.md](./milestones/v1.0-ROADMAP.md)
+
+</details>
+
+## Active / Planned Phases
 
 ### Phase 2: Admin Auth & Salon Setup
+
 **Goal**: Give salon staff protected access to the operational data required for booking
 **Depends on**: Phase 1
 **Requirements**: ADMN-01, ADMN-06, STAF-01, STAF-02, STAF-03, STAF-04
@@ -53,6 +50,7 @@ Plans:
 - [ ] 02-03: Build working-hours and exception management with persisted validation
 
 ### Phase 3: Public Booking Engine
+
 **Goal**: Deliver a real public booking flow with accurate availability and conflict-safe submission
 **Depends on**: Phase 2
 **Requirements**: BOOK-01, BOOK-02, BOOK-03, BOOK-04, BOOK-05, BOOK-06, BOOK-07, BOOK-08, STAF-05
@@ -70,6 +68,7 @@ Plans:
 - [ ] 03-03: Implement booking submission, conflict handling, and public success/error states
 
 ### Phase 4: Staff Booking Operations
+
 **Goal**: Let salon staff manage the full booking lifecycle after bookings exist
 **Depends on**: Phase 3
 **Requirements**: ADMN-02, ADMN-03, ADMN-04, ADMN-05, COMM-01, COMM-02
@@ -86,6 +85,7 @@ Plans:
 - [ ] 04-03: Implement client and salon notification triggers and templates
 
 ### Phase 5: Launch Hardening & Reuse Proof
+
 **Goal**: Make the product launch-safe and prove that the shared booking/admin system can be reused for another salon
 **Depends on**: Phase 4
 **Requirements**: BUIL-03, COMM-03
@@ -102,13 +102,12 @@ Plans:
 
 ## Progress
 
-**Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
+**Execution Order:** 2 -> 3 -> 4 -> 5
 
-| Phase | Plans Complete | Status | Completed |
-|-------|----------------|--------|-----------|
-| 1. Builder Boundaries & Mode Hardening | 0/3 | Not started | - |
-| 2. Admin Auth & Salon Setup | 0/3 | Not started | - |
-| 3. Public Booking Engine | 0/3 | Not started | - |
-| 4. Staff Booking Operations | 0/3 | Not started | - |
-| 5. Launch Hardening & Reuse Proof | 0/2 | Not started | - |
+| Phase | Milestone | Plans Complete | Status | Completed |
+|-------|-----------|----------------|--------|-----------|
+| 1. Builder Boundaries & Mode Hardening | v1.0 | 4/4 | Complete | 2026-04-12 |
+| 2. Admin Auth & Salon Setup | v1.1 | 0/3 | Next | - |
+| 3. Public Booking Engine | v1.2 | 0/3 | Planned | - |
+| 4. Staff Booking Operations | v1.3 | 0/3 | Planned | - |
+| 5. Launch Hardening & Reuse Proof | v1.4 | 0/2 | Planned | - |
