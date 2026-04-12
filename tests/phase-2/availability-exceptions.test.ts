@@ -64,6 +64,51 @@ describe("availability exception validation", () => {
     ).toThrow("Das Ende muss nach dem Start liegen.");
   });
 
+  it("rejects malformed timed exception start and end values before persistence", () => {
+    expect(() =>
+      normalizeAvailabilityException({
+        staffId: "staff-1",
+        type: "break",
+        allDay: false,
+        startAt: "not-a-date",
+        endAt: "2026-06-15T10:30:00.000Z",
+      })
+    ).toThrow("Bitte einen gueltigen Zeitraum angeben.");
+
+    expect(() =>
+      normalizeAvailabilityException({
+        staffId: "staff-1",
+        type: "break",
+        allDay: false,
+        startAt: "2026-06-15T10:00:00.000Z",
+        endAt: "not-a-date",
+      })
+    ).toThrow("Bitte einen gueltigen Zeitraum angeben.");
+  });
+
+  it("rejects impossible Berlin datetime-local values but keeps valid ones", () => {
+    expect(() =>
+      normalizeAvailabilityException({
+        staffId: "staff-1",
+        type: "blocked",
+        allDay: false,
+        startAt: "2026-02-30T10:00",
+        endAt: "2026-02-30T10:30",
+      })
+    ).toThrow("Bitte einen gueltigen Zeitraum angeben.");
+
+    const normalized = normalizeAvailabilityException({
+      staffId: "staff-1",
+      type: "blocked",
+      allDay: false,
+      startAt: "2026-06-15T10:00",
+      endAt: "2026-06-15T10:30",
+    });
+
+    expect(normalized.startAt.toISOString()).toBe("2026-06-15T08:00:00.000Z");
+    expect(normalized.endAt.toISOString()).toBe("2026-06-15T08:30:00.000Z");
+  });
+
   it("protects exception persistence with admin auth, queries, and schema window checks", () => {
     const actionsSource = readWorkspaceFile("lib/booking/setup-actions.ts");
     const queriesSource = readWorkspaceFile("lib/booking/setup-queries.ts");
