@@ -27,18 +27,16 @@ export default async function AdminPage() {
   ].filter((item): item is string => Boolean(item));
   const missingWeeklyCount = overview.setupCompletion.staffMissingWeeklyHours.length;
   const cards = adminDashboardCards
-    .filter(
-      (card) => card.href === "/admin/leistungen" || requiredSetupRoutes.includes(card.href)
-    )
+    .filter((card) => requiredSetupRoutes.includes(card.href))
     .map((card) => {
-      if (card.href === "/admin/stylisten") {
+      if (card.title === "Stylisten") {
         return {
           ...card,
           status: `${overview.counts.activeStaff} aktiv`,
         };
       }
 
-      if (card.href === "/admin/leistungen") {
+      if (card.title === "Leistungen") {
         return {
           ...card,
           status: `${overview.counts.assignedServices} Zuordnungen`,

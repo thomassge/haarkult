@@ -21,8 +21,8 @@ export const adminDashboardCards: AdminDashboardCard[] = [
   },
   {
     title: "Leistungen",
-    description: "Festlegen, welche Leistungen von welchen Stylisten angeboten werden.",
-    href: "/admin/leistungen",
+    description: "Leistungen direkt pro Stylistin oder Stylist zuordnen.",
+    href: "/admin/stylisten",
   },
   {
     title: "Arbeitszeiten",
@@ -65,7 +65,7 @@ export function AdminShell({
 
         <div className="grid gap-4 md:grid-cols-2">
           {cards.map((card) => (
-            <Link key={card.href} href={card.href} className="group block">
+            <Link key={`${card.title}-${card.href}`} href={card.href} className="group block">
               <Card
                 className="h-full border-[var(--line-strong)] transition-colors group-hover:border-zinc-900 dark:group-hover:border-zinc-100"
                 padded
