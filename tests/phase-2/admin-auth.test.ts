@@ -115,6 +115,20 @@ describe("admin auth route protection source contracts", () => {
     expect(source).toMatch(/href:\s*"\/admin\/zeiten"/);
     expect(source).toMatch(/href:\s*"\/admin\/ausnahmen"/);
   });
+
+  it("provides a one-owner seed script without printing seed secrets", () => {
+    const packageJson = readWorkspaceFile("package.json");
+    const source = readWorkspaceFile("scripts/seed-admin-user.mjs");
+
+    expect(packageJson).toMatch(/"admin:seed":\s*"node scripts\/seed-admin-user\.mjs"/);
+    expect(source).toMatch(/ADMIN_SEED_EMAIL/);
+    expect(source).toMatch(/ADMIN_SEED_PASSWORD/);
+    expect(source).toMatch(/admin_users/);
+    expect(source).toMatch(/role/);
+    expect(source).toMatch(/'owner'/);
+    expect(source).toMatch(/active\s*=\s*true|true/);
+    expect(source).not.toMatch(/console\.(log|error)\([^)]*seedPassword/);
+  });
 });
 
 describe("admin credential authorization", () => {
