@@ -74,9 +74,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 03-01: Build public service and stylist selection flow
-- [ ] 03-02: Implement server-side availability engine and slot query endpoints
-- [ ] 03-03: Implement booking submission, conflict handling, and public success/error states
+- [ ] 03-01-PLAN.md - Build public service and stylist selection flow
+- [ ] 03-02-PLAN.md - Implement server-side availability engine and slot query endpoints
+- [ ] 03-03-PLAN.md - Implement booking submission, conflict handling, and public success/error states
 
 ### Phase 4: Staff Booking Operations
 
