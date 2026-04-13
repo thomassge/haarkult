@@ -73,23 +73,23 @@ describe("availability engine", () => {
     const slots = calculateAvailableSlots(createInput());
 
     expect(slots.map((slot) => slot.startAt.toISOString())).toEqual([
+      "2026-06-15T07:00:00.000Z",
+      "2026-06-15T07:15:00.000Z",
+      "2026-06-15T07:30:00.000Z",
+      "2026-06-15T07:45:00.000Z",
+      "2026-06-15T08:00:00.000Z",
+      "2026-06-15T08:15:00.000Z",
+      "2026-06-15T08:30:00.000Z",
+      "2026-06-15T08:45:00.000Z",
       "2026-06-15T09:00:00.000Z",
       "2026-06-15T09:15:00.000Z",
-      "2026-06-15T09:30:00.000Z",
-      "2026-06-15T09:45:00.000Z",
-      "2026-06-15T10:00:00.000Z",
-      "2026-06-15T10:15:00.000Z",
-      "2026-06-15T10:30:00.000Z",
-      "2026-06-15T10:45:00.000Z",
-      "2026-06-15T11:00:00.000Z",
-      "2026-06-15T11:15:00.000Z",
     ]);
     expect(slots[0]).toMatchObject({
       staffId: "staff-anna",
       staffName: "Anna",
-      endAt: new Date("2026-06-15T09:45:00.000Z"),
+      endAt: new Date("2026-06-15T07:45:00.000Z"),
     });
-    expect(formatSlotId(slots[0])).toBe("staff-anna:2026-06-15T09:00:00.000Z");
+    expect(formatSlotId(slots[0])).toBe("staff-anna:2026-06-15T07:00:00.000Z");
     expect(slots[0].slotId).toBe(formatSlotId(slots[0]));
   });
 
@@ -119,42 +119,41 @@ describe("availability engine", () => {
         exceptions: [
           {
             staffId: anna.id,
-            startAt: new Date("2026-06-15T09:30:00.000Z"),
-            endAt: new Date("2026-06-15T10:15:00.000Z"),
+            startAt: new Date("2026-06-15T07:30:00.000Z"),
+            endAt: new Date("2026-06-15T08:15:00.000Z"),
           },
         ],
         existingBookings: [
           {
             staffId: anna.id,
             status: "confirmed",
-            startAt: new Date("2026-06-15T10:45:00.000Z"),
-            endAt: new Date("2026-06-15T11:15:00.000Z"),
+            startAt: new Date("2026-06-15T08:45:00.000Z"),
+            endAt: new Date("2026-06-15T09:15:00.000Z"),
           },
           {
             staffId: anna.id,
             status: "cancelled",
-            startAt: new Date("2026-06-15T11:15:00.000Z"),
-            endAt: new Date("2026-06-15T12:00:00.000Z"),
+            startAt: new Date("2026-06-15T09:15:00.000Z"),
+            endAt: new Date("2026-06-15T10:00:00.000Z"),
           },
           {
             staffId: anna.id,
             status: "completed",
-            startAt: new Date("2026-06-15T11:15:00.000Z"),
-            endAt: new Date("2026-06-15T12:00:00.000Z"),
+            startAt: new Date("2026-06-15T09:15:00.000Z"),
+            endAt: new Date("2026-06-15T10:00:00.000Z"),
           },
           {
             staffId: anna.id,
             status: "no_show",
-            startAt: new Date("2026-06-15T11:15:00.000Z"),
-            endAt: new Date("2026-06-15T12:00:00.000Z"),
+            startAt: new Date("2026-06-15T09:15:00.000Z"),
+            endAt: new Date("2026-06-15T10:00:00.000Z"),
           },
         ],
       })
     );
 
     expect(slots.map((slot) => slot.startAt.toISOString())).toEqual([
-      "2026-06-15T10:15:00.000Z",
-      "2026-06-15T11:15:00.000Z",
+      "2026-06-15T09:15:00.000Z",
     ]);
   });
 
