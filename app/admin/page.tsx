@@ -6,7 +6,12 @@ import { requireAdmin } from "@/lib/auth/admin-session";
 import { getAdminSetupOverview } from "@/lib/booking/setup-queries";
 import { AdminShell, adminDashboardCards } from "./_components/admin-shell";
 
-const requiredSetupRoutes = ["/admin/stylisten", "/admin/zeiten", "/admin/ausnahmen"];
+const requiredSetupRoutes = [
+  "/admin/stylisten",
+  "/admin/leistungen",
+  "/admin/zeiten",
+  "/admin/ausnahmen",
+];
 
 export const metadata: Metadata = {
   title: "Admin | Haarkult-Maintal",

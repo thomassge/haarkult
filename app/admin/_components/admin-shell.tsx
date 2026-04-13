@@ -22,7 +22,7 @@ export const adminDashboardCards: AdminDashboardCard[] = [
   {
     title: "Leistungen",
     description: "Leistungen direkt pro Stylistin oder Stylist zuordnen.",
-    href: "/admin/stylisten",
+    href: "/admin/leistungen",
   },
   {
     title: "Arbeitszeiten",

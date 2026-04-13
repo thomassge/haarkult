@@ -44,7 +44,7 @@ export type PublicBookingTransaction = SelectFromClient & {
 
 type PublicBookingDb = {
   transaction: <TResult>(
-    callback: (tx: PublicBookingTransaction) => Promise<TResult>
+    callback: (tx: unknown) => Promise<TResult>
   ) => Promise<TResult>;
 };
 
@@ -155,7 +155,9 @@ export async function createPublicBooking(
 
   try {
     return await db.transaction(async (tx) => {
-      await acquireLock(tx, { staffId: submission.staffId, date: submission.date });
+      const bookingTx = tx as PublicBookingTransaction;
+
+      await acquireLock(bookingTx, { staffId: submission.staffId, date: submission.date });
 
       const availableSlots = await getAvailableSlots(
         {
@@ -164,7 +166,7 @@ export async function createPublicBooking(
           staffId: submission.stylistPreferenceStaffId,
         },
         {
-          client: tx,
+          client: bookingTx,
           now: deps.now,
         }
       );
@@ -198,8 +200,8 @@ export async function createPublicBooking(
         updatedAt: now,
       };
 
-      await tx.insert(bookings).values(bookingRow).returning();
-      await tx
+      await bookingTx.insert(bookings).values(bookingRow).returning();
+      await bookingTx
         .insert(bookingEvents)
         .values({
           id: eventId,

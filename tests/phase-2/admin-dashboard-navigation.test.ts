@@ -13,20 +13,19 @@ function routeFileForAdminHref(href: string) {
 }
 
 describe("admin dashboard navigation", () => {
-  it("routes Leistungen to the existing stylist service-assignment setup", () => {
+  it("routes Leistungen to its own service-assignment setup page", () => {
     const source = readWorkspaceFile("app/admin/_components/admin-shell.tsx");
 
     expect(source).toMatch(/title:\s*"Leistungen"/);
-    expect(source).not.toMatch(/href:\s*"\/admin\/leistungen"/);
     expect(source).toMatch(
-      /title:\s*"Leistungen"[\s\S]*?href:\s*"\/admin\/stylisten"/
+      /title:\s*"Leistungen"[\s\S]*?href:\s*"\/admin\/leistungen"/
     );
   });
 
-  it("does not keep dashboard status logic for a missing Leistungen route", () => {
+  it("keeps dashboard status logic wired to the real Leistungen route", () => {
     const source = readWorkspaceFile("app/admin/page.tsx");
 
-    expect(source).not.toMatch(/\/admin\/leistungen/);
+    expect(source).toMatch(/\/admin\/leistungen/);
   });
 
   it("links every static dashboard card href to an existing admin setup route file", () => {
@@ -36,11 +35,12 @@ describe("admin dashboard navigation", () => {
 
     expect(hrefs).toEqual([
       "/admin/stylisten",
-      "/admin/stylisten",
+      "/admin/leistungen",
       "/admin/zeiten",
       "/admin/ausnahmen",
     ]);
     expect(hrefs).toContain("/admin/stylisten");
+    expect(hrefs).toContain("/admin/leistungen");
     expect(hrefs).toContain("/admin/zeiten");
     expect(hrefs).toContain("/admin/ausnahmen");
 

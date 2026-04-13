@@ -34,7 +34,7 @@ export function SlotStep({
   onRetry,
 }: SlotStepProps) {
   return (
-    <section className="rounded-lg border border-[#d9e1da] bg-white p-6">
+    <section className="surface-card rounded-lg p-5 sm:p-6">
       <h2 className="text-[20px] font-semibold leading-[1.2] tracking-normal">
         Zeit auswaehlen
       </h2>
@@ -55,8 +55,8 @@ export function SlotStep({
             onClick={() => onDateSelect(date)}
             className={
               date === selectedDate
-                ? "min-h-11 rounded-lg border border-[#23624f] bg-[#23624f] px-3 py-2 text-[14px] font-semibold leading-[1.4] tracking-normal text-white"
-                : "min-h-11 rounded-lg border border-[#d9e1da] bg-white px-3 py-2 text-[14px] font-semibold leading-[1.4] tracking-normal text-[#161a17]"
+                ? "min-h-11 rounded-lg border border-[var(--accent)] bg-[var(--accent)] px-3 py-2 text-[14px] font-semibold leading-[1.4] tracking-normal text-[var(--accent-foreground)]"
+                : "min-h-11 rounded-lg border border-[var(--line-strong)] bg-[var(--surface-strong)] px-3 py-2 text-[14px] font-semibold leading-[1.4] tracking-normal text-[var(--foreground)]"
             }
           >
             {formatDateLabel(date)}
@@ -83,7 +83,7 @@ export function SlotStep({
             <button
               type="button"
               onClick={onRetry}
-              className="mt-3 min-h-11 rounded-lg border border-[#23624f] px-4 py-2 text-[14px] font-semibold leading-[1.4] tracking-normal text-[#23624f]"
+              className="mt-3 min-h-11 rounded-lg border border-[var(--accent)] px-4 py-2 text-[14px] font-semibold leading-[1.4] tracking-normal text-[var(--accent)]"
             >
               Zeiten neu laden
             </button>
@@ -102,7 +102,7 @@ export function SlotStep({
             <button
               type="button"
               onClick={onRetry}
-              className="mt-3 min-h-11 rounded-lg border border-[#23624f] px-4 py-2 text-[14px] font-semibold leading-[1.4] tracking-normal text-[#23624f]"
+              className="mt-3 min-h-11 rounded-lg border border-[var(--accent)] px-4 py-2 text-[14px] font-semibold leading-[1.4] tracking-normal text-[var(--accent)]"
             >
               Zeiten neu laden
             </button>
@@ -119,8 +119,8 @@ export function SlotStep({
                 onClick={() => onSlotSelect(slot)}
                 className={
                   slot.slotId === selectedSlotId
-                    ? "min-h-11 rounded-lg border border-[#23624f] bg-[#23624f] px-4 py-2 text-[14px] font-semibold leading-[1.4] tracking-normal text-white"
-                    : "min-h-11 rounded-lg border border-[#d9e1da] bg-white px-4 py-2 text-[14px] font-semibold leading-[1.4] tracking-normal text-[#161a17]"
+                    ? "min-h-11 rounded-lg border border-[var(--accent)] bg-[var(--accent)] px-4 py-2 text-[14px] font-semibold leading-[1.4] tracking-normal text-[var(--accent-foreground)]"
+                    : "min-h-11 rounded-lg border border-[var(--line-strong)] bg-[var(--surface-strong)] px-4 py-2 text-[14px] font-semibold leading-[1.4] tracking-normal text-[var(--foreground)]"
                 }
               >
                 {formatTime(slot.startAt)}

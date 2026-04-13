@@ -190,13 +190,20 @@ describe("/termin-buchen public booking flow", () => {
     render(await BookingPage());
 
     expect(screen.getByText("1 Leistung")).toBeTruthy();
-    expect(screen.getByText("2 Stylist")).toBeTruthy();
-    expect(screen.getByText("3 Zeit")).toBeTruthy();
-    expect(screen.getByText("4 Kontakt")).toBeTruthy();
     expect(screen.getByRole("button", { name: /Damen/i })).toBeTruthy();
     expect(screen.getByRole("button", { name: /Haarschnitt/i })).toBeTruthy();
+    expect(screen.getByText("2 Stylist")).toBeTruthy();
+    expect(screen.queryByText("Stylist auswaehlen")).toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: /Haarschnitt/i }));
+
     expect(screen.getByText("Keine Praeferenz")).toBeTruthy();
-    expect(screen.getByText("Termin anfragen")).toBeTruthy();
+    expect(screen.queryByText("Leistung auswaehlen")).toBeNull();
+
+    fireEvent.click(screen.getByText("Keine Praeferenz"));
+
+    expect(screen.getByText("Zeit auswaehlen")).toBeTruthy();
+    expect(screen.queryByText("Kontakt")).toBeNull();
   });
 
   it("loads server slots after date selection and submits required contact fields", async () => {
@@ -207,6 +214,7 @@ describe("/termin-buchen public booking flow", () => {
     });
 
     render(await BookingPage());
+    fireEvent.click(screen.getByRole("button", { name: /Haarschnitt/i }));
     fireEvent.click(screen.getAllByRole("button", { name: /^Datum /i })[0]);
 
     expect(screen.getByText("Freie Zeiten werden geladen...")).toBeTruthy();
@@ -216,6 +224,7 @@ describe("/termin-buchen public booking flow", () => {
     );
 
     fireEvent.click(screen.getByRole("button", { name: /09:00/ }));
+    expect(screen.getByText("Kontakt")).toBeTruthy();
     fireEvent.change(screen.getByLabelText("Name"), {
       target: { value: "Mira Mustermann" },
     });
@@ -265,6 +274,7 @@ describe("/termin-buchen public booking flow", () => {
     });
 
     render(await BookingPage());
+    fireEvent.click(screen.getByRole("button", { name: /Haarschnitt/i }));
     fireEvent.click(screen.getAllByRole("button", { name: /^Datum /i })[0]);
     fireEvent.click(await screen.findByRole("button", { name: /09:00/ }));
     fireEvent.change(screen.getByLabelText("Name"), {
@@ -286,6 +296,9 @@ describe("/termin-buchen public booking flow", () => {
         "Diese Zeit ist gerade nicht mehr verfuegbar. Deine Angaben bleiben erhalten. Bitte waehle eine neue Uhrzeit."
       )
     ).toBeTruthy();
+    expect(screen.getByText("Zeit auswaehlen")).toBeTruthy();
+    expect(screen.queryByText("Kontakt")).toBeNull();
+    fireEvent.click(await screen.findByRole("button", { name: /09:00/ }));
     expect((screen.getByLabelText("Name") as HTMLInputElement).value).toBe(
       "Mira Mustermann"
     );
@@ -300,7 +313,7 @@ describe("/termin-buchen public booking flow", () => {
     );
     expect(screen.getByRole("button", { name: "Termin anfragen" })).toHaveProperty(
       "disabled",
-      true
+      false
     );
     expect(fetch).toHaveBeenCalledTimes(2);
   });
@@ -314,6 +327,7 @@ describe("/termin-buchen public booking flow", () => {
     });
 
     render(await BookingPage());
+    fireEvent.click(screen.getByRole("button", { name: /Haarschnitt/i }));
     fireEvent.click(screen.getAllByRole("button", { name: /^Datum /i })[0]);
 
     expect(await screen.findByText("Keine freien Zeiten gefunden")).toBeTruthy();
@@ -348,6 +362,11 @@ describe("/termin-buchen public booking flow", () => {
     expect(screen.queryByText("Keine Praeferenz")).toBeNull();
     expect(screen.getByText("2 Zeit")).toBeTruthy();
     expect(screen.getByText("3 Kontakt")).toBeTruthy();
+    expect(screen.queryByText("Zeit auswaehlen")).toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: /Haarschnitt/i }));
+
+    expect(screen.getByText("Zeit auswaehlen")).toBeTruthy();
   });
 
   it("renders public contact fallback without booking controls when setup is incomplete", async () => {

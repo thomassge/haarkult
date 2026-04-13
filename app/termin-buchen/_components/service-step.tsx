@@ -26,7 +26,7 @@ export function ServiceStep({
     null;
 
   return (
-    <section className="rounded-lg border border-[#d9e1da] bg-white p-6">
+    <section className="surface-card rounded-lg p-5 sm:p-6">
       <h2 className="text-[20px] font-semibold leading-[1.2] tracking-normal">
         Leistung auswaehlen
       </h2>
@@ -40,8 +40,8 @@ export function ServiceStep({
               onClick={() => onCategoryChange(category.id)}
               className={
                 category.id === activeCategory?.id
-                  ? "min-h-11 rounded-lg border border-[#23624f] bg-[#23624f] px-4 py-2 text-[14px] font-semibold leading-[1.4] tracking-normal text-white"
-                  : "min-h-11 rounded-lg border border-[#d9e1da] bg-white px-4 py-2 text-[14px] font-semibold leading-[1.4] tracking-normal text-[#161a17]"
+                  ? "min-h-11 rounded-lg border border-[var(--accent)] bg-[var(--accent)] px-4 py-2 text-[14px] font-semibold leading-[1.4] tracking-normal text-[var(--accent-foreground)]"
+                  : "min-h-11 rounded-lg border border-[var(--line-strong)] bg-[var(--surface-strong)] px-4 py-2 text-[14px] font-semibold leading-[1.4] tracking-normal text-[var(--foreground)]"
               }
             >
               {category.label}
@@ -79,21 +79,21 @@ function ServiceOptionButton({
       onClick={() => onSelect(service.id)}
       className={
         selected
-          ? "w-full rounded-lg border border-[#23624f] bg-[#eef4ef] p-4 text-left"
-          : "w-full rounded-lg border border-[#d9e1da] bg-white p-4 text-left"
+          ? "w-full rounded-lg border border-[var(--accent)] bg-[var(--surface-strong)] p-4 text-left"
+          : "w-full rounded-lg border border-[var(--line-strong)] bg-[var(--surface)] p-4 text-left"
       }
     >
-      <span className="block text-[16px] font-semibold leading-[1.5] tracking-normal text-[#161a17]">
+      <span className="block text-[16px] font-semibold leading-[1.5] tracking-normal text-[var(--foreground)]">
         {service.title}
       </span>
-      <span className="mt-1 block text-[14px] font-semibold leading-[1.4] tracking-normal text-[#5f6b62]">
+      <span className="mt-1 block text-[14px] font-semibold leading-[1.4] tracking-normal text-[var(--muted)]">
         {service.durationLabel} · {service.priceLabel}
       </span>
-      <span className="mt-2 block text-[16px] leading-[1.5] text-[#5f6b62]">
+      <span className="mt-2 block text-[16px] leading-[1.5] text-[var(--muted)]">
         {service.description}
       </span>
       {service.note ? (
-        <span className="mt-2 block text-[14px] font-semibold leading-[1.4] tracking-normal text-[#5f6b62]">
+        <span className="mt-2 block text-[14px] font-semibold leading-[1.4] tracking-normal text-[var(--muted)]">
           {service.note}
         </span>
       ) : null}

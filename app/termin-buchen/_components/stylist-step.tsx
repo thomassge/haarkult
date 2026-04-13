@@ -14,7 +14,7 @@ export function StylistStep({
   onPreferenceChange,
 }: StylistStepProps) {
   return (
-    <section className="rounded-lg border border-[#d9e1da] bg-white p-6">
+    <section className="surface-card rounded-lg p-5 sm:p-6">
       <h2 className="text-[20px] font-semibold leading-[1.2] tracking-normal">
         Stylist auswaehlen
       </h2>
@@ -26,8 +26,8 @@ export function StylistStep({
             onClick={() => onPreferenceChange(option.id)}
             className={
               option.id === selectedPreferenceId
-                ? "min-h-11 w-full rounded-lg border border-[#23624f] bg-[#eef4ef] px-4 py-3 text-left text-[16px] font-semibold leading-[1.5] tracking-normal"
-                : "min-h-11 w-full rounded-lg border border-[#d9e1da] bg-white px-4 py-3 text-left text-[16px] font-semibold leading-[1.5] tracking-normal"
+                ? "min-h-11 w-full rounded-lg border border-[var(--accent)] bg-[var(--surface-strong)] px-4 py-3 text-left text-[16px] font-semibold leading-[1.5] tracking-normal"
+                : "min-h-11 w-full rounded-lg border border-[var(--line-strong)] bg-[var(--surface)] px-4 py-3 text-left text-[16px] font-semibold leading-[1.5] tracking-normal"
             }
           >
             {option.label}

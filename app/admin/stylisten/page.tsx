@@ -26,29 +26,42 @@ export default async function AdminStylistsPage() {
           <Heading
             eyebrow="Admin"
             title="Stylisten"
-            subtitle="Pflege die Personen, die spaeter fuer Online-Termine ausgewaehlt werden koennen."
+            subtitle="Pflege nur die Personen, die spaeter fuer Online-Termine ausgewaehlt werden koennen."
           />
           <div className="text-sm text-zinc-600 dark:text-zinc-300">
             Angemeldet als <span className="font-medium">{admin.email}</span>
           </div>
         </div>
 
-        <div className="mb-8">
-          <Link className="text-sm underline underline-offset-4" href="/admin">
+        <div className="mb-8 flex flex-wrap gap-4 text-sm">
+          <Link className="underline underline-offset-4" href="/admin">
             Zurueck zum Salon-Setup
+          </Link>
+          <Link className="underline underline-offset-4" href="/admin/leistungen">
+            Leistungen zuordnen
           </Link>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
           <div className="space-y-4">
-            <Card className="border-[var(--line-strong)] p-5 sm:p-6">
-              <FinePrint>Neu</FinePrint>
-              <h2 className="mt-3 text-xl font-semibold text-zinc-950 dark:text-zinc-50">
-                Stylistin oder Stylist anlegen
-              </h2>
-              <BodyText className="mt-3 text-zinc-700 dark:text-zinc-300">
-                Neue Personen starten aktiv und mit Alle Leistungen als einfachem Standard.
-              </BodyText>
+            <Card
+              as="details"
+              className="group border-[var(--line-strong)] p-5 sm:p-6"
+            >
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4">
+                <span>
+                  <FinePrint>Neu</FinePrint>
+                  <span className="mt-3 block text-xl font-semibold text-zinc-950 dark:text-zinc-50">
+                    Neue Stylistin anlegen
+                  </span>
+                  <BodyText className="mt-2 text-zinc-700 dark:text-zinc-300">
+                    Oeffne das Formular erst, wenn du eine neue Person anlegen willst.
+                  </BodyText>
+                </span>
+                <span className="rounded-lg border border-[var(--line-strong)] px-3 py-2 text-sm font-semibold">
+                  Oeffnen
+                </span>
+              </summary>
               <div className="mt-6">
                 <StylistSetupForm services={setupData.serviceOptions} />
               </div>
@@ -71,24 +84,35 @@ export default async function AdminStylistsPage() {
               </Card>
             ) : (
               setupData.staff.map((staffRow) => (
-                <Card key={staffRow.id} className="border-[var(--line-strong)] p-5 sm:p-6">
-                  <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                    <div>
-                      <h3 className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">
+                <Card
+                  key={staffRow.id}
+                  as="details"
+                  className="group border-[var(--line-strong)] p-5 sm:p-6"
+                >
+                  <summary className="flex cursor-pointer list-none flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                    <span>
+                      <span className="block text-lg font-semibold text-zinc-950 dark:text-zinc-50">
                         {staffRow.name}
-                      </h3>
+                      </span>
                       <BodyText className="text-zinc-600 dark:text-zinc-300">
-                        {staffRow.active ? "Aktiv" : "Inaktiv"} ·{" "}
+                        {staffRow.active ? "Aktiv" : "Inaktiv"} -{" "}
                         {staffRow.assignedServices.length} Leistungen
                       </BodyText>
-                    </div>
-                    <FinePrint>{staffRow.slug}</FinePrint>
-                  </div>
+                    </span>
+                    <span className="flex items-center gap-3">
+                      <FinePrint>{staffRow.slug}</FinePrint>
+                      <span className="rounded-lg border border-[var(--line-strong)] px-3 py-2 text-sm font-semibold">
+                        Bearbeiten
+                      </span>
+                    </span>
+                  </summary>
 
-                  <StylistSetupForm
-                    stylist={staffRow}
-                    services={setupData.serviceOptions}
-                  />
+                  <div className="mt-5">
+                    <StylistSetupForm
+                      stylist={staffRow}
+                      services={setupData.serviceOptions}
+                    />
+                  </div>
                 </Card>
               ))
             )}

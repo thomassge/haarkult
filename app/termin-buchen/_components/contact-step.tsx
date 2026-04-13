@@ -25,16 +25,17 @@ export function ContactStep({
   onSubmit,
 }: ContactStepProps) {
   return (
-    <section className="rounded-lg border border-[#d9e1da] bg-white p-6">
+    <section className="surface-card rounded-lg p-5 sm:p-6">
       <h2 className="text-[20px] font-semibold leading-[1.2] tracking-normal">
         Kontakt
       </h2>
-      <p className="mt-3 text-[16px] leading-[1.5] text-[#5f6b62]">
+      <p className="mt-3 text-[16px] leading-[1.5] text-[var(--muted)]">
         Wir nutzen deine Angaben nur fuer diese Terminanfrage. Du brauchst kein
         Kundenkonto.
       </p>
 
       <div className="mt-5 grid gap-4">
+        <FieldError messages={fieldErrors?._form} />
         <FieldError messages={fieldErrors?.name} />
         <label
           htmlFor="booking-name"
@@ -46,7 +47,7 @@ export function ContactStep({
             value={contact.name}
             required
             onChange={(event) => onContactChange("name", event.target.value)}
-            className="min-h-11 rounded-lg border border-[#d9e1da] px-3 py-2 text-[16px] font-normal leading-[1.5] tracking-normal"
+            className="min-h-11 rounded-lg border border-[var(--line-strong)] bg-[var(--surface-strong)] px-3 py-2 text-[16px] font-normal leading-[1.5] tracking-normal"
           />
         </label>
 
@@ -61,7 +62,7 @@ export function ContactStep({
             value={contact.phone}
             required
             onChange={(event) => onContactChange("phone", event.target.value)}
-            className="min-h-11 rounded-lg border border-[#d9e1da] px-3 py-2 text-[16px] font-normal leading-[1.5] tracking-normal"
+            className="min-h-11 rounded-lg border border-[var(--line-strong)] bg-[var(--surface-strong)] px-3 py-2 text-[16px] font-normal leading-[1.5] tracking-normal"
           />
         </label>
 
@@ -77,7 +78,7 @@ export function ContactStep({
             required
             type="email"
             onChange={(event) => onContactChange("email", event.target.value)}
-            className="min-h-11 rounded-lg border border-[#d9e1da] px-3 py-2 text-[16px] font-normal leading-[1.5] tracking-normal"
+            className="min-h-11 rounded-lg border border-[var(--line-strong)] bg-[var(--surface-strong)] px-3 py-2 text-[16px] font-normal leading-[1.5] tracking-normal"
           />
         </label>
 
@@ -90,10 +91,10 @@ export function ContactStep({
             id="booking-note"
             value={contact.note}
             onChange={(event) => onContactChange("note", event.target.value)}
-            className="min-h-24 rounded-lg border border-[#d9e1da] px-3 py-2 text-[16px] font-normal leading-[1.5] tracking-normal"
+            className="min-h-24 rounded-lg border border-[var(--line-strong)] bg-[var(--surface-strong)] px-3 py-2 text-[16px] font-normal leading-[1.5] tracking-normal"
           />
         </label>
-        <p className="text-[14px] font-normal leading-[1.4] text-[#5f6b62]">
+        <p className="text-[14px] font-normal leading-[1.4] text-[var(--muted)]">
           Wuensche, Besonderheiten oder eine bevorzugte Rueckrufzeit kannst du hier
           eintragen.
         </p>
@@ -103,7 +104,7 @@ export function ContactStep({
         type="button"
         disabled={disabled || pending}
         onClick={onSubmit}
-        className="mt-5 min-h-11 rounded-lg bg-[#23624f] px-5 py-3 text-[14px] font-semibold leading-[1.4] tracking-normal text-white disabled:cursor-not-allowed disabled:bg-[#5f6b62]"
+        className="mt-5 min-h-11 rounded-lg bg-[var(--accent)] px-5 py-3 text-[14px] font-semibold leading-[1.4] tracking-normal text-[var(--accent-foreground)] disabled:cursor-not-allowed disabled:bg-[var(--muted)]"
       >
         {pending ? "Wird gesendet..." : submitLabel}
       </button>

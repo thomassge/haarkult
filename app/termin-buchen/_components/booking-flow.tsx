@@ -31,6 +31,8 @@ type BookingFlowProps = {
 const staleSlotConflictCopy =
   "Diese Zeit ist gerade nicht mehr verfuegbar. Deine Angaben bleiben erhalten. Bitte waehle eine neue Uhrzeit.";
 
+type BookingStep = "service" | "stylist" | "slot" | "contact" | "result";
+
 function findInitialServiceId(
   services: PublicBookingServiceOptionDto[],
   staffRows: StaffSetupDto[]
@@ -63,6 +65,7 @@ export function BookingFlow({ booking, brandName, staffRows }: BookingFlowProps)
   const [selectedServiceId, setSelectedServiceId] = useState(() =>
     findInitialServiceId(allServices, staffRows)
   );
+  const [activeStep, setActiveStep] = useState<BookingStep>("service");
   const [selectedStylistPreferenceId, setSelectedStylistPreferenceId] =
     useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -101,6 +104,7 @@ export function BookingFlow({ booking, brandName, staffRows }: BookingFlowProps)
     setSlotError(null);
     setConflictMessage(null);
     setSubmitResult(null);
+    setActiveStep(showStylistStepForService(serviceId) ? "stylist" : "slot");
   }
 
   function handleStylistChange(preferenceId: string) {
@@ -111,6 +115,7 @@ export function BookingFlow({ booking, brandName, staffRows }: BookingFlowProps)
     setSlotError(null);
     setConflictMessage(null);
     setSubmitResult(null);
+    setActiveStep("slot");
   }
 
   async function loadSlots(date: string) {
@@ -161,6 +166,11 @@ export function BookingFlow({ booking, brandName, staffRows }: BookingFlowProps)
     void loadSlots(date);
   }
 
+  function handleSlotSelect(slot: PublicSlotDto) {
+    setSelectedSlot(slot);
+    setActiveStep("contact");
+  }
+
   function handleContactChange(field: keyof typeof contact, value: string) {
     setContact((current) => ({
       ...current,
@@ -190,22 +200,56 @@ export function BookingFlow({ booking, brandName, staffRows }: BookingFlowProps)
     formData.set("note", contact.note);
 
     setSubmitPending(true);
-    const result = await submitPublicBookingAction(submitResult, formData);
-    setSubmitPending(false);
-    setSubmitResult(result);
 
-    if (result.status === "slot_conflict") {
-      setConflictMessage(result.message || staleSlotConflictCopy);
-      setSelectedSlot(null);
-      setContact({
-        name: result.preservedInput.name,
-        phone: result.preservedInput.phone,
-        email: result.preservedInput.email,
-        note: result.preservedInput.note ?? "",
+    try {
+      const result = await submitPublicBookingAction(submitResult, formData);
+      setSubmitResult(result);
+
+      if (result.status === "slot_conflict") {
+        setConflictMessage(result.message || staleSlotConflictCopy);
+        setSelectedSlot(null);
+        setContact({
+          name: result.preservedInput.name,
+          phone: result.preservedInput.phone,
+          email: result.preservedInput.email,
+          note: result.preservedInput.note ?? "",
+        });
+        setSelectedDate(result.preservedInput.date);
+        setActiveStep("slot");
+        await loadSlots(result.preservedInput.date);
+      }
+    } catch {
+      setSubmitResult({
+        status: "validation_error",
+        message: "Bitte pruefe deine Angaben.",
+        fieldErrors: {
+          _form: [
+            "Die Anfrage konnte nicht gesendet werden. Bitte versuche es noch einmal.",
+          ],
+        },
+        preservedInput: {
+          serviceId: selectedServiceId,
+          date: selectedDate,
+          slotId: selectedSlot.slotId,
+          staffId: selectedSlot.staffId,
+          startAt: selectedSlot.startAt,
+          stylistPreferenceStaffId: selectedStylistPreferenceId ?? undefined,
+          name: contact.name,
+          phone: contact.phone,
+          email: contact.email,
+          note: contact.note,
+        },
       });
-      setSelectedDate(result.preservedInput.date);
-      await loadSlots(result.preservedInput.date);
+    } finally {
+      setSubmitPending(false);
     }
+  }
+
+  function showStylistStepForService(serviceId: string) {
+    return (
+      booking.allowStylistSelection &&
+      deriveStylistPreferenceOptions(serviceId, staffRows).showStylistStep
+    );
   }
 
   const fieldErrors =
@@ -214,12 +258,13 @@ export function BookingFlow({ booking, brandName, staffRows }: BookingFlowProps)
     submitResult?.status === "success"
       ? (submitResult as PublicBookingSuccessResult)
       : null;
+  const currentStep = successResult ? "result" : activeStep;
 
   return (
-    <main className="min-h-screen bg-[#f7f8f6] py-10 text-[#161a17] sm:py-14 lg:py-16">
+    <main className="min-h-screen py-10 text-[var(--foreground)] sm:py-14 lg:py-16">
       <Container>
         <div className="mb-6">
-          <p className="text-[14px] font-semibold leading-[1.4] tracking-normal text-[#5f6b62]">
+          <p className="text-[14px] font-semibold leading-[1.4] tracking-normal text-[var(--muted)]">
             {brandName}
           </p>
           <h1 className="mt-2 text-[28px] font-semibold leading-[1.2] tracking-normal">
@@ -234,11 +279,15 @@ export function BookingFlow({ booking, brandName, staffRows }: BookingFlowProps)
           {progressSteps.map((step, index) => (
             <span
               key={step}
-              aria-current={index === 0 ? "step" : undefined}
+              aria-current={
+                isProgressStepActive(index, currentStep, showStylistStep)
+                  ? "step"
+                  : undefined
+              }
               className={
-                index === 0
-                  ? "rounded-lg border border-[#23624f] bg-[#23624f] px-3 py-2 text-white"
-                  : "rounded-lg border border-[#d9e1da] bg-white px-3 py-2 text-[#5f6b62]"
+                isProgressStepActive(index, currentStep, showStylistStep)
+                  ? "rounded-lg border border-[var(--accent)] bg-[var(--accent)] px-3 py-2 text-[var(--accent-foreground)]"
+                  : "rounded-lg border border-[var(--line-strong)] bg-[var(--surface-strong)] px-3 py-2 text-[var(--muted)]"
               }
             >
               {step}
@@ -248,15 +297,17 @@ export function BookingFlow({ booking, brandName, staffRows }: BookingFlowProps)
 
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.4fr)]">
           <div className="space-y-6">
-            <ServiceStep
-              options={serviceOptions}
-              selectedCategory={selectedCategory}
-              selectedServiceId={selectedServiceId}
-              onCategoryChange={setSelectedCategory}
-              onServiceChange={handleServiceChange}
-            />
+            {currentStep === "service" ? (
+              <ServiceStep
+                options={serviceOptions}
+                selectedCategory={selectedCategory}
+                selectedServiceId={selectedServiceId}
+                onCategoryChange={setSelectedCategory}
+                onServiceChange={handleServiceChange}
+              />
+            ) : null}
 
-            {showStylistStep ? (
+            {currentStep === "stylist" && showStylistStep ? (
               <StylistStep
                 options={stylistOptions.options}
                 selectedPreferenceId={selectedStylistPreferenceId}
@@ -266,8 +317,9 @@ export function BookingFlow({ booking, brandName, staffRows }: BookingFlowProps)
 
             {successResult ? (
               <BookingResult result={successResult} />
-            ) : (
-              <>
+            ) : null}
+
+            {currentStep === "slot" ? (
                 <SlotStep
                   dates={dateOptions}
                   selectedDate={selectedDate}
@@ -277,10 +329,12 @@ export function BookingFlow({ booking, brandName, staffRows }: BookingFlowProps)
                   error={slotError}
                   conflictMessage={conflictMessage}
                   onDateSelect={handleDateSelect}
-                  onSlotSelect={setSelectedSlot}
+                  onSlotSelect={handleSlotSelect}
                   onRetry={() => selectedDate && void loadSlots(selectedDate)}
                 />
+            ) : null}
 
+            {currentStep === "contact" ? (
                 <ContactStep
                   submitLabel={submitLabel}
                   pending={submitPending}
@@ -290,8 +344,7 @@ export function BookingFlow({ booking, brandName, staffRows }: BookingFlowProps)
                   onContactChange={handleContactChange}
                   onSubmit={handleSubmit}
                 />
-              </>
-            )}
+            ) : null}
           </div>
 
           <BookingSummary
@@ -327,4 +380,16 @@ function createDateOptions(leadTimeHours: number, maxAdvanceDays: number) {
 
     return date.toISOString().slice(0, 10);
   });
+}
+
+function isProgressStepActive(
+  index: number,
+  currentStep: BookingStep,
+  showStylistStep: boolean
+) {
+  const steps = showStylistStep
+    ? ["service", "stylist", "slot", "contact"]
+    : ["service", "slot", "contact"];
+
+  return steps[index] === currentStep;
 }

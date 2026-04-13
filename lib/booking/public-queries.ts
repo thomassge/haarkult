@@ -54,7 +54,7 @@ export async function loadPublicAvailabilityInput(
     throw new PublicSlotQueryError();
   }
 
-  const client = deps.client ?? (await import("@/db")).db;
+  const client = (deps.client ?? (await import("@/db")).db) as SelectFromClient;
   const [staffRows, serviceRows, weeklyRows, exceptionRows, bookingRows] = await Promise.all([
     selectFrom<StaffRow>(client, staff),
     selectFrom<StaffServiceRow>(client, staffServices),
