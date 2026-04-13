@@ -4,8 +4,8 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Phase 3 planning complete
-last_updated: "2026-04-13T15:31:04.234Z"
-last_activity: 2026-04-13 -- Phase 03 planning complete
+last_updated: "2026-04-13T15:36:05.853Z"
+last_activity: 2026-04-13 -- Phase 03 execution started
 progress:
   total_phases: 4
   completed_phases: 1
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-12)
 
 **Core value:** A salon should be able to run a premium website with either contact-only mode or real booking mode by changing salon-specific content and configuration, not by rewriting the codebase.
-**Current focus:** Phase 03 - public-booking-engine
+**Current focus:** Phase 03 — public-booking-engine
 
 ## Current Position
 
-Phase: 03 (public-booking-engine) - READY
-Plan: Not started
-Status: Ready to execute
-Last activity: 2026-04-13 -- Phase 03 planning complete
+Phase: 03 (public-booking-engine) — EXECUTING
+Plan: 1 of 3
+Status: Executing Phase 03
+Last activity: 2026-04-13 -- Phase 03 execution started
 
 Progress: [##########] 100% for v1.0
 
@@ -74,7 +74,7 @@ Recent decisions affecting current work:
 
 ### Pending Todos
 
-None yet.
+- Refine admin services and stylist setup UX (`.planning/todos/pending/2026-04-13-refine-admin-services-and-stylist-setup-ux.md`)
 
 ### Blockers/Concerns
 
