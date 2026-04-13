@@ -9,6 +9,7 @@
     "lint": "eslint",
     "test:unit": "vitest run",
     "admin:seed": "node scripts/seed-admin-user.mjs",
+    "booking:seed": "node scripts/seed-booking-setup.mjs",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate"
   },
