@@ -126,7 +126,7 @@ The central planning risk is availability correctness, not UI complexity. [VERIF
 |------------|-----------|----------|
 | Server Actions for slot lookup | Route Handlers returning JSON | Use Route Handlers for availability lookup because date/service/staff changes are naturally query-like and should not mutate data. [CITED: https://nextjs.org/docs/app/building-your-application/routing/route-handlers] |
 | Adding a form/state library | React local state plus `useActionState` where useful | Existing scope is a single guided form, so a new dependency adds complexity without solving a current repo problem. [VERIFIED: package.json] [CITED: https://react.dev/reference/react/useActionState] |
-| Database exclusion constraint in Phase 3 | Transactional re-check plus indexed overlap query | A Postgres exclusion constraint is robust for overlap prevention, but it likely requires schema/migration work not already present; use a transactional re-check now and add DB-level exclusion if UAT finds real concurrent write risk. [CITED: https://www.postgresql.org/docs/current/ddl-constraints.html] [ASSUMED] |
+| Database exclusion constraint in Phase 3 | Transaction-scoped Postgres advisory lock plus availability re-check | A Postgres exclusion constraint is robust for overlap prevention, but it requires schema/migration work around a range expression that is not already present. For Phase 3, use `pg_advisory_xact_lock` keyed by concrete staff id plus local booking date so competing writes for the same staff/day serialize before the availability re-check and insert. [CITED: https://www.postgresql.org/docs/current/ddl-constraints.html] [ASSUMED] |
 
 **Installation:** No new runtime packages are recommended for Phase 3. [VERIFIED: package.json]
 
@@ -225,7 +225,7 @@ export function getAvailableSlots(input: AvailabilityInput): AvailabilitySlot[] 
 
 ### Pattern 3: Re-Check Before Insert
 
-**What:** Submission validates public fields, resolves the service snapshot, computes available slots again, confirms the chosen concrete slot is still available, then inserts `bookings` and a `booking_events.created` row in one transaction. [VERIFIED: db/schema.ts] [CITED: https://orm.drizzle.team/docs/transactions]
+**What:** Submission validates public fields, resolves the service snapshot, starts a transaction, acquires a transaction-scoped Postgres advisory lock for the concrete staff member and selected local date, computes available slots again inside that lock, confirms the chosen concrete slot is still available, then inserts `bookings` and a `booking_events.created` row in the same transaction. [VERIFIED: db/schema.ts] [CITED: https://orm.drizzle.team/docs/transactions]
 
 **When to use:** Always use this for public booking submission because public slot data can become stale between lookup and submit. [VERIFIED: BOOK-08 in .planning/REQUIREMENTS.md]
 
@@ -234,6 +234,11 @@ export function getAvailableSlots(input: AvailabilityInput): AvailabilitySlot[] 
 ```ts
 // Source: Drizzle transaction pattern already used in lib/booking/setup-actions.ts. [VERIFIED: codebase grep]
 await db.transaction(async (tx) => {
+  await acquireStaffDayBookingLock(tx, {
+    staffId: submitInput.staffId,
+    date: submitInput.date,
+  });
+
   const slots = await queryAvailableSlots(tx, submitInput);
   const selectedSlot = slots.find((slot) => slot.slotId === submitInput.slotId);
 
@@ -262,7 +267,7 @@ await db.transaction(async (tx) => {
 | Public form validation | Custom string checks scattered in components | Zod schemas in `lib/booking/public-validation.ts` [CITED: https://zod.dev] | Existing admin setup uses Zod and tests schema behavior. [VERIFIED: lib/booking/setup-validation.ts] |
 | Service catalog | New arrays inside booking components | `content/services.ts`, `bookableServices`, `createBookingServiceSnapshot()` [VERIFIED: lib/booking/catalog.ts] | Catalog reuse is a project constraint and avoids Haarkult-only branching. [VERIFIED: AGENTS.md] |
 | Database writes | Ad hoc SQL strings | Drizzle inserts/transactions [CITED: https://orm.drizzle.team/docs/transactions] | Existing schema and setup actions already use Drizzle. [VERIFIED: db/schema.ts] |
-| Slot conflict detection | Client-side disabled buttons only | Server re-check against current bookings before insert [VERIFIED: BOOK-08] | Slot data can stale between lookup and submit. [VERIFIED: 03-CONTEXT.md] |
+| Slot conflict detection | Client-side disabled buttons only | Transaction-scoped advisory lock plus server re-check against current bookings before insert [VERIFIED: BOOK-08] | Slot data can stale between lookup and submit, and concurrent submitters must serialize before insert. [VERIFIED: 03-CONTEXT.md] |
 | Authentication/account flow | Customer login or account prompts | Guest-first contact fields only [VERIFIED: AGENTS.md] | Customer accounts are out of v1 scope. [VERIFIED: AGENTS.md] |
 
 **Key insight:** The only custom logic Phase 3 should own is salon-specific availability composition; validation, routing, persistence, and tests should reuse the existing stack. [VERIFIED: package.json] [VERIFIED: db/schema.ts]
@@ -273,8 +278,8 @@ await db.transaction(async (tx) => {
 
 **What goes wrong:** The user sees a slot that is no longer valid and the app inserts it anyway. [VERIFIED: BOOK-08]
 **Why it happens:** Slot lookup and submission use different logic or submission trusts the client. [ASSUMED]
-**How to avoid:** Put the shared availability calculation in `lib/booking/availability.ts` and call it from both the slot endpoint and submit action. [ASSUMED]
-**Warning signs:** Tests mock slot availability separately from submit availability. [ASSUMED]
+**How to avoid:** Put the shared availability calculation in `lib/booking/availability.ts` and call it from both the slot endpoint and submit action. During submission, acquire a transaction-scoped advisory lock for `public-booking:${staffId}:${date}` before recomputing and inserting. [ASSUMED]
+**Warning signs:** Tests mock slot availability separately from submit availability, or duplicate-submit tests only check stale pre-existing bookings and not two concurrent submissions. [ASSUMED]
 
 ### Pitfall 2: One-Stylist Rule Implemented Globally Instead Of Per Service
 
@@ -359,27 +364,25 @@ export function overlaps(left: TimeWindow, right: TimeWindow) {
 
 | # | Claim | Section | Risk if Wrong |
 |---|-------|---------|---------------|
-| A1 | Transactional re-check is enough for Phase 3 without a database exclusion constraint. | Standard Stack / Alternatives | Concurrent public submissions for the same staff/time could double-book under unlucky timing; planner should test and consider DB-level constraint if risk is unacceptable. |
+| A1 | Transaction-scoped advisory locking by concrete staff id plus local date is enough for Phase 3 without a database exclusion constraint. | Standard Stack / Alternatives | If the lock is keyed too narrowly or bypassed by a future write path, concurrent public submissions could still double-book; planner must require focused duplicate-submit tests and keep staff/admin write paths aligned later. |
 | A2 | Route-local React state is sufficient without adding a form/state dependency. | Standard Stack / Alternatives | If the flow becomes more complex than planned, state bugs could accumulate; keep component boundaries small. |
 | A3 | Half-open interval overlap is the intended booking semantics. | Common Pitfalls / Code Examples | If business rules require buffers or closed boundaries, slots at exact edges may be wrong; include buffer tests. |
 | A4 | No new package is needed for timezone handling. | Common Pitfalls | DST bugs may appear if local date conversion is not centralized and tested; planner may add a date library only if tests expose unacceptable complexity. |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Should Phase 3 add a database-level overlap guard?**
+1. **RESOLVED: Phase 3 will use a Postgres transaction-scoped advisory lock, not a new exclusion constraint.**
    - What we know: The schema has indexes on staff and start/status, but no exclusion constraint. [VERIFIED: db/schema.ts]
-   - What's unclear: Whether production concurrency risk warrants a migration now. [ASSUMED]
-   - Recommendation: Plan transactional re-check first; add a Wave 0 spike or schema task if double-submit tests show a real race. [ASSUMED]
+   - Decision: Add a `withStaffDayBookingLock(tx, input, callback)` or equivalent helper in `lib/booking/public-actions.ts` that executes `pg_advisory_xact_lock` inside the booking transaction with a key derived from `public-booking:${staffId}:${date}` before availability is re-checked and before `bookings`/`bookingEvents` are inserted. [ASSUMED]
+   - Why: Advisory locking is executable in the current repo with Drizzle transactions and raw SQL, avoids silently accepting concurrent double bookings, and does not require a Phase 3 schema migration. A true exclusion constraint remains a later hardening option if the product adds more write paths or needs database-enforced overlap protection across all clients. [VERIFIED: db/schema.ts] [ASSUMED]
 
-2. **What date range should the UI initially show?**
+2. **RESOLVED: The UI initially shows 14 selectable dates within lead time and booking horizon.**
    - What we know: `maxAdvanceDays` is 60 and `leadTimeHours` is 12. [VERIFIED: content/booking.ts]
-   - What's unclear: The exact number of visible date buttons is discretionary. [VERIFIED: 03-CONTEXT.md]
-   - Recommendation: Show a compact initial range such as 7-14 dates and allow moving forward within horizon. [ASSUMED]
+   - Decision: Use the UI-SPEC contract value of 14 date buttons, filtered so dates respect lead time and never exceed the configured horizon; allow moving forward within the horizon. [VERIFIED: 03-UI-SPEC.md]
 
-3. **Should nearby alternatives be first-class in Phase 3?**
-   - What we know: D-20 allows them if they fit naturally. [VERIFIED: 03-CONTEXT.md]
-   - What's unclear: Whether this fits without delaying the required conflict path. [ASSUMED]
-   - Recommendation: Treat alternatives as optional after same-date reload works. [ASSUMED]
+3. **RESOLVED: Nearby alternatives are optional after same-date reload.**
+   - What we know: D-20 allows alternatives if they fit naturally. [VERIFIED: 03-CONTEXT.md]
+   - Decision: Required conflict behavior is same-date slot reload after clearing only the invalid slot. Nearby alternatives may be displayed only if they are naturally produced by the same availability output and do not add a separate recommendation engine or delay BOOK-08. [VERIFIED: 03-UI-SPEC.md] [ASSUMED]
 
 ## Environment Availability
 
@@ -453,7 +456,7 @@ export function overlaps(left: TimeWindow, right: TimeWindow) {
 
 | Pattern | STRIDE | Standard Mitigation |
 |---------|--------|---------------------|
-| Double booking through stale slot | Tampering / Race condition [ASSUMED] | Server-side availability re-check plus transaction before insert. [CITED: https://orm.drizzle.team/docs/transactions] |
+| Double booking through stale or concurrent slot | Tampering / Race condition [ASSUMED] | Transaction-scoped advisory lock by concrete staff/date, then server-side availability re-check and insert in the same transaction. [CITED: https://orm.drizzle.team/docs/transactions] |
 | Invalid service or staff IDs submitted by client | Tampering [ASSUMED] | Validate IDs against catalog and active staff-service assignments server-side. [VERIFIED: lib/booking/catalog.ts] [VERIFIED: db/schema.ts] |
 | Personal data over-collection | Privacy [VERIFIED: COMM-03 later requirement] | Phase 3 collects only name, phone, email, optional note as required. [VERIFIED: BOOK-07] |
 | Setup information leak | Information Disclosure [VERIFIED: D-25/D-26] | Public setup-incomplete state shows contact fallback, not technical setup status. [VERIFIED: 03-CONTEXT.md] |
