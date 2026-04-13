@@ -182,7 +182,7 @@ function createDeps(options: {
   const records: string[] = [];
   const bookingRows: Record<string, unknown>[] = [];
   const eventRows: Record<string, unknown>[] = [];
-  const locks = new Map<string, Promise<void>>();
+  let transactionQueue = Promise.resolve();
 
   const deps: PublicBookingDeps & {
     records: string[];
@@ -214,23 +214,20 @@ function createDeps(options: {
       return options.slots;
     },
     db: {
-      transaction: async (callback) => callback(createTransaction()),
+      transaction: async (callback) => {
+        const result = transactionQueue.then(() => callback(createTransaction()));
+
+        transactionQueue = result.then(
+          () => undefined,
+          () => undefined
+        );
+
+        return result;
+      },
     },
     acquireLock: async (_tx, input) => {
       const lockKey = `public-booking:${input.staffId}:${input.date}`;
-      const previous = locks.get(lockKey) ?? Promise.resolve();
-      let release = () => {};
-      const current = previous.then(
-        () =>
-          new Promise<void>((resolve) => {
-            release = resolve;
-          })
-      );
-
-      locks.set(lockKey, current);
-      await previous;
       records.push(`lock:${lockKey}`);
-      release();
     },
   };
 
