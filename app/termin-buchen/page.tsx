@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { booking } from "@/content/booking";
 import { site } from "@/content/site";
+import { isMissingBookingEnvError } from "@/lib/booking/env";
 import { getStaffSetupData } from "@/lib/booking/setup-queries";
 import { getBookingPresentationState } from "@/lib/site-mode";
 import { BookingEntryShell } from "./_components/booking-entry-shell";
@@ -24,9 +25,9 @@ export default async function BookingPage() {
   const { contactActions, pageCopy, subtitle } = getBookingEntryContent();
 
   if (isBookingEnabled) {
-    const setupData = await getStaffSetupData();
+    const setupData = await getBookingSetupDataOrNull();
 
-    if (setupData.setupCompletion.complete) {
+    if (setupData?.setupCompletion.complete) {
       return (
         <BookingFlow
           booking={booking}
@@ -64,4 +65,16 @@ export default async function BookingPage() {
       subtitle={subtitle}
     />
   );
+}
+
+async function getBookingSetupDataOrNull() {
+  try {
+    return await getStaffSetupData();
+  } catch (error) {
+    if (isMissingBookingEnvError(error)) {
+      return null;
+    }
+
+    throw error;
+  }
 }

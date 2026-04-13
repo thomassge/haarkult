@@ -377,6 +377,29 @@ describe("/termin-buchen public booking flow", () => {
     expect(screen.queryByText("1 Leistung")).toBeNull();
     expect(screen.queryByText(/setup|admin|technisch|datenbank|konfiguration/i)).toBeNull();
   });
+
+  it("renders public contact fallback when booking database env is missing", async () => {
+    vi.resetModules();
+    vi.doMock("@/lib/booking/setup-queries", () => ({
+      getStaffSetupData: vi.fn(async () => {
+        throw new Error("Missing required booking environment variable: DATABASE_URL");
+      }),
+    }));
+
+    const { default: BookingPage } = await import("@/app/termin-buchen/page");
+
+    render(await BookingPage());
+
+    expect(screen.getByText("Termin direkt anfragen")).toBeTruthy();
+    expect(
+      screen.getByText(
+        "Online sind gerade keine Zeiten verfuegbar. Du erreichst den Salon direkt per Telefon, WhatsApp oder E-Mail."
+      )
+    ).toBeTruthy();
+    expect(screen.getByRole("link", { name: /Anrufen/i })).toBeTruthy();
+    expect(screen.queryByText("1 Leistung")).toBeNull();
+    expect(screen.queryByText(/setup|admin|technisch|datenbank|konfiguration/i)).toBeNull();
+  });
 });
 
 function createSlot() {

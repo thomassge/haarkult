@@ -8,6 +8,13 @@ export type BookingEnv = {
 
 let cachedBookingEnv: BookingEnv | null = null;
 
+export function isMissingBookingEnvError(error: unknown) {
+  return (
+    error instanceof Error &&
+    error.message.startsWith("Missing required booking environment variable:")
+  );
+}
+
 function readRequiredEnv(name: keyof BookingEnv) {
   const value = process.env[name];
 
