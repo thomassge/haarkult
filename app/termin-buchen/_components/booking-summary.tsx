@@ -36,13 +36,13 @@ export function BookingSummary({
     "Wird automatisch passend gesucht";
 
   return (
-    <aside className="rounded-lg border border-[#d9e1da] bg-white p-6 lg:sticky lg:top-6 lg:self-start">
+    <aside className="surface-card rounded-lg p-5 sm:p-6 lg:sticky lg:top-6 lg:self-start">
       <h2 className="text-[20px] font-semibold leading-[1.2] tracking-normal">
         Deine Auswahl
       </h2>
       <dl className="mt-5 space-y-4 text-[16px] leading-[1.5]">
         <div>
-          <dt className="text-[14px] font-semibold leading-[1.4] tracking-normal text-[#5f6b62]">
+          <dt className="text-[14px] font-semibold leading-[1.4] tracking-normal text-[var(--muted)]">
             Leistung
           </dt>
           <dd className="mt-1 font-semibold tracking-normal">
@@ -52,13 +52,13 @@ export function BookingSummary({
           </dd>
         </div>
         <div>
-          <dt className="text-[14px] font-semibold leading-[1.4] tracking-normal text-[#5f6b62]">
+          <dt className="text-[14px] font-semibold leading-[1.4] tracking-normal text-[var(--muted)]">
             Stylist
           </dt>
           <dd className="mt-1 font-semibold tracking-normal">{stylistLabel}</dd>
         </div>
         <div>
-          <dt className="text-[14px] font-semibold leading-[1.4] tracking-normal text-[#5f6b62]">
+          <dt className="text-[14px] font-semibold leading-[1.4] tracking-normal text-[var(--muted)]">
             Zeit
           </dt>
           <dd className="mt-1 font-semibold tracking-normal">
@@ -70,7 +70,7 @@ export function BookingSummary({
           </dd>
         </div>
       </dl>
-      <p className="mt-6 rounded-lg bg-[#eef4ef] p-4 text-[16px] leading-[1.5] text-[#5f6b62]">
+      <p className="mt-6 rounded-lg border border-[var(--line)] bg-[var(--surface)] p-4 text-[16px] leading-[1.5] text-[var(--muted)]">
         {submitLabel} bleibt unverbindlich, bis der Salon den Termin bestaetigt.
       </p>
     </aside>

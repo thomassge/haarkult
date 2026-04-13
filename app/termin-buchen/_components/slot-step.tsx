@@ -40,7 +40,7 @@ export function SlotStep({
       </h2>
 
       {conflictMessage ? (
-        <p className="mt-4 rounded-lg border border-[#b42318] bg-white p-4 text-[16px] leading-[1.5] text-[#b42318]">
+        <p className="mt-4 rounded-lg border border-[#b42318] bg-[var(--surface-strong)] p-4 text-[16px] leading-[1.5] text-[#b42318]">
           {conflictMessage}
         </p>
       ) : null}
@@ -66,20 +66,20 @@ export function SlotStep({
 
       <div className="mt-5 min-h-16">
         {!selectedDate ? (
-          <p className="text-[16px] leading-[1.5] text-[#5f6b62]">
+          <p className="text-[16px] leading-[1.5] text-[var(--muted)]">
             Waehle zuerst ein Datum aus.
           </p>
         ) : null}
 
         {loading ? (
-          <p className="text-[16px] leading-[1.5] text-[#5f6b62]">
+          <p className="text-[16px] leading-[1.5] text-[var(--muted)]">
             Freie Zeiten werden geladen...
           </p>
         ) : null}
 
         {error ? (
-          <div className="rounded-lg bg-[#eef4ef] p-4">
-            <p className="text-[16px] leading-[1.5] text-[#5f6b62]">{error}</p>
+          <div className="rounded-lg border border-[var(--line)] bg-[var(--surface)] p-4">
+            <p className="text-[16px] leading-[1.5] text-[var(--muted)]">{error}</p>
             <button
               type="button"
               onClick={onRetry}
@@ -91,11 +91,11 @@ export function SlotStep({
         ) : null}
 
         {selectedDate && !loading && !error && slots.length === 0 ? (
-          <div className="rounded-lg bg-[#eef4ef] p-4">
+          <div className="rounded-lg border border-[var(--line)] bg-[var(--surface)] p-4">
             <h3 className="text-[20px] font-semibold leading-[1.2] tracking-normal">
               Keine freien Zeiten gefunden
             </h3>
-            <p className="mt-2 text-[16px] leading-[1.5] text-[#5f6b62]">
+            <p className="mt-2 text-[16px] leading-[1.5] text-[var(--muted)]">
               Waehle ein anderes Datum, eine andere Leistung oder eine andere Stylistin
               aus.
             </p>

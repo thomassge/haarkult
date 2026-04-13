@@ -26,31 +26,31 @@ export function BookingEntryShell({
   subtitle,
 }: BookingEntryShellProps) {
   return (
-    <div className="min-h-screen bg-[#f7f8f6] text-[#161a17]">
+    <div className="min-h-screen text-[var(--foreground)]">
       <Section className="pt-10 sm:pt-14 lg:pt-16">
         <Container>
           <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.45fr)]">
-            <section className="rounded-lg border border-[#d9e1da] bg-white p-6 sm:p-8">
+            <section className="surface-card rounded-lg p-6 sm:p-8">
               {pageCopy.eyebrow ? (
                 <FinePrint className="tracking-normal">{pageCopy.eyebrow}</FinePrint>
               ) : null}
-              <h1 className="mt-4 text-[28px] font-semibold leading-[1.2] tracking-normal text-[#161a17]">
+              <h1 className="mt-4 text-[28px] font-semibold leading-[1.2] tracking-normal text-[var(--foreground)]">
                 {pageCopy.title}
               </h1>
-              <p className="mt-4 max-w-2xl text-[16px] leading-[1.5] text-[#5f6b62]">
+              <p className="mt-4 max-w-2xl text-[16px] leading-[1.5] text-[var(--muted)]">
                 {subtitle}
               </p>
-              <BodyText className="mt-6 text-[16px] leading-[1.5] text-[#5f6b62]">
+              <BodyText className="mt-6 text-[16px] leading-[1.5] text-[var(--muted)]">
                 {pageCopy.body}
               </BodyText>
             </section>
 
             {pageCopy.steps?.length ? (
-              <section className="rounded-lg border border-[#d9e1da] bg-white p-6 sm:p-8">
+              <section className="surface-card rounded-lg p-6 sm:p-8">
                 <FinePrint className="tracking-normal">
                   {pageCopy.stepsLabel}
                 </FinePrint>
-                <ul className="mt-5 space-y-3 text-[16px] leading-[1.5] text-[#5f6b62]">
+                <ul className="mt-5 space-y-3 text-[16px] leading-[1.5] text-[var(--muted)]">
                   {pageCopy.steps.map((step) => (
                     <li key={step}>{step}</li>
                   ))}
@@ -59,12 +59,12 @@ export function BookingEntryShell({
             ) : null}
           </div>
 
-          <section className="mt-6 rounded-lg border border-[#d9e1da] bg-white p-6 sm:p-8">
+          <section className="surface-card mt-6 rounded-lg p-6 sm:p-8">
             <FinePrint className="tracking-normal">{pageCopy.contactTitle}</FinePrint>
-            <p className="mt-3 text-[20px] font-semibold leading-[1.2] tracking-normal text-[#161a17]">
+            <p className="mt-3 text-[20px] font-semibold leading-[1.2] tracking-normal text-[var(--foreground)]">
               {brandName}
             </p>
-            <BodyText className="mt-2 max-w-2xl text-[16px] leading-[1.5] text-[#5f6b62]">
+            <BodyText className="mt-2 max-w-2xl text-[16px] leading-[1.5] text-[var(--muted)]">
               {pageCopy.contactBody}
             </BodyText>
 
