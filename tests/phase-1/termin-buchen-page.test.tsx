@@ -77,7 +77,7 @@ describe("/termin-buchen fallback", () => {
     );
     const expectedSubtitle = `${booking.copy.contactOnly.subtitlePrefix} ${formatInlineList(fallbackChannels)}.`;
 
-    render(<BookingPage />);
+    render(await BookingPage());
 
     expect(screen.getByText(booking.copy.contactOnly.title)).toBeTruthy();
     expect(screen.getByText(expectedSubtitle)).toBeTruthy();
@@ -101,7 +101,7 @@ describe("/termin-buchen fallback", () => {
     );
     const expectedSubtitle = `${booking.copy.contactOnly.subtitlePrefix} ${formatInlineList(fallbackChannels)}.`;
 
-    render(<BookingPage />);
+    render(await BookingPage());
 
     expect(screen.getByText(expectedSubtitle)).toBeTruthy();
     expect(screen.getByRole("link", { name: /Anrufen/i })).toBeTruthy();
