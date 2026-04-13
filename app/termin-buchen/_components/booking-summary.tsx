@@ -4,11 +4,14 @@ import type {
   PublicBookingServiceOptionDto,
   StylistPreferenceOptionsDto,
 } from "../_lib/booking-flow-options";
+import { formatTime, type PublicSlotDto } from "./slot-step";
 
 type BookingSummaryProps = {
   selectedService: PublicBookingServiceOptionDto | null;
   stylistOptions: StylistPreferenceOptionsDto;
   selectedPreferenceId: string | null;
+  selectedDate: string | null;
+  selectedSlot: PublicSlotDto | null;
   submitLabel: string;
 };
 
@@ -16,6 +19,8 @@ export function BookingSummary({
   selectedService,
   stylistOptions,
   selectedPreferenceId,
+  selectedDate,
+  selectedSlot,
   submitLabel,
 }: BookingSummaryProps) {
   const selectedPreference = stylistOptions.options.find(
@@ -57,13 +62,26 @@ export function BookingSummary({
             Zeit
           </dt>
           <dd className="mt-1 font-semibold tracking-normal">
-            Freie Zeiten folgen im naechsten Schritt.
+            {selectedSlot
+              ? `${formatDate(selectedSlot.startAt)} um ${formatTime(selectedSlot.startAt)}`
+              : selectedDate
+                ? "Bitte eine freie Uhrzeit waehlen"
+                : "Noch kein Datum gewaehlt"}
           </dd>
         </div>
       </dl>
       <p className="mt-6 rounded-lg bg-[#eef4ef] p-4 text-[16px] leading-[1.5] text-[#5f6b62]">
-        {submitLabel} bleibt unverbindlich, bis eine freie Zeit ausgewaehlt ist.
+        {submitLabel} bleibt unverbindlich, bis der Salon den Termin bestaetigt.
       </p>
     </aside>
   );
+}
+
+function formatDate(value: string) {
+  return new Intl.DateTimeFormat("de-DE", {
+    timeZone: "Europe/Berlin",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(new Date(value));
 }

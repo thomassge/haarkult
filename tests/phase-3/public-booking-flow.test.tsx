@@ -286,13 +286,22 @@ describe("/termin-buchen public booking flow", () => {
         "Diese Zeit ist gerade nicht mehr verfuegbar. Deine Angaben bleiben erhalten. Bitte waehle eine neue Uhrzeit."
       )
     ).toBeTruthy();
-    expect(screen.getByLabelText("Name")).toHaveValue("Mira Mustermann");
-    expect(screen.getByLabelText("Telefon")).toHaveValue("06181 12345");
-    expect(screen.getByLabelText("E-Mail")).toHaveValue("mira@example.test");
-    expect(screen.getByLabelText("Hinweis (optional)")).toHaveValue(
+    expect((screen.getByLabelText("Name") as HTMLInputElement).value).toBe(
+      "Mira Mustermann"
+    );
+    expect((screen.getByLabelText("Telefon") as HTMLInputElement).value).toBe(
+      "06181 12345"
+    );
+    expect((screen.getByLabelText("E-Mail") as HTMLInputElement).value).toBe(
+      "mira@example.test"
+    );
+    expect((screen.getByLabelText("Hinweis (optional)") as HTMLTextAreaElement).value).toBe(
       "Bitte vorher kurz anrufen."
     );
-    expect(screen.getByRole("button", { name: "Termin anfragen" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Termin anfragen" })).toHaveProperty(
+      "disabled",
+      true
+    );
     expect(fetch).toHaveBeenCalledTimes(2);
   });
 

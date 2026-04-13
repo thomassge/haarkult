@@ -226,8 +226,8 @@ export async function createPublicBooking(
             : "Dein Termin ist gebucht",
         message:
           initialStatus === "pending"
-            ? "Wir pruefen deine Anfrage und melden uns zur Bestaetigung."
-            : "Dein Termin wurde direkt bestaetigt.",
+            ? "Der Salon prueft den Termin und meldet sich persoenlich bei dir."
+            : "Der Termin ist eingetragen. Bitte komm ein paar Minuten vorher in den Salon.",
         appointment: {
           serviceTitle: serviceSnapshot.serviceTitle,
           staffId: selectedSlot.staffId,
