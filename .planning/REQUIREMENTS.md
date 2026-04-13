@@ -1,7 +1,7 @@
 # Requirements: Haarkult Salon Builder
 
 **Defined:** 2026-04-10
-**Last updated:** 2026-04-12 after v1.0 / Phase 1 completion
+**Last updated:** 2026-04-13 after v1.2 / Phase 3 completion
 **Core Value:** A salon should be able to run a premium website with either contact-only mode or real booking mode by changing salon-specific content and configuration, not by rewriting the codebase.
 
 ## Completed Milestones
@@ -27,26 +27,23 @@ Archived at: [v1.0-REQUIREMENTS.md](./milestones/v1.0-REQUIREMENTS.md)
 - [x] **STAF-03**: Salon staff can set recurring weekly working hours for each stylist
 - [x] **STAF-04**: Salon staff can set one-off blocked times, breaks, vacations, or availability exceptions for each stylist
 
+### Phase 3 / v1.2 - Public Booking Engine
+
+- [x] **BOOK-01**: Client can browse bookable services with duration and price context before starting a booking
+- [x] **BOOK-02**: Client can start a booking from the public website when booking mode is enabled
+- [x] **BOOK-03**: Client can select a service to book
+- [x] **BOOK-04**: Client is not asked to choose a stylist when only one eligible stylist exists for the booking
+- [x] **BOOK-05**: Client can choose a preferred stylist when more than one eligible stylist exists
+- [x] **BOOK-06**: Client can see available appointment slots for the selected service, stylist choice, and date
+- [x] **BOOK-07**: Client can submit a booking using name, phone, email, and an optional note
+- [x] **BOOK-08**: Client gets a clear retry path when the selected slot is no longer available during submission
+- [x] **STAF-05**: The booking system calculates availability from service duration, staff schedules, exceptions, existing bookings, lead time, booking horizon, and slot step rules
+
 ### Later v1 Requirements
 
 #### Builder
 
 - [ ] **BUIL-03**: Maintainer can reuse the same booking and admin code paths across multiple salons with salon-specific data differences
-
-#### Public Booking
-
-- [ ] **BOOK-01**: Client can browse bookable services with duration and price context before starting a booking
-- [ ] **BOOK-02**: Client can start a booking from the public website when booking mode is enabled
-- [ ] **BOOK-03**: Client can select a service to book
-- [ ] **BOOK-04**: Client is not asked to choose a stylist when only one eligible stylist exists for the booking
-- [ ] **BOOK-05**: Client can choose a preferred stylist when more than one eligible stylist exists
-- [ ] **BOOK-06**: Client can see available appointment slots for the selected service, stylist choice, and date
-- [ ] **BOOK-07**: Client can submit a booking using name, phone, email, and an optional note
-- [ ] **BOOK-08**: Client gets a clear retry path when the selected slot is no longer available during submission
-
-#### Staff Setup
-
-- [ ] **STAF-05**: The booking system calculates availability from service duration, staff schedules, exceptions, existing bookings, lead time, booking horizon, and slot step rules
 
 #### Admin Operations
 
@@ -106,15 +103,15 @@ Archived at: [v1.0-REQUIREMENTS.md](./milestones/v1.0-REQUIREMENTS.md)
 | STAF-04 | Phase 2 | v1.1 | Complete |
 | ADMN-01 | Phase 2 | v1.1 | Complete |
 | ADMN-06 | Phase 2 | v1.1 | Complete |
-| BOOK-01 | Phase 3 | v1.2 | Pending |
-| BOOK-02 | Phase 3 | v1.2 | Pending |
-| BOOK-03 | Phase 3 | v1.2 | Pending |
-| BOOK-04 | Phase 3 | v1.2 | Pending |
-| BOOK-05 | Phase 3 | v1.2 | Pending |
-| BOOK-06 | Phase 3 | v1.2 | Pending |
-| BOOK-07 | Phase 3 | v1.2 | Pending |
-| BOOK-08 | Phase 3 | v1.2 | Pending |
-| STAF-05 | Phase 3 | v1.2 | Pending |
+| BOOK-01 | Phase 3 | v1.2 | Complete |
+| BOOK-02 | Phase 3 | v1.2 | Complete |
+| BOOK-03 | Phase 3 | v1.2 | Complete |
+| BOOK-04 | Phase 3 | v1.2 | Complete |
+| BOOK-05 | Phase 3 | v1.2 | Complete |
+| BOOK-06 | Phase 3 | v1.2 | Complete |
+| BOOK-07 | Phase 3 | v1.2 | Complete |
+| BOOK-08 | Phase 3 | v1.2 | Complete |
+| STAF-05 | Phase 3 | v1.2 | Complete |
 | ADMN-02 | Phase 4 | v1.3 | Pending |
 | ADMN-03 | Phase 4 | v1.3 | Pending |
 | ADMN-04 | Phase 4 | v1.3 | Pending |
@@ -127,6 +124,8 @@ Archived at: [v1.0-REQUIREMENTS.md](./milestones/v1.0-REQUIREMENTS.md)
 **Coverage:**
 
 - Phase 1 requirements completed: 5
-- Active/carry-forward v1 requirements: 23
+- Phase 2 requirements completed: 6
+- Phase 3 requirements completed: 9
+- Active/carry-forward v1 requirements: 14
 - Mapped to phases: 28
 - Unmapped: 0

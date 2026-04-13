@@ -8,8 +8,8 @@ This roadmap tracks the salon-builder product as phase-sized milestones. The ful
 
 - [x] **v1.0 - Phase 1: Builder Boundaries & Mode Hardening** - shipped 2026-04-12 ([archive](./milestones/v1.0-ROADMAP.md))
 - [x] **v1.1 - Phase 2: Admin Auth & Salon Setup** - shipped 2026-04-12
-- [ ] **v1.2 - Phase 3: Public Booking Engine** - next
-- [ ] **v1.3 - Phase 4: Staff Booking Operations** - planned
+- [x] **v1.2 - Phase 3: Public Booking Engine** - shipped 2026-04-13
+- [ ] **v1.3 - Phase 4: Staff Booking Operations** - next
 - [ ] **v1.4 - Phase 5: Launch Hardening & Reuse Proof** - planned
 
 ## Phase Numbering
@@ -37,6 +37,16 @@ This roadmap tracks the salon-builder product as phase-sized milestones. The ful
 - Requirements completed: ADMN-01, ADMN-06, STAF-01, STAF-02, STAF-03, STAF-04
 - Verification: passed after gap closure
 - Report: [02-VERIFICATION.md](./phases/02-admin-auth-salon-setup/02-VERIFICATION.md)
+
+</details>
+
+<details>
+<summary>v1.2 - Phase 3: Public Booking Engine - SHIPPED 2026-04-13</summary>
+
+- [x] Phase 3: Public Booking Engine - 3/3 plans complete
+- Requirements completed: BOOK-01, BOOK-02, BOOK-03, BOOK-04, BOOK-05, BOOK-06, BOOK-07, BOOK-08, STAF-05
+- Verification: passed after human UAT and runtime/visual fixes
+- Report: [03-VERIFICATION.md](./phases/03-public-booking-engine/03-VERIFICATION.md)
 
 </details>
 
@@ -74,9 +84,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 03-01-PLAN.md - Build public service and stylist selection flow
-- [ ] 03-02-PLAN.md - Implement server-side availability engine and slot query endpoints
-- [ ] 03-03-PLAN.md - Implement booking submission, conflict handling, and public success/error states
+- [x] 03-01-PLAN.md - Build public service and stylist selection flow
+- [x] 03-02-PLAN.md - Implement server-side availability engine and slot query endpoints
+- [x] 03-03-PLAN.md - Implement booking submission, conflict handling, and public success/error states
 
 ### Phase 4: Staff Booking Operations
 
@@ -119,6 +129,6 @@ Plans:
 |-------|-----------|----------------|--------|-----------|
 | 1. Builder Boundaries & Mode Hardening | v1.0 | 4/4 | Complete | 2026-04-12 |
 | 2. Admin Auth & Salon Setup | v1.1 | 4/4 | Complete | 2026-04-12 |
-| 3. Public Booking Engine | v1.2 | 0/3 | Next | - |
-| 4. Staff Booking Operations | v1.3 | 0/3 | Planned | - |
+| 3. Public Booking Engine | v1.2 | 3/3 | Complete | 2026-04-13 |
+| 4. Staff Booking Operations | v1.3 | 0/3 | Next | - |
 | 5. Launch Hardening & Reuse Proof | v1.4 | 0/2 | Planned | - |

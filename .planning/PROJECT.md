@@ -4,7 +4,7 @@
 
 This project starts as the real website for the user's mother's salon, Haarkult-Maintal. It is also becoming a reusable salon website system where most variation between salons comes from swapping structured salon information, services, staff data, booking setup, and assets instead of rebuilding the application.
 
-The current product has a completed brochure/builder foundation with hardened mode boundaries and a completed protected admin setup foundation. The next priority is Phase 3: the public booking engine that consumes salon-managed setup data for service selection, stylist selection, availability, and booking submission.
+The current product has a completed brochure/builder foundation, protected admin setup foundation, and public booking engine. The next priority is Phase 4: staff booking operations for reviewing, accepting, declining, rescheduling, and notifying around booking requests.
 
 ## Core Value
 
@@ -12,25 +12,24 @@ A salon should be able to run a premium website with either contact-only mode or
 
 ## Current State
 
-**Shipped milestone:** v1.1 - Phase 2: Admin Auth & Salon Setup
-**Next milestone:** v1.2 - Phase 3: Public Booking Engine
-**Last updated:** 2026-04-12
+**Shipped milestone:** v1.2 - Phase 3: Public Booking Engine
+**Next milestone:** v1.3 - Phase 4: Staff Booking Operations
+**Last updated:** 2026-04-13
 
 Phase 1 is complete. Booking-specific config and copy are isolated in `content/booking.ts`, salon-wide data remains in `content/site.ts`, public mode decisions flow through `lib/site-mode.ts`, and `/termin-buchen` is route-local.
 
 Phase 2 is complete. Admin staff can sign in through protected Auth.js Credentials auth, manage operational stylists, assign services, set recurring weekly working hours, and create one-off availability exceptions. Phase 2 verification passed after a gap closure that repointed the `Leistungen` dashboard card to `/admin/stylisten` and rejected invalid timed exception dates before persistence.
 
-The current codebase still does not have a public availability engine, booking submission, staff booking lifecycle operations, or notification flows. Those are intentionally planned for later phases.
+Phase 3 is complete. Clients can browse service categories, choose a service, choose a stylist only when more than one eligible stylist exists, load server-calculated slots, submit a guest booking request, and receive a safe retry path when a selected slot becomes stale. The implementation uses the Phase 2 server-owned setup model and Neon-backed booking tables. Staff booking lifecycle operations and notification flows remain planned for Phase 4.
 
 ## Next Milestone Goals
 
-Phase 3 should make public booking mode real enough for clients to request appointments:
+Phase 4 should let salon staff operate the bookings created by Phase 3:
 
-- Clients can browse/select bookable services.
-- Clients choose a stylist only when more than one eligible stylist exists.
-- Clients see valid free time slots based on service duration, stylist setup, weekly hours, exceptions, and booking rules.
-- Booking submission re-checks slot availability on the server before writing a request.
-- Public booking logic uses the server-owned setup model created in Phase 2.
+- Staff can view upcoming and pending bookings in the admin area.
+- Staff can accept, decline/cancel, and reschedule bookings using valid slots.
+- Booking changes create event history.
+- Clients and the salon receive booking-related notifications after relevant actions.
 
 ## Requirements
 
@@ -51,13 +50,19 @@ Phase 3 should make public booking mode real enough for clients to request appoi
 - Staff requirement STAF-02: salon staff can assign which services each stylist can perform - v1.1
 - Staff requirement STAF-03: salon staff can set recurring weekly working hours for each stylist - v1.1
 - Staff requirement STAF-04: salon staff can set one-off blocked times, breaks, vacations, or availability exceptions for each stylist - v1.1
+- Booking requirement BOOK-01: clients can browse bookable services with duration and price context - v1.2
+- Booking requirement BOOK-02: clients can start booking from the public website in booking mode - v1.2
+- Booking requirement BOOK-03: clients can select a service to book - v1.2
+- Booking requirement BOOK-04: stylist selection is skipped when only one eligible stylist exists - v1.2
+- Booking requirement BOOK-05: clients can choose a preferred stylist when more than one eligible stylist exists - v1.2
+- Booking requirement BOOK-06: clients can see available slots for selected service, stylist choice, and date - v1.2
+- Booking requirement BOOK-07: clients can submit a booking using name, phone, email, and optional note - v1.2
+- Booking requirement BOOK-08: clients get a clear retry path when the selected slot is no longer available - v1.2
+- Staff requirement STAF-05: booking availability is calculated from duration, schedules, exceptions, bookings, lead time, horizon, and slot step rules - v1.2
 
 ### Active
 
 - [ ] Complete real booking mode for hair salons on top of the existing website foundation
-- [ ] Let clients choose a service from the salon catalog and create an appointment
-- [ ] Let clients choose a stylist only when the salon has more than one stylist; skip that choice automatically when there is only one
-- [ ] Show only valid free time slots based on the selected service, stylist availability, and booking rules
 - [ ] Let salon staff review, accept, decline, and reschedule appointments
 - [ ] Keep the booking and admin logic reusable across multiple salons without splitting into per-salon custom implementations
 
@@ -100,7 +105,7 @@ The business direction is salon-first. The broader idea of supporting other appo
 | Prioritize booking mode and salon admin next | Contact-only mode is mostly there; the biggest product gap is real appointment operations | Good |
 | Keep salon-specific content and assets easily swappable | Reuse depends on changing data and branding rather than rewriting code | Good |
 | Use one shared booking/admin logic across salons | Core scheduling behavior should stay consistent and reusable | Good |
-| Only ask users to choose a stylist when the salon has more than one | The booking UX should match the real salon setup and avoid unnecessary choices | Pending - Phase 3 |
+| Only ask users to choose a stylist when the salon has more than one | The booking UX should match the real salon setup and avoid unnecessary choices | Good - v1.2 |
 | Keep non-salon verticals out of current scope | Future expansion matters, but current execution must stay focused on hair salons | Good |
 | Move booking rules and booking-page copy to `content/booking.ts` | Keeps salon-wide identity/contact data separate from booking-domain behavior | Good - v1.0 |
 | Resolve brochure mode behavior through `lib/site-mode.ts` | Avoids duplicate mode branching across homepage, footer, and booking route surfaces | Good - v1.0 |
@@ -108,8 +113,9 @@ The business direction is salon-first. The broader idea of supporting other appo
 | Treat each roadmap phase as a milestone | Keeps completion, archive, and planning loops small while the broader product backlog remains active | Good - v1.0 |
 | Use Auth.js Credentials with scrypt-hashed owner seed accounts for admin v1 | Provides protected salon-admin access without customer accounts or external auth complexity | Good - v1.1 |
 | Store operational staff and availability separately from marketing team content | Public team content stays brochure-oriented while booking logic consumes server-owned setup rows | Good - v1.1 |
-| Keep service assignment under `/admin/stylisten` | Service capabilities are per stylist; a separate `/admin/leistungen` route would duplicate the model | Good - v1.1 |
+| Add `/admin/leistungen` as a distinct service-assignment entry point | Phase 3 UAT showed that routing both Stylisten and Leistungen to the same page was confusing, even if the underlying model still assigns services per stylist | Good - v1.2 |
 | Validate timed availability exceptions before persistence | Phase 3 availability needs reliable exception windows and controlled validation errors | Good - v1.1 |
+| Use Neon serverless pool adapter for app DB access | Public booking submission and admin writes need Drizzle transactions, which the previous neon-http adapter does not support | Good - v1.2 |
 
 ## Evolution
 
@@ -124,4 +130,4 @@ This document evolves at phase transitions and milestone boundaries.
 5. Confirm the core value and constraints still match the project.
 
 ---
-*Last updated: 2026-04-12 after v1.1 milestone completion*
+*Last updated: 2026-04-13 after v1.2 milestone completion*
